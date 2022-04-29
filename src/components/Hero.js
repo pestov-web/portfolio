@@ -1,41 +1,64 @@
-import React from "react";
-import { Box, Button, Container, Grid, Paper, Typography } from "@mui/material";
-import Social from "./Social";
-import ConvBg from "./Particles";
+import React from 'react';
+import {
+  Box,
+  Button,
+  Container,
+  Fade,
+  Grid,
+  Paper,
+  Slide,
+  Typography,
+  Zoom,
+} from '@mui/material';
+import Social from './Social';
+import TsParticles from '../vendors/js/TsParticles';
 
 function Hero({ darkMode }) {
   return (
     <Paper
-      className={"hero"}
+      className={'hero'}
       sx={{
-        height: "70vh",
-        position: "relative",
-        background: "00",
+        height: '70vh',
+        position: 'relative',
+        background: '00',
       }}
     >
-      {" "}
-      <Container sx={{ height: "100%" }} maxWidth={"md"}>
+      {' '}
+      <Container sx={{ height: '100%' }} maxWidth={'md'}>
         <Grid
-          sx={{ height: "100%" }}
+          sx={{ height: '100%' }}
           container
-          justifyContent={"space-between"}
-          alignItems={"center"}
+          justifyContent={'space-between'}
+          alignItems={'center'}
         >
           <Grid item>
-            <Typography component={"h1"} variant={"h3"}>
-              Привет, меня зовут Владимир
-            </Typography>
-            <Typography variant={"h5"}>я начинающий веб разработчик</Typography>
+            <Zoom in={true} timeout={700}>
+              <Typography component={'h1'} variant={'h3'}>
+                Привет, меня зовут Владимир
+              </Typography>
+            </Zoom>
+            <Zoom in={true} timeout={700} style={{ transitionDelay: '500ms' }}>
+              <Typography variant={'h5'}>
+                я начинающий веб разработчик
+              </Typography>
+            </Zoom>
+
             <Box my={2}>
-              <Button variant={"outlined"}>Подробнее</Button>
+              <Fade
+                in={true}
+                timeout={1200}
+                style={{ transitionDelay: '1000ms' }}
+              >
+                <Button variant={'outlined'}>Подробнее</Button>
+              </Fade>
             </Box>
           </Grid>
           <Grid item>
             <Social />
           </Grid>
         </Grid>
-      </Container>{" "}
-      <ConvBg darkMode={darkMode} />
+      </Container>{' '}
+      <TsParticles darkMode={darkMode} />
     </Paper>
   );
 }

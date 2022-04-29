@@ -1,23 +1,23 @@
-import React from "react";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
-import "./lol.css";
+import React from 'react';
+import Particles from 'react-tsparticles';
+import { loadFull } from 'tsparticles';
+import '../css/tsParticles.css';
 
-function ConvBg({ darkMode }) {
+function TsParticles({ darkMode }) {
   const particlesInit = async (main) => {
     await loadFull(main);
   };
 
   return (
     <Particles
-      className={"canvo"}
-      canvasClassName={"canvo__can"}
+      className={'canvo'}
+      canvasClassName={'canvo__can'}
       id="tsparticles"
       init={particlesInit}
       options={{
         background: {
           color: {
-            value: darkMode ? "#37383b" : "#e0dcdc",
+            value: darkMode ? '#37383b' : '#ECF2FE',
           },
         },
         fullScreen: {
@@ -28,11 +28,11 @@ function ConvBg({ darkMode }) {
           events: {
             onClick: {
               enable: true,
-              mode: "push",
+              mode: 'push',
             },
             onHover: {
               enable: true,
-              mode: "repulse",
+              mode: 'repulse',
             },
             resize: true,
           },
@@ -48,23 +48,23 @@ function ConvBg({ darkMode }) {
         },
         particles: {
           color: {
-            value: darkMode ? "#ffffff" : "#747a7e",
+            value: darkMode ? '#ffffff' : '#747a7e',
           },
           links: {
-            color: darkMode ? "#5499ab" : "#5eb69f",
+            color: darkMode ? '#5d8e9a' : '#90ACF6',
             distance: 150,
             enable: true,
-            opacity: 0.2,
+            opacity: 0.4,
             width: 1,
           },
           collisions: {
             enable: false,
           },
           move: {
-            direction: "none",
+            direction: 'none',
             enable: true,
             outModes: {
-              default: "bounce",
+              default: 'bounce',
             },
             random: false,
             speed: 1,
@@ -81,7 +81,7 @@ function ConvBg({ darkMode }) {
             value: 0.5,
           },
           shape: {
-            type: "circle",
+            type: 'circle',
           },
           size: {
             value: { min: 1, max: 5 },
@@ -93,4 +93,4 @@ function ConvBg({ darkMode }) {
   );
 }
 
-export default ConvBg;
+export default TsParticles;
