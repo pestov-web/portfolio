@@ -5,6 +5,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Hero from './Hero';
 import Header from './Header';
 import { useState } from 'react';
+import Projects from './Projects';
+import Footer from './Footer';
+import About from './About';
 
 function App() {
   const [isThemeDark, setIsThemeDark] = useState(false);
@@ -30,7 +33,11 @@ function App() {
       <CssBaseline />
       <Header />
       <Hero darkMode={isThemeDark} />
+      <About />
+      <Projects />
+      <Footer />
     </ThemeProvider>
   );
 }
+
 export default App;

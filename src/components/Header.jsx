@@ -18,14 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { avatar } from '../utils/constants';
-
-export const navMenu = [
-  { nameRu: 'Обо мне', nameEn: 'About', href: '#about' },
-  { nameRu: 'Навыки', nameEn: 'Skills', href: '#experience' },
-  { nameRu: 'Портфолио', nameEn: 'Work', href: '#portfolio' },
-  { nameRu: 'Контакты', nameEn: 'Contact', href: '#contact' },
-  { nameRu: 'Резюме', nameEn: 'Resume', href: '#' },
-];
+import { navMenu } from '../data/navMenu';
 
 const grow = keyframes`
   from {
@@ -93,12 +86,15 @@ function Header() {
               {item.nameRu}
             </Button>
           ))}
-          <IconButton
-            onClick={toggleBurgerMenu}
-            sx={{ display: { xs: 'block', md: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <div>
+            {' '}
+            <IconButton
+              onClick={toggleBurgerMenu}
+              sx={{ display: { xs: 'inline-flex', md: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </div>
         </Toolbar>
       </Container>
       <SwipeableDrawer

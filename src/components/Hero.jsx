@@ -16,7 +16,7 @@ import TsParticles from '../vendors/js/TsParticles';
 function Hero({ darkMode }) {
   return (
     <Paper
-      className={'hero'}
+      component={'section'}
       sx={{
         height: '70vh',
         position: 'relative',
