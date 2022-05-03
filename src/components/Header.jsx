@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   AppBar,
   Avatar,
+  Box,
   Button,
   Container,
   Divider,
@@ -19,6 +20,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { avatar } from '../utils/constants';
 import { navMenu } from '../data/navMenu';
+import ResumeButton from './ResumeButton';
 
 const grow = keyframes`
   from {
@@ -86,6 +88,7 @@ function Header() {
               {item.nameRu}
             </Button>
           ))}
+          <ResumeButton />
           <div>
             {' '}
             <IconButton
@@ -103,13 +106,20 @@ function Header() {
         onClose={toggleBurgerMenu}
         onOpen={toggleBurgerMenu}
       >
-        <div>
+        <Box>
           {' '}
-          <IconButton onClick={toggleBurgerMenu}>
+          <IconButton
+            onClick={toggleBurgerMenu}
+            sx={{
+              my: { xs: '8px', sm: '12px' },
+              marginLeft: '130px',
+              marginRight: '10px',
+            }}
+          >
             <CloseIcon />
           </IconButton>
           <Divider />
-        </div>{' '}
+        </Box>{' '}
         <List>
           {' '}
           {navMenu.map((item, index) => (

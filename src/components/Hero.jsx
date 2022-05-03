@@ -18,7 +18,7 @@ function Hero({ darkMode }) {
     <Paper
       component={'section'}
       sx={{
-        height: '70vh',
+        height: { xs: '60vh', sm: '70vh' },
         position: 'relative',
         background: '00',
       }}
@@ -29,21 +29,19 @@ function Hero({ darkMode }) {
           sx={{ height: '100%' }}
           container
           justifyContent={'space-between'}
-          alignItems={'center'}
+          alignContent={'space-evenly'}
         >
-          <Grid item>
+          <Grid item xs={12} sm={11}>
             <Zoom in={true} timeout={700}>
               <Typography component={'h1'} variant={'h3'}>
-                Привет, меня зовут Владимир
+                Привет, я Владимир
               </Typography>
             </Zoom>
             <Zoom in={true} timeout={700} style={{ transitionDelay: '500ms' }}>
-              <Typography variant={'h5'}>
-                я начинающий веб разработчик
-              </Typography>
+              <Typography variant={'h5'}>начинающий веб разработчик</Typography>
             </Zoom>
 
-            <Box my={2}>
+            <Box my={3}>
               <Fade
                 in={true}
                 timeout={1200}
@@ -53,7 +51,7 @@ function Hero({ darkMode }) {
               </Fade>
             </Box>
           </Grid>
-          <Grid item>
+          <Grid item xs={12} sm={1}>
             <Social />
           </Grid>
         </Grid>

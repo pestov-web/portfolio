@@ -7,9 +7,6 @@ import {
   Container,
   Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Paper,
   Stack,
   Typography,
@@ -38,65 +35,43 @@ function About() {
               justifyContent: 'space-between',
             }}
           >
-            <Box>
-              <List disablePadding={true} subheader>
-                <ListItem disableGutters disablePadding>
-                  <ListItemText
-                    primary="Меня зовут Владимир Пестов"
-                    secondary={
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="p"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        Я ищу свою первую работу.
-                      </Typography>
-                    }
-                  />
-                </ListItem>{' '}
-                <ListItem disableGutters disablePadding>
-                  <ListItemText
-                    secondary={
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="p"
-                        variant="body2"
-                      >
-                        Активно занимаюсь самообразованием, читаю обучающую
-                        литературу по веб-разработке.
-                      </Typography>
-                    }
-                  />
-                </ListItem>{' '}
-                <ListItem disableGutters disablePadding>
-                  <ListItemText
-                    secondary={
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="p"
-                        variant="body2"
-                      >
-                        Быстро разбираюсь в новых областях и темах, эффективно
-                        работаю самостоятельно и в команде.
-                      </Typography>
-                    }
-                  />
-                </ListItem>{' '}
-                <ListItem disableGutters disablePadding>
-                  <ListItemText
-                    secondary={
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="p"
-                        variant="body2"
-                      >
-                        Имею бэкграунд системного администратора.
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-              </List>
+            <Box display={'flex'} flexDirection={'column'} gap={1}>
+              <Typography> Меня зовут Владимир Пестов</Typography>
+
+              <Typography
+                sx={{ display: 'inline' }}
+                component="p"
+                variant="body2"
+                color="text.primary"
+              >
+                Я ищу свою первую работу.
+              </Typography>
+
+              <Typography
+                sx={{ display: 'inline' }}
+                component="p"
+                variant="body2"
+              >
+                Активно занимаюсь самообразованием, читаю обучающую литературу
+                по веб-разработке.
+              </Typography>
+
+              <Typography
+                sx={{ display: 'inline' }}
+                component="p"
+                variant="body2"
+              >
+                Быстро разбираюсь в новых областях и темах, эффективно работаю
+                самостоятельно и в команде.
+              </Typography>
+
+              <Typography
+                sx={{ display: 'inline' }}
+                component="p"
+                variant="body2"
+              >
+                Имею бэкграунд системного администратора.
+              </Typography>
             </Box>
             <Box>
               <Divider sx={{ paddingTop: { xs: '15px', sm: '0' } }} />

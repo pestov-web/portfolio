@@ -2,7 +2,15 @@ import React from 'react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import { Grid, IconButton, Link } from '@mui/material';
+import {
+  Box,
+  Container,
+  Grid,
+  IconButton,
+  Link,
+  List,
+  ListItem,
+} from '@mui/material';
 
 const socialItems = [
   {
@@ -22,34 +30,37 @@ const socialItems = [
   },
 ];
 
-function Social() {
+function Social({ place }) {
   return (
-    <Grid
+    <Container
       sx={{
-        display: { xs: 'none', md: 'block' },
+        m: 0,
+        p: { xs: 0 },
+        display: 'flex',
+        flexDirection: { xs: 'row', sm: `${place ? 'row' : 'column'}` },
+        gap: '10px',
+        listStyle: 'none',
+        alignItems: 'flex-end',
       }}
-      container
-      direction={'column'}
-      spacing={1}
     >
+      {' '}
       {socialItems.map((item, index) => (
-        <Grid key={index} item>
-          <Link href={item.url} target="_blank" rel="noreferrer">
+        <Link href={item.url} target="_blank" rel="noreferrer">
+          {' '}
+          <IconButton
+            component={'a'}
+            sx={[
+              (theme) => ({
+                '&:hover': { color: theme.palette.primary.main },
+              }),
+            ]}
+          >
             {' '}
-            <IconButton
-              sx={[
-                (theme) => ({
-                  '&:hover': { color: theme.palette.primary.main },
-                }),
-              ]}
-            >
-              {' '}
-              <item.icon />
-            </IconButton>
-          </Link>
-        </Grid>
+            <item.icon />
+          </IconButton>
+        </Link>
       ))}
-    </Grid>
+    </Container>
   );
 }
 
