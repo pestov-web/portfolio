@@ -89,7 +89,7 @@ function About() {
             </Box>
           </Grid>
           <Grid item xs={12} sm={5} md={4} padding={2} component={'picture'}>
-            <box>
+            <Box>
               <CardMedia
                 component="img"
                 image={firstPhoto}
@@ -115,7 +115,7 @@ function About() {
                   }),
                 ]}
               />
-            </box>
+            </Box>
           </Grid>
         </Grid>
       </Paper>{' '}

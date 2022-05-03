@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Link,
-  Paper,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Container, Paper } from '@mui/material';
 import Social from './Social';
 
 function Footer() {
@@ -32,9 +24,9 @@ function Footer() {
         <Box>
           <Social place={'footer'} />
         </Box>
-        <box>
+        <Box>
           <Button variant={'outlined'}>Владимир Пестов</Button>
-        </box>
+        </Box>
       </Container>
     </Paper>
   );

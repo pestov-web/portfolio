@@ -2,15 +2,7 @@ import React from 'react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import {
-  Box,
-  Container,
-  Grid,
-  IconButton,
-  Link,
-  List,
-  ListItem,
-} from '@mui/material';
+import { Container, IconButton, Link } from '@mui/material';
 
 const socialItems = [
   {
@@ -45,10 +37,10 @@ function Social({ place }) {
     >
       {' '}
       {socialItems.map((item, index) => (
-        <Link href={item.url} target="_blank" rel="noreferrer">
+        <Link key={index} href={item.url} target="_blank" rel="noreferrer">
           {' '}
           <IconButton
-            component={'a'}
+            aria-label={item.name}
             sx={[
               (theme) => ({
                 '&:hover': { color: theme.palette.primary.main },

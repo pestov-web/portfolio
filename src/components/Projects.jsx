@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  alpha,
   Box,
   Card,
   CardContent,
@@ -53,7 +52,7 @@ function Projects() {
                     p: '15px !important',
                   }}
                 >
-                  <Typography component={'h3'} variant={'h5'}>
+                  <Typography component={'h2'} variant={'h5'}>
                     {item.nameRu}
                   </Typography>
                   <Typography component={'p'} paragraph>
@@ -61,6 +60,7 @@ function Projects() {
                   </Typography>
                   <Box alignSelf={isEven(item.id) ? 'flex-start' : 'flex-end'}>
                     <IconButton
+                      aria-label={item.labelGh}
                       sx={[
                         (theme) => ({
                           '&:hover': { color: theme.palette.primary.main },
@@ -70,6 +70,7 @@ function Projects() {
                       <GitHubIcon />
                     </IconButton>
                     <IconButton
+                      aria-label={item.labelDemo}
                       sx={[
                         (theme) => ({
                           '&:hover': { color: theme.palette.primary.main },

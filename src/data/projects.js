@@ -7,6 +7,8 @@ export const projectsList = [
     id: 1,
     nameRu: 'Linzer',
     nameEn: 'Linzer',
+    labelGh: 'GutHub',
+    labelDemo: 'Live Demo',
     description:
       'Многостраничный сайт компании "Linzer" переделаный в адаптивный с использованием React из старого статичного сайта.',
     image: linzer,
@@ -18,6 +20,8 @@ export const projectsList = [
     id: 2,
     nameRu: 'Movies Explorer',
     nameEn: 'Movies Explroer',
+    labelGh: 'GutHub',
+    labelDemo: 'Live Demo',
     description:
       'Сайт поиска фильмов по каталогу. Дипломный проект студента факультета Веб-разработки, включающий фронтенд и бэкенд части приложения.',
     image: diploma,
@@ -28,6 +32,8 @@ export const projectsList = [
     id: 3,
     nameRu: 'Mesto',
     nameEn: 'Mesto',
+    labelGh: 'GutHub',
+    labelDemo: 'Live Demo',
     description:
       'Учебный проект "Место", включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями.',
     image: mesto,

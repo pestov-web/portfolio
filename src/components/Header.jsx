@@ -54,6 +54,7 @@ function Header() {
           </Avatar>{' '}
           {navMenu.map((item, index) => (
             <Button
+              aria-label={item.nameRu}
               sx={[
                 {
                   display: { xs: 'none', md: 'block' },
@@ -126,6 +127,7 @@ function Header() {
             <ListItem key={index}>
               {' '}
               <Link
+                aria-label={item.nameRu}
                 color={'textPrimary'}
                 variant={'button'}
                 underline={'none'}

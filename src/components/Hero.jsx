@@ -6,7 +6,6 @@ import {
   Fade,
   Grid,
   Paper,
-  Slide,
   Typography,
   Zoom,
 } from '@mui/material';
@@ -38,7 +37,9 @@ function Hero({ darkMode }) {
               </Typography>
             </Zoom>
             <Zoom in={true} timeout={700} style={{ transitionDelay: '500ms' }}>
-              <Typography variant={'h5'}>начинающий веб разработчик</Typography>
+              <Typography component={'p'} variant={'h5'}>
+                начинающий веб разработчик
+              </Typography>
             </Zoom>
 
             <Box my={3}>
