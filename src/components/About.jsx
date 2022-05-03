@@ -17,7 +17,7 @@ import { techsList } from '../data/techs';
 function About() {
   return (
     <Container maxWidth={'md'} component={'section'} sx={{ py: 10 }}>
-      <Divider textAlign="left" component={'h2'} sx={{ py: 4 }}>
+      <Divider textAlign="left" component={'h2'} sx={{ py: 4 }} id={'about'}>
         Обо мне
       </Divider>
       <Paper elevation={3}>

@@ -3,12 +3,9 @@ import {
   AppBar,
   Avatar,
   Box,
-  Button,
   Container,
   Divider,
   IconButton,
-  keyframes,
-  Link,
   List,
   ListItem,
   SwipeableDrawer,
@@ -21,15 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { avatar } from '../utils/constants';
 import { navMenu } from '../data/navMenu';
 import ResumeButton from './ResumeButton';
-
-const grow = keyframes`
-  from {
-    width: 5%;
-  }
-  to {
-    width: 100%;
-  }
-`;
+import ScrollToButton from './ScrollToButton';
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,41 +42,7 @@ function Header() {
             PW
           </Avatar>{' '}
           {navMenu.map((item, index) => (
-            <Button
-              aria-label={item.nameRu}
-              sx={[
-                {
-                  display: { xs: 'none', md: 'block' },
-                  paddingY: '15px',
-                  fontWeight: '500',
-                  position: 'relative',
-                },
-                (theme) => ({
-                  '&:hover': {
-                    color: theme.palette.primary.main,
-                    '&::after': {
-                      content: '""',
-                      borderBottom: '2px solid',
-                      borderColor: theme.palette.primary.main,
-                      display: 'block',
-                      width: '100%',
-                      position: 'absolute',
-                      bottom: '0',
-                      left: '0',
-                      animation: `${grow} 0.7s  ease`,
-                    },
-                  },
-                }),
-              ]}
-              key={index}
-              color={'primary'}
-              variant={'button'}
-              underline={'none'}
-              href={item.href}
-              mr={2}
-            >
-              {item.nameRu}
-            </Button>
+            <ScrollToButton item={item} key={index} />
           ))}
           <ResumeButton />
           <div>
@@ -125,19 +80,16 @@ function Header() {
           {' '}
           {navMenu.map((item, index) => (
             <ListItem key={index}>
-              {' '}
-              <Link
-                aria-label={item.nameRu}
-                color={'textPrimary'}
-                variant={'button'}
-                underline={'none'}
-                href={item.href}
-                mr={2}
-              >
-                {item.nameRu}
-              </Link>
+              <ScrollToButton
+                item={item}
+                isModal={true}
+                onClick={toggleBurgerMenu}
+              />
             </ListItem>
-          ))}
+          ))}{' '}
+          <ListItem>
+            <ResumeButton isModal={true} />
+          </ListItem>
         </List>
       </SwipeableDrawer>
     </AppBar>

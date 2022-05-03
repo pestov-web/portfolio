@@ -21,7 +21,12 @@ function Projects() {
 
   return (
     <Container maxWidth={'md'} component={'section'}>
-      <Divider textAlign="left" component={'h2'} sx={{ py: 4 }}>
+      <Divider
+        textAlign="left"
+        component={'h2'}
+        sx={{ py: 4 }}
+        id={'portfolio'}
+      >
         Мои работы
       </Divider>
       <Container
