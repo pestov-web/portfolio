@@ -8,7 +8,7 @@ export const projectsList = [
     nameRu: 'Linzer',
     nameEn: 'Linzer',
     description:
-      'lorem pulorem huylotrm lorem pulorem huylotrmlorem pulorem huylotrmlorem pulorem huylotrmlorem pulorem huylotrm',
+      'Многостраничный сайт компании "Linzer" переделаный в адаптивный с использованием React из старого статичного сайта.',
     image: linzer,
     ghUrl: 'https://github.com/pestov-web/linzer-react',
     prjUrl: 'https://linzer.su/',
@@ -16,21 +16,22 @@ export const projectsList = [
 
   {
     id: 2,
-    nameRu: 'Movies Exploer',
-    nameEn: 'Movies Exploer',
-    description: 'Учебный проект студента факультета Веб-разработки.',
+    nameRu: 'Movies Explorer',
+    nameEn: 'Movies Explroer',
+    description:
+      'Сайт поиска фильмов по каталогу. Дипломный проект студента факультета Веб-разработки, включающий фронтенд и бэкенд части приложения.',
     image: diploma,
-    ghUrl: 'https://github.com/pestov-web/linzer-react',
-    prjUrl: 'https://linzer.su/',
+    ghUrl: 'https://github.com/pestov-web/movies-explorer-frontend',
+    prjUrl: 'https://movies.pestov-web.ru/',
   },
   {
     id: 3,
     nameRu: 'Mesto',
     nameEn: 'Mesto',
     description:
-      'Проект: Место Проектная работа № 9 Проект является одностраничным сайтом.',
+      'Учебный проект "Место", включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями.',
     image: mesto,
-    ghUrl: 'https://github.com/pestov-web/linzer-react',
-    prjUrl: 'https://linzer.su/',
+    ghUrl: 'https://github.com/pestov-web/react-mesto-api-full',
+    prjUrl: 'https://mesto.pestov-web.ru/',
   },
 ];
