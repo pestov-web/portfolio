@@ -14,24 +14,26 @@ function App() {
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
+  const toggleTheme = () => setIsThemeDark(!isThemeDark);
+
   React.useEffect(() => {
-    prefersDarkMode ? setIsThemeDark(true) : setIsThemeDark(false);
+    setIsThemeDark(prefersDarkMode);
   }, [prefersDarkMode]);
 
   const theme = React.useMemo(
     () =>
       createTheme({
         palette: {
-          mode: prefersDarkMode ? 'dark' : 'light',
+          mode: isThemeDark ? 'dark' : 'light',
         },
       }),
-    [prefersDarkMode]
+    [isThemeDark]
   );
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
+      <Header toggleTheme={toggleTheme} />
       <Hero darkMode={isThemeDark} />
       <About />
       <Projects />

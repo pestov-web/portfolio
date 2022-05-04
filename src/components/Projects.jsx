@@ -64,7 +64,11 @@ function Projects() {
                     {item.description}
                   </Typography>
                   <Box alignSelf={isEven(item.id) ? 'flex-start' : 'flex-end'}>
+                    {' '}
                     <IconButton
+                      href={item.ghUrl}
+                      target="_blank"
+                      rel="noreferrer"
                       aria-label={item.labelGh}
                       sx={[
                         (theme) => ({
@@ -75,6 +79,9 @@ function Projects() {
                       <GitHubIcon />
                     </IconButton>
                     <IconButton
+                      href={item.prjUrl}
+                      target="_blank"
+                      rel="noreferrer"
                       aria-label={item.labelDemo}
                       sx={[
                         (theme) => ({

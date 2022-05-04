@@ -13,12 +13,12 @@ const socialItems = [
   {
     name: 'Facebook',
     icon: FacebookIcon,
-    url: '#',
+    url: 'https://www.facebook.com/mindwrk',
   },
   {
     name: 'LinkedIn',
     icon: LinkedInIcon,
-    url: '#',
+    url: 'https://www.linkedin.com/in/vladimir-pestov-a36a00238/',
   },
 ];
 
@@ -37,20 +37,20 @@ function Social({ place }) {
     >
       {' '}
       {socialItems.map((item, index) => (
-        <Link key={index} href={item.url} target="_blank" rel="noreferrer">
-          {' '}
-          <IconButton
-            aria-label={item.name}
-            sx={[
-              (theme) => ({
-                '&:hover': { color: theme.palette.primary.main },
-              }),
-            ]}
-          >
-            {' '}
-            <item.icon />
-          </IconButton>
-        </Link>
+        <IconButton
+          key={index}
+          href={item.url}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={item.name}
+          sx={[
+            (theme) => ({
+              '&:hover': { color: theme.palette.primary.main },
+            }),
+          ]}
+        >
+          <item.icon />
+        </IconButton>
       ))}
     </Container>
   );

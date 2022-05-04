@@ -25,7 +25,9 @@ function Footer() {
           <Social place={'footer'} />
         </Box>
         <Box>
-          <Button variant={'outlined'}>Владимир Пестов</Button>
+          <Button href="mailto:pestov.web@yandex.ru" variant={'outlined'}>
+            Написать
+          </Button>
         </Box>
       </Container>
     </Paper>

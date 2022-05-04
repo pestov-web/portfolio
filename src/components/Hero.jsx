@@ -11,8 +11,13 @@ import {
 } from '@mui/material';
 import Social from './Social';
 import TsParticles from '../vendors/js/TsParticles';
+import { scrollTo } from '../utils/sctollTo';
 
 function Hero({ darkMode }) {
+  const scrollToAbout = () => {
+    scrollTo({ id: 'about' });
+  };
+
   return (
     <Paper
       component={'section'}
@@ -48,7 +53,9 @@ function Hero({ darkMode }) {
                 timeout={1200}
                 style={{ transitionDelay: '1000ms' }}
               >
-                <Button variant={'outlined'}>Подробнее</Button>
+                <Button onClick={scrollToAbout} variant={'outlined'}>
+                  Подробнее
+                </Button>
               </Fade>
             </Box>
           </Grid>

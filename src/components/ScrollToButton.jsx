@@ -14,13 +14,13 @@ const grow = keyframes`
 const ScrollToButton = ({
   toRef,
   duration,
-  children,
+  outlined,
   onClick,
   isModal,
   item,
 }) => {
   const handleMenuClick = () => {
-    scrollTo({ id: item.href, ref: toRef, duration });
+    scrollTo({ id: item.href });
     if (onClick) {
       onClick();
     }

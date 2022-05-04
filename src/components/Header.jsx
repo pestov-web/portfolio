@@ -3,6 +3,7 @@ import {
   AppBar,
   Avatar,
   Box,
+  Button,
   Container,
   Divider,
   IconButton,
@@ -14,13 +15,14 @@ import {
 
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
 
 import { avatar } from '../utils/constants';
 import { navMenu } from '../data/navMenu';
 import ResumeButton from './ResumeButton';
 import ScrollToButton from './ScrollToButton';
 
-function Header() {
+function Header({ toggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleBurgerMenu = () => {
@@ -31,29 +33,39 @@ function Header() {
     <AppBar position={'sticky'} color={'default'}>
       <Container maxWidth={'md'}>
         {' '}
-        <Toolbar disableGutters>
-          <Avatar
-            sx={{
-              marginRight: 'auto',
-            }}
-            alt="Vladimir Pestov"
-            src={avatar}
-          >
-            PW
-          </Avatar>{' '}
-          {navMenu.map((item, index) => (
-            <ScrollToButton item={item} key={index} />
-          ))}
-          <ResumeButton />
-          <div>
-            {' '}
-            <IconButton
-              onClick={toggleBurgerMenu}
-              sx={{ display: { xs: 'inline-flex', md: 'none' } }}
+        <Toolbar
+          disableGutters
+          sx={{ display: 'flex', justifyContent: 'space-between' }}
+        >
+          <Box display={'flex'}>
+            <Avatar
+              sx={{
+                marginRight: 'auto',
+              }}
+              alt="Vladimir Pestov"
+              src={avatar}
             >
-              <MenuIcon />
+              PW
+            </Avatar>
+            <IconButton onClick={toggleTheme} sx={{ marginLeft: 3 }}>
+              <Brightness4Icon />
             </IconButton>
-          </div>
+          </Box>
+          <Box display={'flex'} alignItems={'center'}>
+            {navMenu.map((item, index) => (
+              <ScrollToButton item={item} key={index} />
+            ))}{' '}
+            <ResumeButton />
+            <div>
+              {' '}
+              <IconButton
+                onClick={toggleBurgerMenu}
+                sx={{ display: { xs: 'inline-flex', md: 'none' } }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </div>
+          </Box>{' '}
         </Toolbar>
       </Container>
       <SwipeableDrawer
