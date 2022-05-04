@@ -59,7 +59,11 @@ function Header({ toggleTheme }) {
             >
               PW
             </Avatar>
-            <IconButton onClick={toggleTheme} sx={{ marginLeft: 3 }}>
+            <IconButton
+              onClick={toggleTheme}
+              aria-label={'изменить тему'}
+              sx={{ marginLeft: 3 }}
+            >
               <Brightness4Icon />
             </IconButton>
           </Box>
