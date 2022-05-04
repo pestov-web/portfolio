@@ -21,9 +21,14 @@ import { avatar } from '../utils/constants';
 import { navMenu } from '../data/navMenu';
 import ResumeButton from './ResumeButton';
 import ScrollToButton from './ScrollToButton';
+import { scrollTo } from '../utils/sctollTo';
 
 function Header({ toggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const scrollToTop = () => {
+    scrollTo({ id: 'tsparticles' });
+  };
 
   const toggleBurgerMenu = () => {
     setIsOpen(!isOpen);
@@ -39,8 +44,15 @@ function Header({ toggleTheme }) {
         >
           <Box display={'flex'}>
             <Avatar
+              onClick={scrollToTop}
               sx={{
                 marginRight: 'auto',
+                cursor: 'pointer',
+                transition: 'all linear 0.2s',
+                '&:hover': {
+                  boxShadow:
+                    '0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%)',
+                },
               }}
               alt="Vladimir Pestov"
               src={avatar}
