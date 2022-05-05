@@ -78,12 +78,24 @@ function About() {
               <Stack
                 direction="row"
                 flexWrap={'wrap'}
+                gap={1}
                 sx={{ paddingTop: { xs: '15px' } }}
               >
-                {techsList.map((item) => (
-                  <Button key={item.id} size="small">
-                    {item.name}
-                  </Button>
+                {techsList.map((item, index) => (
+                  <Chip
+                    key={index}
+                    label={item.name}
+                    size={'small'}
+                    sx={[
+                      { background: 'none' },
+                      (theme) => ({
+                        color: theme.palette.primary.main,
+                      }),
+                    ]}
+                  />
+                  // <Button key={item.id} size="small">
+                  //   {item.name}
+                  // </Button>
                 ))}
               </Stack>
             </Box>
