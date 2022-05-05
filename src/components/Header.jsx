@@ -3,7 +3,6 @@ import {
   AppBar,
   Avatar,
   Box,
-  Button,
   Container,
   Divider,
   IconButton,
@@ -42,27 +41,17 @@ function Header({ toggleTheme }) {
           disableGutters
           sx={{ display: 'flex', justifyContent: 'space-between' }}
         >
-          <Box display={'flex'}>
-            <Avatar
-              onClick={scrollToTop}
-              sx={{
-                marginRight: 'auto',
-                cursor: 'pointer',
-                transition: 'all linear 0.2s',
-                '&:hover': {
-                  boxShadow:
-                    '0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%)',
-                },
-              }}
-              alt="Vladimir Pestov"
-              src={avatar}
-            >
-              PW
-            </Avatar>
+          <Box display={'flex'} alignItems={'center'}>
+            <IconButton onClick={scrollToTop}>
+              <Avatar alt="Владимир Пестов" src={avatar}>
+                PW
+              </Avatar>
+            </IconButton>
+
             <IconButton
               onClick={toggleTheme}
               aria-label={'изменить тему'}
-              sx={{ marginLeft: 3 }}
+              sx={{ marginLeft: 3, height: '40px' }}
             >
               <Brightness4Icon />
             </IconButton>
