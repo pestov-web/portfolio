@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 function ResumeButton({ isModal }) {
   return (
     <Button
-      href="#"
+      href="/resumehh.pdf"
       aria-label="Резюме"
       variant={'outlined'}
       sx={{
