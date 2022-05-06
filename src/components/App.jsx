@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useMediaQuery from '@mui/material/useMediaQuery';
+// import useMediaQuery from '@mui/material/useMediaQuery';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Hero from './Hero';
@@ -16,7 +16,6 @@ function App() {
 
   // enable auto theme switching
   // uncomment and change default isThemeDark state to false
-
   // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   //
   // React.useEffect(() => {
