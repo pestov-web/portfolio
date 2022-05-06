@@ -10,15 +10,18 @@ import Footer from './Footer';
 import About from './About';
 
 function App() {
-  const [isThemeDark, setIsThemeDark] = useState(false);
-
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [isThemeDark, setIsThemeDark] = useState(true);
 
   const toggleTheme = () => setIsThemeDark(!isThemeDark);
 
-  React.useEffect(() => {
-    setIsThemeDark(prefersDarkMode);
-  }, [prefersDarkMode]);
+  // enable auto theme switching
+  // uncomment and change default isThemeDark state to false
+
+  // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  //
+  // React.useEffect(() => {
+  //   setIsThemeDark(prefersDarkMode);
+  // }, [prefersDarkMode]);
 
   const theme = React.useMemo(
     () =>
