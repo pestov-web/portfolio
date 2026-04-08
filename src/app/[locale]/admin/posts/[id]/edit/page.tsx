@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Locale } from "@/shared/config/i18n";
 import { prisma } from "@/shared/lib/prisma";
 import { updatePost, deletePost } from "../../../actions";
+import { TiptapEditor } from "@/shared/ui";
 
 export default async function EditPostPage({
   params,
@@ -12,7 +13,7 @@ export default async function EditPostPage({
 
   const post = await prisma.post.findUnique({
     where: { id },
-    select: { id: true, title: true, excerpt: true, published: true, restricted: true },
+    select: { id: true, title: true, excerpt: true, content: true, published: true, restricted: true },
   });
 
   if (!post) notFound();
@@ -50,6 +51,12 @@ export default async function EditPostPage({
               defaultValue={post.excerpt ?? ""}
               className="rounded-md border border-border bg-surface px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors resize-none"
             />
+          </div>
+
+          {/* Содержимое */}
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium">Содержимое</span>
+            <TiptapEditor name="content" defaultValue={post.content} />
           </div>
 
           {/* Чекбоксы */}

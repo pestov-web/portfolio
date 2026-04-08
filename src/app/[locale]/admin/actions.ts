@@ -30,6 +30,7 @@ export async function createPost(formData: FormData) {
 
   const title = String(formData.get("title") ?? "").trim();
   const excerpt = String(formData.get("excerpt") ?? "").trim() || null;
+  const content = String(formData.get("content") ?? "{}") || "{}";
   const published = formData.get("published") === "on";
   const restricted = formData.get("restricted") === "on";
   const slug = toSlug(title) || `post-${Date.now()}`;
@@ -39,7 +40,7 @@ export async function createPost(formData: FormData) {
       title,
       slug,
       excerpt,
-      content: "{}",
+      content,
       published,
       restricted,
     },
@@ -54,12 +55,13 @@ export async function updatePost(id: string, formData: FormData) {
 
   const title = String(formData.get("title") ?? "").trim();
   const excerpt = String(formData.get("excerpt") ?? "").trim() || null;
+  const content = String(formData.get("content") ?? "{}") || "{}";
   const published = formData.get("published") === "on";
   const restricted = formData.get("restricted") === "on";
 
   await prisma.post.update({
     where: { id },
-    data: { title, excerpt, published, restricted },
+    data: { title, excerpt, content, published, restricted },
   });
 
   redirect("/ru/admin/posts");
@@ -78,6 +80,7 @@ export async function createProject(formData: FormData) {
 
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim() || null;
+  const content = String(formData.get("content") ?? "") || null;
   const repoUrl = String(formData.get("repoUrl") ?? "").trim() || null;
   const demoUrl = String(formData.get("demoUrl") ?? "").trim() || null;
   const published = formData.get("published") === "on";
@@ -89,6 +92,7 @@ export async function createProject(formData: FormData) {
       title,
       slug,
       description,
+      content,
       repoUrl,
       demoUrl,
       published,
@@ -105,6 +109,7 @@ export async function updateProject(id: string, formData: FormData) {
 
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim() || null;
+  const content = String(formData.get("content") ?? "") || null;
   const repoUrl = String(formData.get("repoUrl") ?? "").trim() || null;
   const demoUrl = String(formData.get("demoUrl") ?? "").trim() || null;
   const published = formData.get("published") === "on";
@@ -112,7 +117,7 @@ export async function updateProject(id: string, formData: FormData) {
 
   await prisma.project.update({
     where: { id },
-    data: { title, description, repoUrl, demoUrl, published, order },
+    data: { title, description, content, repoUrl, demoUrl, published, order },
   });
 
   redirect("/ru/admin/projects");

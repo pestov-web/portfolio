@@ -25,11 +25,14 @@
   "blog": {
     "title": "Blog",
     "description": "Thoughts, notes and tutorials about development.",
-    "readMore": "Read more",    "empty": "No posts published yet.",    "restrictedPost": "This post is only available to friends.",
+    "readMore": "Read more",    "empty": "No posts published yet.",    "restrictedPost": "This post is available for friends only.",
+    "loginToRead": "Sign in to read",
+    "emptyContent": "Content not added yet.",
     "comments": {
       "title": "Comments",
       "placeholder": "Write a comment...",
       "submit": "Submit",
+      "empty": "No comments yet.",
       "loginRequired": "Sign in to leave a comment."
     }
   },

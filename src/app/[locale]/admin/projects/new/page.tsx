@@ -1,5 +1,6 @@
 import type { Locale } from "@/shared/config/i18n";
 import { createProject } from "../../actions";
+import { TiptapEditor } from "@/shared/ui";
 
 export default async function NewProjectPage({
   params,
@@ -72,6 +73,12 @@ export default async function NewProjectPage({
               min={0}
               className="h-10 rounded-md border border-border bg-surface px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors"
             />
+          </div>
+
+          {/* Содержимое */}
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium">Содержимое</span>
+            <TiptapEditor name="content" />
           </div>
 
           {/* Чекбокс */}
