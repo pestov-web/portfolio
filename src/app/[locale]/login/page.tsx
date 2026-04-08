@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
-import { signIn } from "@/shared/config/auth-client";
+import { signIn, authClient } from "@/shared/config/auth-client";
 import { useRouter } from "next/navigation";
 import type { Locale } from "@/shared/config/i18n";
 
@@ -26,6 +26,16 @@ function GoogleIcon() {
   );
 }
 
+// Иконка Яндекса
+function YandexIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M2.04 12c0-5.523 4.476-10 10-10 5.523 0 10 4.477 10 10s-4.477 10-10 10c-5.524 0-10-4.477-10-10z" fill="#FC3F1D"/>
+      <path d="M13.32 7.666h-.924c-1.694 0-2.585.858-2.585 2.123 0 1.43.616 2.1 1.881 2.959l1.045.704-3.003 4.548H7.49L10.2 13.78c-1.518-1.077-2.386-2.1-2.386-3.861 0-2.144 1.474-3.554 4.103-3.554h3.003v11.635h-1.6V7.666z" fill="#fff"/>
+    </svg>
+  );
+}
+
 export default function LoginPage() {
   const t = useTranslations("auth");
   const locale = useLocale() as Locale;
@@ -39,6 +49,10 @@ export default function LoginPage() {
 
   const handleGoogle = () => {
     void signIn.social({ provider: "google", callbackURL });
+  };
+
+  const handleYandex = () => {
+    void authClient.signIn.oauth2({ providerId: "yandex", callbackURL });
   };
 
   return (
@@ -69,6 +83,13 @@ export default function LoginPage() {
             >
               <GoogleIcon />
               {t("loginWith", { provider: "Google" })}
+            </button>
+            <button
+              onClick={handleYandex}
+              className="flex items-center justify-center gap-3 h-10 w-full rounded-md border border-border bg-surface text-sm font-medium hover:bg-subtle hover:border-transparent transition-colors"
+            >
+              <YandexIcon />
+              {t("loginWith", { provider: "Яндекс" })}
             </button>
           </div>
 
