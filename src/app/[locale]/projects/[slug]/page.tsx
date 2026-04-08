@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import type { Locale } from "@/shared/config/index";
+import { toRenderableFileUrl } from "@/shared/lib/media";
 import { prisma } from "@/shared/lib/prisma";
 import { renderTiptap } from "@/shared/lib/tiptap";
 
@@ -108,7 +109,7 @@ export default async function ProjectPage({
         {project.coverImage && (
           <div className="relative w-full mb-10 rounded-page overflow-hidden" style={{ aspectRatio: "16/9" }}>
             <Image
-              src={project.coverImage}
+              src={toRenderableFileUrl(project.coverImage)}
               alt={project.title}
               fill
               unoptimized

@@ -106,3 +106,19 @@ export async function deleteUploadedFileByUrl(fileUrl: string | null | undefined
     // Ошибка очистки не должна ломать пользовательскую операцию.
   }
 }
+
+export async function getFileData(objectName: string): Promise<{ buffer: Buffer; contentType: string | null }> {
+  const stream = await getMinioClient().getObject(MINIO_BUCKET, objectName);
+  const chunks: Buffer[] = [];
+
+  for await (const chunk of stream) {
+    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+  }
+
+  const stat = await getMinioClient().statObject(MINIO_BUCKET, objectName);
+
+  return {
+    buffer: Buffer.concat(chunks),
+    contentType: stat.metaData?.["content-type"] ?? null,
+  };
+}

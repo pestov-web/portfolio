@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { PostPreview } from "../model";
+import { toRenderableFileUrl } from "@/shared/lib/media";
 
 // Иконка замка — для закрытых постов
 function LockIcon() {
@@ -35,7 +36,7 @@ export function PostCard({ post, locale, readMoreLabel }: Props) {
       {post.coverImage && (
         <div className="relative h-44 overflow-hidden">
           <Image
-            src={post.coverImage}
+            src={toRenderableFileUrl(post.coverImage)}
             alt={post.title}
             fill
             unoptimized

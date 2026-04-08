@@ -3,7 +3,8 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Image } from "@tiptap/extension-image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { toRenderableFileUrl } from "@/shared/lib/media";
 
 type Props = {
   name: string;
@@ -40,30 +41,66 @@ function ToolBtn({
 }
 
 export function TiptapEditor({ name, defaultValue }: Props) {
-  const hiddenRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const initialContent = getInitialEditorContent(defaultValue);
+  const [serializedContent, setSerializedContent] = useState(initialContent.serialized);
 
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ link: { openOnClick: false } }),
       Image,
     ],
-    content: defaultValue ? (JSON.parse(defaultValue) as object) : undefined,
+    content: initialContent.document,
     editorProps: {
       attributes: {
         class: "prose min-h-48 px-4 py-3 focus:outline-none",
       },
     },
+    onCreate({ editor: ed }) {
+      setSerializedContent(JSON.stringify(ed.getJSON()));
+    },
     onUpdate({ editor: ed }) {
-      if (hiddenRef.current) {
-        hiddenRef.current.value = JSON.stringify(ed.getJSON());
-      }
+      setSerializedContent(JSON.stringify(ed.getJSON()));
     },
     immediatelyRender: false,
   });
 
   const addImage = () => {
-    const url = window.prompt("URL изображения:");
-    if (url) editor?.chain().focus().setImage({ src: url }).run();
+    fileInputRef.current?.click();
+  };
+
+  const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    setIsUploadingImage(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = (await response.json()) as { url?: string; error?: string };
+
+      if (!response.ok || !data.url) {
+        throw new Error(data.error ?? "Ошибка загрузки");
+      }
+
+      editor?.chain().focus().setImage({ src: toRenderableFileUrl(data.url) }).run();
+    } catch (error) {
+      window.alert(error instanceof Error ? error.message : "Ошибка загрузки");
+    } finally {
+      setIsUploadingImage(false);
+      event.target.value = "";
+    }
   };
 
   const setLink = () => {
@@ -75,10 +112,17 @@ export function TiptapEditor({ name, defaultValue }: Props) {
     <div className="flex flex-col border border-border rounded-md overflow-hidden">
       {/* Скрытый input для передачи JSON в form */}
       <input
-        ref={hiddenRef}
         type="hidden"
         name={name}
-        defaultValue={defaultValue ?? "{}"}
+        value={serializedContent}
+        readOnly
+      />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+        className="hidden"
+        onChange={handleImageSelect}
       />
 
       {/* Тулбар */}
@@ -170,6 +214,62 @@ export function TiptapEditor({ name, defaultValue }: Props) {
       <div className="bg-surface min-h-48">
         <EditorContent editor={editor} />
       </div>
+      {isUploadingImage ? (
+        <div className="border-t border-border px-4 py-2 text-sm text-muted">
+          Загрузка изображения...
+        </div>
+      ) : null}
     </div>
   );
+}
+
+function getInitialEditorContent(defaultValue?: string): {
+  document: Record<string, unknown> | undefined;
+  serialized: string;
+} {
+  if (!defaultValue) {
+    return {
+      document: undefined,
+      serialized: "{}",
+    };
+  }
+
+  try {
+    const document = normalizeEditorContent(JSON.parse(defaultValue) as Record<string, unknown>);
+
+    return {
+      document,
+      serialized: JSON.stringify(document),
+    };
+  } catch {
+    return {
+      document: undefined,
+      serialized: "{}",
+    };
+  }
+}
+
+function normalizeEditorContent(value: Record<string, unknown>): Record<string, unknown> {
+  return rewriteNode(value);
+}
+
+function rewriteNode(node: Record<string, unknown>): Record<string, unknown> {
+  const normalizedNode = { ...node };
+
+  if (node.type === "image" && isRecord(node.attrs) && typeof node.attrs.src === "string") {
+    normalizedNode.attrs = {
+      ...node.attrs,
+      src: toRenderableFileUrl(node.attrs.src),
+    };
+  }
+
+  if (Array.isArray(node.content)) {
+    normalizedNode.content = node.content.map((item) => (isRecord(item) ? rewriteNode(item) : item));
+  }
+
+  return normalizedNode;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }

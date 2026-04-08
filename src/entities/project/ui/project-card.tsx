@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { ProjectPreview } from "../model";
+import { toRenderableFileUrl } from "@/shared/lib/media";
 
 // Иконки
 function GitHubIcon() {
@@ -36,7 +37,7 @@ export function ProjectCard({ project, locale, viewProjectLabel, viewCodeLabel, 
       {project.coverImage && (
         <div className="relative h-44 overflow-hidden">
           <Image
-            src={project.coverImage}
+            src={toRenderableFileUrl(project.coverImage)}
             alt={project.title}
             fill
             unoptimized

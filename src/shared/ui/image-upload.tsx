@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { toRenderableFileUrl } from "@/shared/lib/media";
 
 type Props = {
   name: string;
@@ -11,7 +12,7 @@ type Props = {
 
 export function ImageUpload({ name, defaultValue, label = "Обложка" }: Props) {
   const [url, setUrl] = useState(defaultValue ?? "");
-  const [preview, setPreview] = useState(defaultValue ?? "");
+  const [preview, setPreview] = useState(toRenderableFileUrl(defaultValue));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,7 +40,7 @@ export function ImageUpload({ name, defaultValue, label = "Обложка" }: Pr
       setUrl(json.url);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Ошибка загрузки");
-      setPreview(url); // вернуть старый превью
+      setPreview(toRenderableFileUrl(url));
     } finally {
       setLoading(false);
     }

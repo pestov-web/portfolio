@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/shared/auth/server/index";
 import type { Locale } from "@/shared/config/index";
+import { toRenderableFileUrl } from "@/shared/lib/media";
 import { prisma } from "@/shared/lib/prisma";
 import { renderTiptap } from "@/shared/lib/tiptap";
 import { CommentsSection } from "./comments-section";
@@ -107,7 +108,7 @@ export default async function BlogPostPage({
         {post.coverImage && (
           <div className="relative w-full mb-10 rounded-page overflow-hidden" style={{ aspectRatio: "16/9" }}>
             <Image
-              src={post.coverImage}
+              src={toRenderableFileUrl(post.coverImage)}
               alt={post.title}
               fill
               unoptimized
