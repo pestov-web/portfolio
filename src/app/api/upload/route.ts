@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/shared/config/auth";
+import { auth } from "@/shared/auth/server/index";
 import { headers } from "next/headers";
 import { uploadFile } from "@/shared/lib/minio";
 import { randomUUID } from "crypto";

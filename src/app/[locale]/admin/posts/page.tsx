@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import type { Locale } from "@/shared/config/i18n";
+import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
 
 export default async function AdminPostsPage({

@@ -1,8 +1,7 @@
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { getMessages } from "next-intl/server";
-import { locales } from "@/shared/config/i18n";
-import type { Locale } from "@/shared/config/i18n";
+import { locales, type Locale } from "@/shared/config/index";
 import { Header } from "@/widgets/header";
 import { Footer } from "@/widgets/footer";
 

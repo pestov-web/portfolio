@@ -1,0 +1,1 @@
+export { auth, type Session } from "@/shared/config/auth";

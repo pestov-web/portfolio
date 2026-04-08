@@ -1,4 +1,4 @@
-import type { Locale } from "@/shared/config/i18n";
+import type { Locale } from "@/shared/config/index";
 import { createPost } from "../../actions";
 import { TiptapEditor, ImageUpload } from "@/shared/ui";
 

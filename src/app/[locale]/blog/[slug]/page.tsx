@@ -3,11 +3,11 @@ import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import type { Locale } from "@/shared/config/i18n";
+import { auth } from "@/shared/auth/server/index";
+import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
-import { auth } from "@/shared/config/auth";
 import { renderTiptap } from "@/shared/lib/tiptap";
-import { CommentsSection } from "@/features/comments/ui/comments-section";
+import { CommentsSection } from "./comments-section";
 
 function formatDate(date: Date, locale: string) {
   return new Intl.DateTimeFormat(locale === "ru" ? "ru-RU" : "en-US", {

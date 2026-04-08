@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import type { Locale } from "@/shared/config/i18n";
+import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
 import { updateProject, deleteProject } from "../../../actions";
 import { TiptapEditor, ImageUpload } from "@/shared/ui";

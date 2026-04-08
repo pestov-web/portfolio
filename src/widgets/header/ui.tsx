@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useState } from "react";
+import { useSession, signOut } from "@/shared/auth/index";
 import { ThemeToggle } from "@/shared/ui/theme-toggle";
-import { locales, type Locale } from "@/shared/config/i18n";
-import { useSession, signOut } from "@/shared/config/auth-client";
+import { locales, type Locale } from "@/shared/config/index";
 import { buildLocaleSwitchHref, stripLocalePrefix } from "@/shared/lib/locale";
 
 // Иконка гамбургера

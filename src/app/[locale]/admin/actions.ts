@@ -2,11 +2,11 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/shared/lib/prisma";
-import { auth } from "@/shared/config/auth";
+import { auth } from "@/shared/auth/server/index";
+import type { Locale } from "@/shared/config/index";
 import { headers } from "next/headers";
 import { deleteUploadedFileByUrl } from "@/shared/lib/minio";
 import { localizePath } from "@/shared/lib/locale";
-import type { Locale } from "@/shared/config/i18n";
 
 // Проверка прав модератора
 async function requireAdmin(locale: Locale) {

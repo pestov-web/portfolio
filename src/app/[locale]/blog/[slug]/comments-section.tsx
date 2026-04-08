@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useSession } from "@/shared/config/auth-client";
-import { addComment, deleteComment } from "../actions";
+import { useSession } from "@/shared/auth/index";
+import { addComment, deleteComment } from "./comment-actions";
 
 type Comment = {
   id: string;
@@ -40,14 +40,12 @@ export function CommentsSection({ postId, comments, locale }: Props) {
     <section>
       <h2 className="text-lg font-semibold accent-line mb-6">{t("title")}</h2>
 
-      {/* Список комментариев */}
       {comments.length === 0 ? (
         <p className="text-sm text-faint mb-6">{t("empty")}</p>
       ) : (
         <div className="flex flex-col gap-4 mb-8">
           {comments.map((comment) => (
             <div key={comment.id} className="flex gap-3">
-              {/* Аватар */}
               <div className="shrink-0 size-8 rounded-full bg-subtle overflow-hidden">
                 {comment.user.image ? (
                   <Image
@@ -64,7 +62,6 @@ export function CommentsSection({ postId, comments, locale }: Props) {
                 )}
               </div>
 
-              {/* Тело комментария */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-baseline gap-2 mb-1">
                   <span className="text-sm font-medium leading-none">{comment.user.name}</span>
@@ -75,7 +72,6 @@ export function CommentsSection({ postId, comments, locale }: Props) {
                 <p className="text-sm text-muted leading-relaxed wrap-break-word">{comment.content}</p>
               </div>
 
-              {/* Удалить — только автор или ADMIN */}
               {session && (session.user.id === comment.user.id || session.user.role === "ADMIN") && (
                 <form
                   action={deleteComment.bind(null, comment.id, locale)}
@@ -95,7 +91,6 @@ export function CommentsSection({ postId, comments, locale }: Props) {
         </div>
       )}
 
-      {/* Форма добавления */}
       {session ? (
         <form action={addCommentBound} className="flex flex-col gap-3">
           <textarea

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import type { Locale } from "@/shared/config/i18n";
+import { auth } from "@/shared/auth/server/index";
+import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
-import { auth } from "@/shared/config/auth";
 import { headers } from "next/headers";
 import { updateUserRole } from "../actions";
 

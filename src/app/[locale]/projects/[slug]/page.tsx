@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import type { Locale } from "@/shared/config/i18n";
+import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
 import { renderTiptap } from "@/shared/lib/tiptap";
 

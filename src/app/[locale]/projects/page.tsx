@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import type { Locale } from "@/shared/config/i18n";
+import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
 import { ProjectCard } from "@/entities/project";
 
