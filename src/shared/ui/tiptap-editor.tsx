@@ -3,7 +3,6 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Image } from "@tiptap/extension-image";
-import { Link } from "@tiptap/extension-link";
 import { useRef } from "react";
 
 type Props = {
@@ -45,14 +44,13 @@ export function TiptapEditor({ name, defaultValue }: Props) {
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({ link: { openOnClick: false } }),
       Image,
-      Link.configure({ openOnClick: false }),
     ],
     content: defaultValue ? (JSON.parse(defaultValue) as object) : undefined,
     editorProps: {
       attributes: {
-        class: "prose min-h-[12rem] px-4 py-3 focus:outline-none",
+        class: "prose min-h-48 px-4 py-3 focus:outline-none",
       },
     },
     onUpdate({ editor: ed }) {
@@ -169,7 +167,7 @@ export function TiptapEditor({ name, defaultValue }: Props) {
       </div>
 
       {/* Редактор */}
-      <div className="bg-surface min-h-[12rem]">
+      <div className="bg-surface min-h-48">
         <EditorContent editor={editor} />
       </div>
     </div>

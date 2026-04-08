@@ -1,13 +1,11 @@
 import { generateHTML } from "@tiptap/html";
 import StarterKit from "@tiptap/starter-kit";
 import { Image } from "@tiptap/extension-image";
-import { Link } from "@tiptap/extension-link";
 
-// Расширения, совпадающие с редактором
+// Расширения, совпадающие с редактором (Link входит в StarterKit v3)
 const extensions = [
-  StarterKit,
+  StarterKit.configure({ link: { openOnClick: false } }),
   Image,
-  Link.configure({ openOnClick: false }),
 ];
 
 // Парсим Tiptap JSON → HTML на сервере (без клиентского JS)
