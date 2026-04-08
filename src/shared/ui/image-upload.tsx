@@ -66,8 +66,8 @@ export function ImageUpload({ name, defaultValue, label = "Обложка" }: Pr
               src={preview}
               alt="Превью обложки"
               fill
+              unoptimized
               className="object-cover"
-              unoptimized={preview.startsWith("blob:")}
             />
             {loading && (
               <div className="absolute inset-0 bg-bg/70 flex items-center justify-center text-xs text-muted">
