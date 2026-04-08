@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "projects": "Projects",
+    "contact": "Contact",
+    "hypeVoice": "Hype Voice"
+  },
+  "home": {
+    "hero": {
+      "greeting": "Hi, I'm",
+      "role": "Full-Stack Developer",
+      "bio": "I build web applications with clean architecture and quality code."
+    },
+    "latestPosts": "Latest Posts",
+    "latestProjects": "Latest Projects",
+    "viewAll": "View all"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Thoughts, notes and tutorials about development.",
+    "readMore": "Read more",
+    "restrictedPost": "This post is only available to friends.",
+    "comments": {
+      "title": "Comments",
+      "placeholder": "Write a comment...",
+      "submit": "Submit",
+      "loginRequired": "Sign in to leave a comment."
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "My work and side projects.",
+    "viewProject": "View project",
+    "viewCode": "Code",
+    "viewDemo": "Demo"
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Drop me a message, I'll get back to you as soon as possible.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send",
+      "success": "Message sent!",
+      "error": "Something went wrong. Please try again later."
+    }
+  },
+  "auth": {
+    "login": "Sign in",
+    "logout": "Sign out",
+    "loginWith": "Sign in with {provider}",
+    "loginDescription": "Sign in to leave comments and read restricted posts."
+  },
+  "admin": {
+    "title": "Dashboard",
+    "posts": "Posts",
+    "projects": "Projects",
+    "users": "Users",
+    "new": "New",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "published": "Published",
+    "draft": "Draft",
+    "restricted": "Friends only"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "notFound": "Not found",
+    "back": "Back"
+  }
+}
