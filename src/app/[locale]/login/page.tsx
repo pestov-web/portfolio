@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { authClient } from "@/shared/config/auth-client";
 import type { Locale } from "@/shared/config/i18n";
 
@@ -39,17 +40,29 @@ function YandexIcon() {
 export default function LoginPage() {
   const t = useTranslations("auth");
   const locale = useLocale() as Locale;
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+
+  // Читаем ошибку из URL (?error=...) — Better Auth редиректит сюда при неудаче OAuth
+  const urlError = searchParams?.get("error");
+  const urlErrorDescription = searchParams?.get("error_description");
+  const [error, setError] = useState<string | null>(
+    urlErrorDescription ?? urlError ?? null
+  );
 
   const callbackURL = `/${locale}`;
 
   async function handleSocial(provider: "github" | "google") {
     setLoading(provider);
     setError(null);
-    const result = await authClient.signIn.social({ provider, callbackURL });
-    if (result.error) {
-      setError(result.error.message ?? "Ошибка входа");
+    try {
+      const result = await authClient.signIn.social({ provider, callbackURL });
+      if (result.error) {
+        setError(result.error.message ?? result.error.statusText ?? `Ошибка ${result.error.status}`);
+        setLoading(null);
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Неизвестная ошибка");
       setLoading(null);
     }
   }
@@ -57,9 +70,14 @@ export default function LoginPage() {
   async function handleYandex() {
     setLoading("yandex");
     setError(null);
-    const result = await authClient.signIn.oauth2({ providerId: "yandex", callbackURL });
-    if (result.error) {
-      setError(result.error.message ?? "Ошибка входа");
+    try {
+      const result = await authClient.signIn.oauth2({ providerId: "yandex", callbackURL });
+      if (result.error) {
+        setError(result.error.message ?? result.error.statusText ?? `Ошибка ${result.error.status}`);
+        setLoading(null);
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Неизвестная ошибка");
       setLoading(null);
     }
   }
