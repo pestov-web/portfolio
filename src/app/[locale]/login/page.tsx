@@ -2,8 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
-import { signIn, authClient } from "@/shared/config/auth-client";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { authClient } from "@/shared/config/auth-client";
 import type { Locale } from "@/shared/config/i18n";
 
 // Иконки провайдеров
@@ -39,21 +39,30 @@ function YandexIcon() {
 export default function LoginPage() {
   const t = useTranslations("auth");
   const locale = useLocale() as Locale;
-  const router = useRouter();
+  const [loading, setLoading] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const callbackURL = `/${locale}`;
 
-  const handleGitHub = () => {
-    void signIn.social({ provider: "github", callbackURL });
-  };
+  async function handleSocial(provider: "github" | "google") {
+    setLoading(provider);
+    setError(null);
+    const result = await authClient.signIn.social({ provider, callbackURL });
+    if (result.error) {
+      setError(result.error.message ?? "Ошибка входа");
+      setLoading(null);
+    }
+  }
 
-  const handleGoogle = () => {
-    void signIn.social({ provider: "google", callbackURL });
-  };
-
-  const handleYandex = () => {
-    void authClient.signIn.oauth2({ providerId: "yandex", callbackURL });
-  };
+  async function handleYandex() {
+    setLoading("yandex");
+    setError(null);
+    const result = await authClient.signIn.oauth2({ providerId: "yandex", callbackURL });
+    if (result.error) {
+      setError(result.error.message ?? "Ошибка входа");
+      setLoading(null);
+    }
+  }
 
   return (
     <div className="page-container page-x fade-in">
@@ -71,27 +80,38 @@ export default function LoginPage() {
           {/* Провайдеры */}
           <div className="flex flex-col gap-3">
             <button
-              onClick={handleGitHub}
-              className="flex items-center justify-center gap-3 h-10 w-full rounded-md border border-border bg-surface text-sm font-medium hover:bg-subtle hover:border-transparent transition-colors"
+              type="button"
+              disabled={!!loading}
+              onClick={() => void handleSocial("github")}
+              className="flex items-center justify-center gap-3 h-10 w-full rounded-md border border-border bg-surface text-sm font-medium hover:bg-subtle hover:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <GitHubIcon />
-              {t("loginWith", { provider: "GitHub" })}
+              {loading === "github" ? "..." : t("loginWith", { provider: "GitHub" })}
             </button>
             <button
-              onClick={handleGoogle}
-              className="flex items-center justify-center gap-3 h-10 w-full rounded-md border border-border bg-surface text-sm font-medium hover:bg-subtle hover:border-transparent transition-colors"
+              type="button"
+              disabled={!!loading}
+              onClick={() => void handleSocial("google")}
+              className="flex items-center justify-center gap-3 h-10 w-full rounded-md border border-border bg-surface text-sm font-medium hover:bg-subtle hover:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <GoogleIcon />
-              {t("loginWith", { provider: "Google" })}
+              {loading === "google" ? "..." : t("loginWith", { provider: "Google" })}
             </button>
             <button
-              onClick={handleYandex}
-              className="flex items-center justify-center gap-3 h-10 w-full rounded-md border border-border bg-surface text-sm font-medium hover:bg-subtle hover:border-transparent transition-colors"
+              type="button"
+              disabled={!!loading}
+              onClick={() => void handleYandex()}
+              className="flex items-center justify-center gap-3 h-10 w-full rounded-md border border-border bg-surface text-sm font-medium hover:bg-subtle hover:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <YandexIcon />
-              {t("loginWith", { provider: "Яндекс" })}
+              {loading === "yandex" ? "..." : t("loginWith", { provider: "Яндекс" })}
             </button>
           </div>
+
+          {/* Ошибка */}
+          {error && (
+            <p className="text-center text-xs text-red-400">{error}</p>
+          )}
 
           <p className="text-center text-xs text-faint">
             {locale === "ru"
