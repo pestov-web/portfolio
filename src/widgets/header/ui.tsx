@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useState } from "react";
 import { ThemeToggle } from "@/shared/ui/theme-toggle";
 import { locales, type Locale } from "@/shared/config/i18n";
 import { useSession, signOut } from "@/shared/config/auth-client";
+import { buildLocaleSwitchHref, stripLocalePrefix } from "@/shared/lib/locale";
 
 // Иконка гамбургера
 function MenuIcon({ open }: { open: boolean }) {
@@ -50,13 +51,14 @@ export function Header() {
   const t = useTranslations("nav");
   const locale = useLocale() as Locale;
   const rawPathname = usePathname();
+  const searchParams = useSearchParams();
   const [menuOpen, setMenuOpen] = useState(false);
   const { data: session } = useSession();
 
   const isAdmin = session?.user.role === "ADMIN";
 
   // Убираем префикс локали из pathname для сравнения (usePathname может вернуть null вне роута)
-  const pathWithoutLocale = (rawPathname ?? `/${locale}`).replace(new RegExp(`^/${locale}`), "") || "/";
+  const pathWithoutLocale = stripLocalePrefix(rawPathname ?? `/${locale}`, locale);
 
   const navLinks = [
     { href: "/",         label: t("home") },
@@ -70,7 +72,12 @@ export function Header() {
 
   // Переключатель языка — сохраняет текущий путь
   const otherLocale = locales.find((l) => l !== locale) as Locale;
-  const switchHref = `/${otherLocale}${pathWithoutLocale}`;
+  const switchHref = buildLocaleSwitchHref(
+    rawPathname,
+    searchParams?.toString() ?? "",
+    locale,
+    otherLocale
+  );
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur-sm">

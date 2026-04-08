@@ -9,7 +9,7 @@ export default async function EditPostPage({
 }: {
   params: Promise<{ locale: Locale; id: string }>;
 }) {
-  const { id } = await params;
+  const { id, locale } = await params;
 
   const post = await prisma.post.findUnique({
     where: { id },
@@ -19,8 +19,8 @@ export default async function EditPostPage({
   if (!post) notFound();
 
   // Серверные action с привязкой id
-  const updatePostWithId = updatePost.bind(null, post.id);
-  const deletePostWithId = deletePost.bind(null, post.id);
+  const updatePostWithId = updatePost.bind(null, post.id, locale);
+  const deletePostWithId = deletePost.bind(null, post.id, locale);
 
   return (
     <div className="page-container page-x fade-in">

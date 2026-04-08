@@ -25,7 +25,7 @@ export default async function AdminUsersPage({
 }: {
   params: Promise<{ locale: Locale }>;
 }) {
-  await params;
+  const { locale } = await params;
 
   // Проверяем права
   const session = await auth.api.getSession({ headers: await headers() });
@@ -57,7 +57,7 @@ export default async function AdminUsersPage({
 
         <div className="flex flex-col gap-2">
           {users.map((user) => {
-            const updateRole = updateUserRole.bind(null, user.id);
+            const updateRole = updateUserRole.bind(null, user.id, locale);
             const isCurrentUser = user.id === session.user.id;
 
             return (

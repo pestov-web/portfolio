@@ -9,7 +9,7 @@ export default async function EditProjectPage({
 }: {
   params: Promise<{ locale: Locale; id: string }>;
 }) {
-  const { id } = await params;
+  const { id, locale } = await params;
 
   const project = await prisma.project.findUnique({
     where: { id },
@@ -21,8 +21,8 @@ export default async function EditProjectPage({
 
   if (!project) notFound();
 
-  const updateProjectWithId = updateProject.bind(null, project.id);
-  const deleteProjectWithId = deleteProject.bind(null, project.id);
+  const updateProjectWithId = updateProject.bind(null, project.id, locale);
+  const deleteProjectWithId = deleteProject.bind(null, project.id, locale);
 
   return (
     <div className="page-container page-x fade-in">

@@ -7,14 +7,15 @@ export default async function NewPostPage({
 }: {
   params: Promise<{ locale: Locale }>;
 }) {
-  await params;
+  const { locale } = await params;
+  const createPostWithLocale = createPost.bind(null, locale);
 
   return (
     <div className="page-container page-x fade-in">
       <div className="py-14 max-w-2xl">
         <h1 className="text-2xl font-bold mb-8">Новый пост</h1>
 
-        <form action={createPost} className="flex flex-col gap-5">
+        <form action={createPostWithLocale} className="flex flex-col gap-5">
           {/* Обложка */}
           <ImageUpload name="coverImage" />
 

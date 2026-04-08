@@ -1,12 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { contactRateLimiter } from "@/shared/lib/rate-limit";
 
 // Простая валидация на сервере
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function getClientIp(req: NextRequest) {
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0]?.trim() ?? "unknown";
+  }
+
+  return req.headers.get("x-real-ip") ?? "unknown";
+}
+
 export async function POST(req: NextRequest) {
+  const rateLimit = contactRateLimiter(getClientIp(req));
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateLimit.retryAfter) },
+      }
+    );
+  }
+
   let body: unknown;
 
   try {
@@ -38,9 +59,13 @@ export async function POST(req: NextRequest) {
   const to = process.env.CONTACT_EMAIL;
 
   if (!to || !process.env.RESEND_API_KEY) {
-    // В dev без настроенного Resend просто логируем
-    console.log("[contact]", { name, email, message });
-    return NextResponse.json({ ok: true });
+    if (process.env.NODE_ENV !== "production") {
+      // В dev без настроенного Resend просто логируем
+      console.log("[contact]", { name, email, message });
+      return NextResponse.json({ ok: true });
+    }
+
+    return NextResponse.json({ error: "Email delivery is not configured" }, { status: 500 });
   }
 
   try {

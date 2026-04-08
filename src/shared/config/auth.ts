@@ -3,12 +3,33 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { genericOAuth } from "better-auth/plugins";
 import { prisma } from "@/shared/lib/prisma";
+import { mapYandexUserInfo } from "@/shared/lib/yandex-oauth";
+
+const baseURL = process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const trustedOrigins = Array.from(new Set([
+  baseURL,
+  "http://localhost:3000",
+  "http://localhost:3001",
+])).filter(Boolean);
 
 export const auth = betterAuth({
+  baseURL,
+  trustedOrigins,
+
   // БД через Prisma адаптер
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+
+  account: {
+    encryptOAuthTokens: true,
+  },
+
+  rateLimit: {
+    enabled: true,
+    window: 10,
+    max: 100,
+  },
 
   // Регистрируем кастомное поле role — чтобы оно было в сессии
   user: {
@@ -69,15 +90,7 @@ export const auth = betterAuth({
               default_avatar_id?: string;
             };
 
-            return {
-              id: data.id,
-              name: data.display_name ?? data.real_name ?? "Пользователь",
-              email: data.default_email ?? null,
-              emailVerified: !!data.default_email,
-              image: data.default_avatar_id
-                ? `https://avatars.yandex.net/get-yapic/${data.default_avatar_id}/islands-200`
-                : undefined,
-            };
+            return mapYandexUserInfo(data);
           },
         },
       ],

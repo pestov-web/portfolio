@@ -72,7 +72,7 @@ export function CommentsSection({ postId, comments, locale }: Props) {
                     {formatRelative(new Date(comment.createdAt), locale)}
                   </time>
                 </div>
-                <p className="text-sm text-muted leading-relaxed break-words">{comment.content}</p>
+                <p className="text-sm text-muted leading-relaxed wrap-break-word">{comment.content}</p>
               </div>
 
               {/* Удалить — только автор или ADMIN */}
