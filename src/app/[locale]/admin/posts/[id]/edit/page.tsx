@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Locale } from "@/shared/config/i18n";
 import { prisma } from "@/shared/lib/prisma";
 import { updatePost, deletePost } from "../../../actions";
-import { TiptapEditor } from "@/shared/ui";
+import { TiptapEditor, ImageUpload } from "@/shared/ui";
 
 export default async function EditPostPage({
   params,
@@ -13,7 +13,7 @@ export default async function EditPostPage({
 
   const post = await prisma.post.findUnique({
     where: { id },
-    select: { id: true, title: true, excerpt: true, content: true, published: true, restricted: true },
+    select: { id: true, title: true, excerpt: true, content: true, coverImage: true, published: true, restricted: true },
   });
 
   if (!post) notFound();
@@ -28,6 +28,9 @@ export default async function EditPostPage({
         <h1 className="text-2xl font-bold mb-8">Редактировать пост</h1>
 
         <form action={updatePostWithId} className="flex flex-col gap-5">
+          {/* Обложка */}
+          <ImageUpload name="coverImage" defaultValue={post.coverImage ?? undefined} />
+
           {/* Заголовок */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="title" className="text-sm font-medium">Заголовок</label>

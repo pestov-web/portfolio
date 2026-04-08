@@ -1,7 +1,16 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+// Возвращает false на сервере и при первом рендере, true после гидрации
+function useIsMounted() {
+  return useSyncExternalStore(
+    (cb) => { cb(); return () => {}; },
+    () => true,
+    () => false,
+  );
+}
 
 // Иконки SVG — солнце и луна
 function SunIcon() {
@@ -30,9 +39,7 @@ function MoonIcon() {
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  // Избегаем мигания при SSR
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsMounted();
 
   if (!mounted) {
     return <div className="size-8" />;

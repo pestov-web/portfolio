@@ -1,6 +1,6 @@
 import type { Locale } from "@/shared/config/i18n";
 import { createProject } from "../../actions";
-import { TiptapEditor } from "@/shared/ui";
+import { TiptapEditor, ImageUpload } from "@/shared/ui";
 
 export default async function NewProjectPage({
   params,
@@ -15,6 +15,9 @@ export default async function NewProjectPage({
         <h1 className="text-2xl font-bold mb-8">Новый проект</h1>
 
         <form action={createProject} className="flex flex-col gap-5">
+          {/* Обложка */}
+          <ImageUpload name="coverImage" />
+
           {/* Название */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="title" className="text-sm font-medium">Название</label>

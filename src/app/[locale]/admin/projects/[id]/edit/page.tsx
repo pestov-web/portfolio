@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Locale } from "@/shared/config/i18n";
 import { prisma } from "@/shared/lib/prisma";
 import { updateProject, deleteProject } from "../../../actions";
-import { TiptapEditor } from "@/shared/ui";
+import { TiptapEditor, ImageUpload } from "@/shared/ui";
 
 export default async function EditProjectPage({
   params,
@@ -15,7 +15,7 @@ export default async function EditProjectPage({
     where: { id },
     select: {
       id: true, title: true, description: true, content: true,
-      repoUrl: true, demoUrl: true, published: true, order: true,
+      coverImage: true, repoUrl: true, demoUrl: true, published: true, order: true,
     },
   });
 
@@ -30,6 +30,9 @@ export default async function EditProjectPage({
         <h1 className="text-2xl font-bold mb-8">Редактировать проект</h1>
 
         <form action={updateProjectWithId} className="flex flex-col gap-5">
+          {/* Обложка */}
+          <ImageUpload name="coverImage" defaultValue={project.coverImage ?? undefined} />
+
           {/* Название */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="title" className="text-sm font-medium">Название</label>

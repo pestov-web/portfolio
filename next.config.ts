@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
       { hostname: "avatars.githubusercontent.com" },
       // Google аватары
       { hostname: "lh3.googleusercontent.com" },
+      // MinIO локальный
+      { hostname: "localhost", port: "9000" },
     ],
   },
 };
