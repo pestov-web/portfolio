@@ -4,7 +4,9 @@
     "blog": "Блог",
     "projects": "Проекты",
     "contact": "Контакты",
-    "hypeVoice": "Hype Voice"
+    "hypeVoice": "Hype Voice",
+    "signIn": "Войти",
+    "signOut": "Выйти"
   },
   "home": {
     "hero": {

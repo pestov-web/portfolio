@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { useState } from "react";
 import { ThemeToggle } from "@/shared/ui/theme-toggle";
 import { locales, type Locale } from "@/shared/config/i18n";
+import { useSession, signOut } from "@/shared/config/auth-client";
 
 // Иконка гамбургера
 function MenuIcon({ open }: { open: boolean }) {
@@ -50,6 +51,9 @@ export function Header() {
   const locale = useLocale() as Locale;
   const rawPathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: session } = useSession();
+
+  const isAdmin = session?.user.role === "ADMIN";
 
   // Убираем префикс локали из pathname для сравнения (usePathname может вернуть null вне роута)
   const pathWithoutLocale = (rawPathname ?? `/${locale}`).replace(new RegExp(`^/${locale}`), "") || "/";
@@ -111,7 +115,7 @@ export function Header() {
             </a>
           </nav>
 
-          {/* Правая часть: язык + тема + мобильное меню */}
+          {/* Правая часть: язык + тема + auth + мобильное меню */}
           <div className="flex items-center gap-1">
             {/* Переключатель языка */}
             <Link
@@ -123,6 +127,33 @@ export function Header() {
             </Link>
 
             <ThemeToggle />
+
+            {/* Auth: войти / выйти / админ */}
+            {session ? (
+              <div className="hidden md:flex items-center gap-1">
+                {isAdmin && (
+                  <Link
+                    href={`/${locale}/admin`}
+                    className="px-3 py-1.5 text-xs font-medium text-accent hover:bg-subtle rounded-md no-underline transition-colors"
+                  >
+                    Admin
+                  </Link>
+                )}
+                <button
+                  onClick={() => void signOut({ fetchOptions: { onSuccess: () => window.location.reload() } })}
+                  className="px-3 py-1.5 text-xs text-muted hover:text-fg hover:bg-subtle rounded-md transition-colors"
+                >
+                  {t("signOut")}
+                </button>
+              </div>
+            ) : (
+              <Link
+                href={`/${locale}/login`}
+                className="hidden md:inline-flex px-3 py-1.5 text-xs font-medium text-accent hover:bg-subtle rounded-md no-underline transition-colors"
+              >
+                {t("signIn")}
+              </Link>
+            )}
 
             {/* Кнопка мобильного меню */}
             <button
@@ -166,6 +197,40 @@ export function Header() {
               {t("hypeVoice")}
               <ExternalIcon />
             </a>
+
+            {/* Auth в мобильном меню */}
+            <div className="pt-2 mt-1 border-t border-border flex flex-col gap-1">
+              {session ? (
+                <>
+                  {isAdmin && (
+                    <Link
+                      href={`/${locale}/admin`}
+                      onClick={() => setMenuOpen(false)}
+                      className="px-3 py-2 text-sm font-medium text-accent hover:bg-subtle rounded-md no-underline transition-colors"
+                    >
+                      Admin
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false);
+                      void signOut({ fetchOptions: { onSuccess: () => window.location.reload() } });
+                    }}
+                    className="text-left px-3 py-2 text-sm text-muted hover:text-fg hover:bg-subtle rounded-md transition-colors"
+                  >
+                    {t("signOut")}
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href={`/${locale}/login`}
+                  onClick={() => setMenuOpen(false)}
+                  className="px-3 py-2 text-sm font-medium text-accent hover:bg-subtle rounded-md no-underline transition-colors"
+                >
+                  {t("signIn")}
+                </Link>
+              )}
+            </div>
           </nav>
         </div>
       )}
