@@ -129,3 +129,20 @@ export async function deleteProject(id: string) {
   await prisma.project.delete({ where: { id } });
   redirect("/ru/admin/projects");
 }
+
+// ─── Изменение роли пользователя ──────────────────────────────────────────────
+export async function updateUserRole(userId: string, formData: FormData) {
+  await requireAdmin();
+
+  const role = formData.get("role");
+  if (role !== "USER" && role !== "FRIEND" && role !== "ADMIN") {
+    throw new Error("Недопустимая роль");
+  }
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { role },
+  });
+
+  redirect("/ru/admin/users");
+}
