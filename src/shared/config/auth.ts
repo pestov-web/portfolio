@@ -9,6 +9,18 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
 
+  // Регистрируем кастомное поле role — чтобы оно было в сессии
+  user: {
+    additionalFields: {
+      role: {
+        type: ["USER", "FRIEND", "ADMIN"] as const,
+        required: false,
+        defaultValue: "USER",
+        input: false, // пользователь не может менять роль сам
+      },
+    },
+  },
+
   // OAuth провайдеры
   socialProviders: {
     github: {

@@ -1,6 +1,9 @@
 // Главная страница — заглушка, детали будут в src/pages/home
 import { getTranslations, getLocale } from "next-intl/server";
 import Link from "next/link";
+import { prisma } from "@/shared/lib/prisma";
+import { PostCard } from "@/entities/post";
+import { ProjectCard } from "@/entities/project";
 
 // Иконка стрелки вправо
 function ArrowRight() {
@@ -14,6 +17,40 @@ function ArrowRight() {
 export default async function HomePage() {
   const t = await getTranslations("home");
   const locale = await getLocale();
+
+  // Запросы к БД параллельно
+  const [latestPosts, latestProjects] = await Promise.all([
+    prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+      take: 3,
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        coverImage: true,
+        restricted: true,
+        createdAt: true,
+        tags: { select: { tag: { select: { name: true, slug: true } } } },
+      },
+    }),
+    prisma.project.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+      take: 3,
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        description: true,
+        coverImage: true,
+        repoUrl: true,
+        demoUrl: true,
+        tags: { select: { tag: { select: { name: true, slug: true } } } },
+      },
+    }),
+  ]);
 
   return (
     <div className="page-container page-x fade-in">
@@ -65,17 +102,21 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        {/* Заглушка — в будущем заменится компонентом PostCard c Prisma */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="glass p-5 flex flex-col gap-3 animate-pulse">
-              <div className="h-2 w-16 bg-subtle rounded" />
-              <div className="h-4 w-3/4 bg-subtle rounded" />
-              <div className="h-3 w-full bg-subtle rounded" />
-              <div className="h-3 w-2/3 bg-subtle rounded" />
-            </div>
-          ))}
-        </div>
+        {/* Список постов */}
+        {latestPosts.length === 0 ? (
+          <p className="text-sm text-faint">{t("noPosts")}</p>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {latestPosts.map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                locale={locale}
+                readMoreLabel={t("readMore")}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ─── Последние проекты ────────────────────────────────────────── */}
@@ -90,20 +131,23 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        {/* Заглушка — в будущем заменится компонентом ProjectCard c Prisma */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="glass p-5 flex flex-col gap-3 animate-pulse">
-              <div className="h-4 w-1/2 bg-subtle rounded" />
-              <div className="h-3 w-full bg-subtle rounded" />
-              <div className="h-3 w-3/4 bg-subtle rounded" />
-              <div className="mt-2 flex gap-2">
-                <div className="h-5 w-12 bg-subtle rounded-full" />
-                <div className="h-5 w-10 bg-subtle rounded-full" />
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Список проектов */}
+        {latestProjects.length === 0 ? (
+          <p className="text-sm text-faint">{t("noProjects")}</p>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {latestProjects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                locale={locale}
+                viewProjectLabel={t("viewProject")}
+                viewCodeLabel={t("viewCode")}
+                viewDemoLabel={t("viewDemo")}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

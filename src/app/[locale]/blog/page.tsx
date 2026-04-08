@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 import type { Locale } from "@/shared/config/i18n";
+import { prisma } from "@/shared/lib/prisma";
+import { PostCard } from "@/entities/post";
 
 export default async function BlogPage({
   params,
@@ -9,6 +10,21 @@ export default async function BlogPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations("blog");
+
+  const posts = await prisma.post.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      coverImage: true,
+      restricted: true,
+      createdAt: true,
+      tags: { select: { tag: { select: { name: true, slug: true } } } },
+    },
+  });
 
   return (
     <div className="page-container page-x fade-in">
@@ -19,21 +35,21 @@ export default async function BlogPage({
           <p className="text-muted">{t("description")}</p>
         </div>
 
-        {/* Список постов загружается через серверный компонент с Prisma */}
-        {/* Заглушка */}
-        <div className="flex flex-col gap-6">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <article key={i} className="glass p-6 flex flex-col gap-3 animate-pulse">
-              <div className="flex items-center gap-3">
-                <div className="h-5 w-20 bg-subtle rounded-full" />
-                <div className="h-3 w-24 bg-subtle rounded" />
-              </div>
-              <div className="h-5 w-2/3 bg-subtle rounded" />
-              <div className="h-3 w-full bg-subtle rounded" />
-              <div className="h-3 w-4/5 bg-subtle rounded" />
-            </article>
-          ))}
-        </div>
+        {/* Список постов */}
+        {posts.length === 0 ? (
+          <p className="text-sm text-faint">{t("empty")}</p>
+        ) : (
+          <div className="flex flex-col gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                locale={locale}
+                readMoreLabel={t("readMore")}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

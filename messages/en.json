@@ -14,13 +14,18 @@
     },
     "latestPosts": "Latest Posts",
     "latestProjects": "Latest Projects",
-    "viewAll": "View all"
+    "viewAll": "View all",
+    "noPosts": "No posts yet.",
+    "noProjects": "No projects yet.",
+    "readMore": "Read more",
+    "viewProject": "Details",
+    "viewCode": "Code",
+    "viewDemo": "Demo"
   },
   "blog": {
     "title": "Blog",
     "description": "Thoughts, notes and tutorials about development.",
-    "readMore": "Read more",
-    "restrictedPost": "This post is only available to friends.",
+    "readMore": "Read more",    "empty": "No posts published yet.",    "restrictedPost": "This post is only available to friends.",
     "comments": {
       "title": "Comments",
       "placeholder": "Write a comment...",
@@ -31,7 +36,8 @@
   "projects": {
     "title": "Projects",
     "description": "My work and side projects.",
-    "viewProject": "View project",
+    "empty": "No projects yet.",
+    "viewProject": "Details",
     "viewCode": "Code",
     "viewDemo": "Demo"
   },
