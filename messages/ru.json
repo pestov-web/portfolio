@@ -1,0 +1,170 @@
+{
+  "nav": {
+    "home": "Главная",
+    "blog": "Блог",
+    "projects": "Проекты",
+    "contact": "Контакты",
+    "hypeVoice": "Hype Voice",
+    "admin": "Админ",
+    "signIn": "Войти",
+    "signOut": "Выйти",
+    "mainNavigation": "Основная навигация",
+    "mobileNavigation": "Мобильная навигация",
+    "openMenu": "Открыть меню",
+    "closeMenu": "Закрыть меню",
+    "switchToLocale": "Переключить на {locale}"
+  },
+  "home": {
+    "hero": {
+      "greeting": "Привет, я",
+      "role": "Full-Stack разработчик",
+      "bio": "Создаю веб-приложения с чистой архитектурой и хорошим кодом."
+    },
+    "latestPosts": "Последние посты",
+    "latestProjects": "Последние проекты",
+    "viewAll": "Смотреть все",
+    "noPosts": "Посты ещё не добавлены.",
+    "noProjects": "Проекты ещё не добавлены.",
+    "readMore": "Читать далее",
+    "viewProject": "Подробнее",
+    "viewCode": "Код",
+    "viewDemo": "Демо"
+  },
+  "blog": {
+    "title": "Блог",
+    "description": "Мысли, заметки и туториалы о разработке.",
+    "readMore": "Читать далее",
+    "empty": "Посты ещё не опубликованы.",
+    "restrictedPost": "Этот пост доступен только для друзей.",
+    "loginToRead": "Войти, чтобы читать",
+    "emptyContent": "Содержимое ещё не добавлено.",
+    "comments": {
+      "title": "Комментарии",
+      "placeholder": "Написать комментарий...",
+      "submit": "Отправить",
+      "empty": "Комментариев пока нет.",
+      "loginRequired": "Войдите, чтобы оставить комментарий.",
+      "delete": "Удалить"
+    }
+  },
+  "projects": {
+    "title": "Проекты",
+    "description": "Мои работы и пет-проекты.",
+    "empty": "Проекты ещё не добавлены.",
+    "viewProject": "Подробнее",
+    "viewCode": "Код",
+    "viewDemo": "Демо"
+  },
+  "contact": {
+    "title": "Контакты",
+    "description": "Напишите мне, отвечу как можно скорее.",
+    "form": {
+      "name": "Имя",
+      "email": "Email",
+      "message": "Сообщение",
+      "submit": "Отправить",
+      "success": "Сообщение отправлено!",
+      "error": "Что-то пошло не так. Попробуйте позже."
+    }
+  },
+  "auth": {
+    "login": "Войти",
+    "logout": "Выйти",
+    "loginWith": "Войти через {provider}",
+    "loginDescription": "Войдите чтобы оставлять комментарии и читать закрытые посты.",
+    "unknownError": "Неизвестная ошибка",
+    "errorStatus": "Ошибка {status}",
+    "terms": "Авторизуясь, вы принимаете условия использования.",
+    "providers": {
+      "yandex": "Яндекс"
+    }
+  },
+  "admin": {
+    "title": "Панель управления",
+    "posts": "Посты",
+    "post": "пост",
+    "projects": "Проекты",
+    "project": "проект",
+    "users": "Пользователи",
+    "new": "Создать",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "save": "Сохранить",
+    "published": "Опубликован",
+    "draft": "Черновик",
+    "restricted": "Только для друзей",
+    "emptyPosts": "Нет постов.",
+    "emptyProjects": "Нет проектов.",
+    "fields": {
+      "title": "Заголовок",
+      "excerpt": "Анонс",
+      "content": "Содержимое",
+      "description": "Описание",
+      "repository": "Репозиторий",
+      "demo": "Демо",
+      "order": "Порядок"
+    },
+    "postsForm": {
+      "newTitle": "Новый пост",
+      "editTitle": "Редактировать пост",
+      "create": "Создать пост",
+      "delete": "Удалить пост"
+    },
+    "projectsForm": {
+      "newTitle": "Новый проект",
+      "editTitle": "Редактировать проект",
+      "create": "Создать проект",
+      "delete": "Удалить проект"
+    },
+    "dangerZone": "Опасная зона — удаление необратимо.",
+    "usersPage": {
+      "title": "Пользователи",
+      "accountsCount": "{count} аккаунтов",
+      "currentUser": "(вы)",
+      "summary": "{comments} комм. · зарег. {date}",
+      "roles": {
+        "USER": "User",
+        "FRIEND": "Friend",
+        "ADMIN": "Admin"
+      }
+    }
+  },
+  "theme": {
+    "toggleToLight": "Переключить на светлую тему",
+    "toggleToDark": "Переключить на тёмную тему"
+  },
+  "media": {
+    "cover": "Обложка",
+    "previewAlt": "Превью обложки",
+    "loading": "Загрузка…",
+    "removeImage": "Удалить изображение",
+    "selectImage": "Выбрать изображение",
+    "formatsHint": "JPEG, PNG, WebP, GIF, AVIF — до 10 МБ",
+    "uploadError": "Ошибка загрузки"
+  },
+  "editor": {
+    "bold": "Жирный",
+    "italic": "Курсив",
+    "code": "Код",
+    "heading2": "Заголовок H2",
+    "heading3": "Заголовок H3",
+    "bulletList": "Маркированный список",
+    "orderedList": "Нумерованный список",
+    "blockquote": "Цитата",
+    "codeBlock": "Блок кода",
+    "link": "Ссылка",
+    "image": "Изображение",
+    "undo": "Отменить",
+    "redo": "Повторить",
+    "uploadingImage": "Загрузка изображения...",
+    "uploadError": "Ошибка загрузки",
+    "linkPrompt": "URL ссылки:"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "notFound": "Не найдено",
+    "back": "Назад",
+    "author": "mwkeay"
+  }
+}

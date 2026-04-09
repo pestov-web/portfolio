@@ -1,0 +1,1 @@
+export { authClient, signIn, signOut, useSession } from "@/shared/config/auth-client";

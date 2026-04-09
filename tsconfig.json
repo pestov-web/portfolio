@@ -13,13 +13,17 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"],
+      "@/shared/config": ["./src/shared/config/index.ts"],
+      "@/shared/auth": ["./src/shared/auth/index.ts"],
+      "@/shared/auth/server": ["./src/shared/auth/server/index.ts"]
     }
   },
   "include": [
