@@ -5,8 +5,14 @@
     "projects": "Проекты",
     "contact": "Контакты",
     "hypeVoice": "Hype Voice",
+    "admin": "Админ",
     "signIn": "Войти",
-    "signOut": "Выйти"
+    "signOut": "Выйти",
+    "mainNavigation": "Основная навигация",
+    "mobileNavigation": "Мобильная навигация",
+    "openMenu": "Открыть меню",
+    "closeMenu": "Закрыть меню",
+    "switchToLocale": "Переключить на {locale}"
   },
   "home": {
     "hero": {
@@ -37,7 +43,8 @@
       "placeholder": "Написать комментарий...",
       "submit": "Отправить",
       "empty": "Комментариев пока нет.",
-      "loginRequired": "Войдите, чтобы оставить комментарий."
+      "loginRequired": "Войдите, чтобы оставить комментарий.",
+      "delete": "Удалить"
     }
   },
   "projects": {
@@ -64,12 +71,20 @@
     "login": "Войти",
     "logout": "Выйти",
     "loginWith": "Войти через {provider}",
-    "loginDescription": "Войдите чтобы оставлять комментарии и читать закрытые посты."
+    "loginDescription": "Войдите чтобы оставлять комментарии и читать закрытые посты.",
+    "unknownError": "Неизвестная ошибка",
+    "errorStatus": "Ошибка {status}",
+    "terms": "Авторизуясь, вы принимаете условия использования.",
+    "providers": {
+      "yandex": "Яндекс"
+    }
   },
   "admin": {
     "title": "Панель управления",
     "posts": "Посты",
+    "post": "пост",
     "projects": "Проекты",
+    "project": "проект",
     "users": "Пользователи",
     "new": "Создать",
     "edit": "Редактировать",
@@ -77,7 +92,73 @@
     "save": "Сохранить",
     "published": "Опубликован",
     "draft": "Черновик",
-    "restricted": "Только для друзей"
+    "restricted": "Только для друзей",
+    "emptyPosts": "Нет постов.",
+    "emptyProjects": "Нет проектов.",
+    "fields": {
+      "title": "Заголовок",
+      "excerpt": "Анонс",
+      "content": "Содержимое",
+      "description": "Описание",
+      "repository": "Репозиторий",
+      "demo": "Демо",
+      "order": "Порядок"
+    },
+    "postsForm": {
+      "newTitle": "Новый пост",
+      "editTitle": "Редактировать пост",
+      "create": "Создать пост",
+      "delete": "Удалить пост"
+    },
+    "projectsForm": {
+      "newTitle": "Новый проект",
+      "editTitle": "Редактировать проект",
+      "create": "Создать проект",
+      "delete": "Удалить проект"
+    },
+    "dangerZone": "Опасная зона — удаление необратимо.",
+    "usersPage": {
+      "title": "Пользователи",
+      "accountsCount": "{count} аккаунтов",
+      "currentUser": "(вы)",
+      "summary": "{comments} комм. · зарег. {date}",
+      "roles": {
+        "USER": "User",
+        "FRIEND": "Friend",
+        "ADMIN": "Admin"
+      }
+    }
+  },
+  "theme": {
+    "toggleToLight": "Переключить на светлую тему",
+    "toggleToDark": "Переключить на тёмную тему"
+  },
+  "media": {
+    "cover": "Обложка",
+    "previewAlt": "Превью обложки",
+    "loading": "Загрузка…",
+    "removeImage": "Удалить изображение",
+    "selectImage": "Выбрать изображение",
+    "formatsHint": "JPEG, PNG, WebP, GIF, AVIF — до 10 МБ",
+    "uploadError": "Ошибка загрузки"
+  },
+  "editor": {
+    "bold": "Жирный",
+    "italic": "Курсив",
+    "code": "Код",
+    "heading2": "Заголовок H2",
+    "heading3": "Заголовок H3",
+    "bulletList": "Маркированный список",
+    "orderedList": "Нумерованный список",
+    "blockquote": "Цитата",
+    "codeBlock": "Блок кода",
+    "link": "Ссылка",
+    "image": "Изображение",
+    "undo": "Отменить",
+    "redo": "Повторить",
+    "uploadingImage": "Загрузка изображения...",
+    "uploadError": "Ошибка загрузки",
+    "linkPrompt": "URL ссылки:"
   },
   "common": {
     "loading": "Загрузка...",

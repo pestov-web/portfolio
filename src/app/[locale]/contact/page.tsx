@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
+import { PageHeader } from "@/shared/ui/page-header";
+import { Button, Field, FormActions, SurfaceCard, TextArea, TextInput } from "@/shared/ui";
 
 type FormState = "idle" | "loading" | "success" | "error";
 
@@ -36,72 +38,66 @@ export default function ContactPage() {
   return (
     <div className="page-container page-x fade-in">
       <section className="py-14 max-w-xl">
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
-          <p className="text-muted">{t("description")}</p>
-        </div>
+        <PageHeader
+          title={t("title")}
+          description={t("description")}
+        />
 
         {state === "success" ? (
-          <div className="glass p-6 text-center">
+          <SurfaceCard padding="lg" className="text-center">
             <p className="text-accent font-medium">{tf("success")}</p>
-          </div>
+          </SurfaceCard>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             {/* Имя */}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="name" className="text-sm font-medium">
-                {tf("name")}
-              </label>
-              <input
+            <Field label={tf("name")} htmlFor="name">
+              <TextInput
                 id="name"
                 name="name"
                 type="text"
                 required
                 autoComplete="name"
-                className="h-10 w-full rounded-md border border-border bg-surface px-3 text-sm placeholder:text-faint focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors"
+                className="w-full"
               />
-            </div>
+            </Field>
 
             {/* Email */}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="email" className="text-sm font-medium">
-                {tf("email")}
-              </label>
-              <input
+            <Field label={tf("email")} htmlFor="email">
+              <TextInput
                 id="email"
                 name="email"
                 type="email"
                 required
                 autoComplete="email"
-                className="h-10 w-full rounded-md border border-border bg-surface px-3 text-sm placeholder:text-faint focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors"
+                className="w-full"
               />
-            </div>
+            </Field>
 
             {/* Сообщение */}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="message" className="text-sm font-medium">
-                {tf("message")}
-              </label>
-              <textarea
+            <Field label={tf("message")} htmlFor="message">
+              <TextArea
                 id="message"
                 name="message"
                 rows={6}
                 required
-                className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm placeholder:text-faint focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors resize-none"
+                className="w-full"
               />
-            </div>
+            </Field>
 
             {state === "error" && (
               <p className="text-sm text-red-500">{tf("error")}</p>
             )}
 
-            <button
-              type="submit"
-              disabled={state === "loading"}
-              className="h-10 px-5 bg-accent-vivid text-white text-sm font-medium rounded-md hover:bg-accent-dim transition-colors disabled:opacity-50 disabled:cursor-not-allowed self-start"
-            >
-              {state === "loading" ? "..." : tf("submit")}
-            </button>
+            <FormActions className="pt-0">
+              <Button
+                type="submit"
+                disabled={state === "loading"}
+                variant="primary"
+                className="h-10 px-5 self-start"
+              >
+                {state === "loading" ? "..." : tf("submit")}
+              </Button>
+            </FormActions>
           </form>
         )}
       </section>

@@ -1,9 +1,9 @@
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import type { ThemeProviderProps } from "./theme-provider.types";
 
-// Обёртка над next-themes для клиентских компонентов
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: ThemeProviderProps) {
   return (
     <NextThemesProvider
       attribute="class"
@@ -16,3 +16,5 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     </NextThemesProvider>
   );
 }
+
+export type { ThemeProviderProps } from "./theme-provider.types";

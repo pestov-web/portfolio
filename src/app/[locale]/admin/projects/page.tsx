@@ -1,7 +1,9 @@
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
+import { PageHeader } from "@/shared/ui/page-header";
+import { ListRow } from "@/shared/ui/list-row";
+import { Badge, ButtonLink } from "@/shared/ui";
 
 export default async function AdminProjectsPage({
   params,
@@ -26,43 +28,44 @@ export default async function AdminProjectsPage({
   return (
     <div className="page-container page-x fade-in">
       <div className="py-14">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold">{t("projects")}</h1>
-          <Link
-            href={`/${locale}/admin/projects/new`}
-            className="px-4 py-2 bg-accent-vivid text-white text-sm font-medium rounded-md no-underline hover:bg-accent-dim transition-colors"
-          >
-            + {t("new")}
-          </Link>
-        </div>
+        <PageHeader
+          title={t("projects")}
+          size="md"
+          actions={(
+            <ButtonLink
+              href={`/${locale}/admin/projects/new`}
+              variant="primary"
+            >
+              + {t("new")}
+            </ButtonLink>
+          )}
+        />
 
         {projects.length === 0 ? (
-          <p className="text-sm text-faint">Нет проектов.</p>
+          <p className="text-sm text-faint">{t("emptyProjects")}</p>
         ) : (
           <div className="flex flex-col gap-1">
             {projects.map((project) => (
-              <div key={project.id} className="glass flex items-center justify-between gap-4 px-4 py-3">
+              <ListRow key={project.id}>
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className={[
-                    "shrink-0 text-xs px-2 py-0.5 rounded-full font-mono",
-                    project.published ? "bg-green-500/10 text-green-500" : "bg-subtle text-faint",
-                  ].join(" ")}>
+                  <Badge variant={project.published ? "success" : "muted"}>
                     {project.published ? t("published") : t("draft")}
-                  </span>
+                  </Badge>
                   <span className="truncate text-sm">{project.title}</span>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <span className="hidden sm:block text-xs text-faint font-mono">
                     #{project.order}
                   </span>
-                  <Link
+                  <ButtonLink
                     href={`/${locale}/admin/projects/${project.id}/edit`}
-                    className="px-3 py-1 text-xs border border-border rounded-md no-underline hover:bg-subtle transition-colors"
+                    variant="outline"
+                    size="sm"
                   >
                     {t("edit")}
-                  </Link>
+                  </ButtonLink>
                 </div>
-              </div>
+              </ListRow>
             ))}
           </div>
         )}

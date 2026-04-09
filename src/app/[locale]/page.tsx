@@ -1,22 +1,19 @@
 // Главная страница — заглушка, детали будут в src/pages/home
-import { getTranslations, getLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
+import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
 import { PostCard } from "@/entities/post";
 import { ProjectCard } from "@/entities/project";
+import { ArrowRightIcon, ButtonLink } from "@/shared/ui";
 
-// Иконка стрелки вправо
-function ArrowRight() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M3 8h10M9 4l4 4-4 4" />
-    </svg>
-  );
-}
-
-export default async function HomePage() {
-  const t = await getTranslations("home");
-  const locale = await getLocale();
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "home" });
 
   // Запросы к БД параллельно
   const [latestPosts, latestProjects] = await Promise.all([
@@ -71,19 +68,19 @@ export default async function HomePage() {
           {t("hero.bio")}
         </p>
         <div className="flex flex-wrap gap-3">
-          <Link
+          <ButtonLink
             href={`/${locale}/projects`}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-accent-vivid text-white text-sm font-medium rounded-md no-underline hover:bg-accent-dim transition-colors"
+            variant="primary"
           >
             {t("latestProjects")}
-            <ArrowRight />
-          </Link>
-          <Link
+            <ArrowRightIcon />
+          </ButtonLink>
+          <ButtonLink
             href={`/${locale}/blog`}
-            className="inline-flex items-center gap-2 px-4 py-2 border border-border text-sm font-medium rounded-md no-underline hover:bg-subtle hover:border-transparent transition-colors"
+            variant="secondary"
           >
             {t("latestPosts")}
-          </Link>
+          </ButtonLink>
         </div>
       </section>
 
@@ -98,7 +95,7 @@ export default async function HomePage() {
             href={`/${locale}/blog`}
             className="flex items-center gap-1 text-sm text-muted hover:text-accent no-underline transition-colors"
           >
-            {t("viewAll")} <ArrowRight />
+            {t("viewAll")} <ArrowRightIcon />
           </Link>
         </div>
 
@@ -127,7 +124,7 @@ export default async function HomePage() {
             href={`/${locale}/projects`}
             className="flex items-center gap-1 text-sm text-muted hover:text-accent no-underline transition-colors"
           >
-            {t("viewAll")} <ArrowRight />
+            {t("viewAll")} <ArrowRightIcon />
           </Link>
         </div>
 

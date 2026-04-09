@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
-import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/shared/auth/server/index";
@@ -8,6 +7,9 @@ import type { Locale } from "@/shared/config/index";
 import { toRenderableFileUrl } from "@/shared/lib/media";
 import { prisma } from "@/shared/lib/prisma";
 import { renderTiptap } from "@/shared/lib/tiptap";
+import { ButtonLink } from "@/shared/ui";
+import { CoverMedia } from "@/shared/ui/cover-media";
+import { DetailHeader } from "@/shared/ui/detail-header";
 import { CommentsSection } from "./comments-section";
 
 function formatDate(date: Date, locale: string) {
@@ -49,12 +51,13 @@ export default async function BlogPostPage({
           <div className="py-20 flex flex-col items-center gap-4 text-center">
             <div className="text-3xl">🔒</div>
             <h1 className="text-xl font-semibold">{t("restrictedPost")}</h1>
-            <Link
+            <ButtonLink
               href={`/${locale}/login`}
-              className="mt-2 px-4 py-2 bg-accent-vivid text-white text-sm font-medium rounded-md no-underline hover:bg-accent-dim transition-colors"
+              variant="primary"
+              className="mt-2"
             >
               {t("loginToRead")}
-            </Link>
+            </ButtonLink>
           </div>
         </div>
       );
@@ -75,48 +78,31 @@ export default async function BlogPostPage({
           <span className="text-muted truncate">{post.slug}</span>
         </nav>
 
-        {/* Шапка */}
-        <header className="mb-10">
-          {/* Теги */}
-          {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {post.tags.map(({ tag }) => (
-                <Link
-                  key={tag.slug}
-                  href={`/${locale}/blog?tag=${tag.slug}`}
-                  className="px-2.5 py-0.5 text-xs rounded-full bg-subtle text-muted no-underline hover:text-accent transition-colors"
-                >
-                  {tag.name}
-                </Link>
-              ))}
-            </div>
+        <DetailHeader
+          title={post.title}
+          tags={post.tags.map(({ tag }) => (
+            <Link
+              key={tag.slug}
+              href={`/${locale}/blog?tag=${tag.slug}`}
+              className="px-2.5 py-0.5 text-xs rounded-full bg-subtle text-muted no-underline hover:text-accent transition-colors"
+            >
+              {tag.name}
+            </Link>
+          ))}
+          meta={(
+            <time dateTime={post.createdAt.toISOString()}>
+              {formatDate(post.createdAt, locale)}
+            </time>
           )}
-
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 leading-snug">
-            {post.title}
-          </h1>
-
-          <time
-            dateTime={post.createdAt.toISOString()}
-            className="text-sm text-faint font-mono"
-          >
-            {formatDate(post.createdAt, locale)}
-          </time>
-        </header>
+        />
 
         {/* Обложка */}
         {post.coverImage && (
-          <div className="relative w-full mb-10 rounded-page overflow-hidden" style={{ aspectRatio: "16/9" }}>
-            <Image
-              src={toRenderableFileUrl(post.coverImage)}
-              alt={post.title}
-              fill
-              unoptimized
-              priority
-              sizes="(max-width: 768px) 100vw, 768px"
-              className="object-cover"
-            />
-          </div>
+          <CoverMedia
+            src={toRenderableFileUrl(post.coverImage)}
+            alt={post.title}
+            priority
+          />
         )}
 
         {/* Контент */}

@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
 import { updatePost, deletePost } from "../../../actions";
-import { TiptapEditor, ImageUpload } from "@/shared/ui";
+import { PageHeader } from "@/shared/ui/page-header";
+import { Button, CheckboxField, Field, FormActions, TiptapEditor, ImageUpload, TextArea, TextInput } from "@/shared/ui";
 
 export default async function EditPostPage({
   params,
@@ -10,6 +12,7 @@ export default async function EditPostPage({
   params: Promise<{ locale: Locale; id: string }>;
 }) {
   const { id, locale } = await params;
+  const t = await getTranslations("admin");
 
   const post = await prisma.post.findUnique({
     where: { id },
@@ -25,74 +28,64 @@ export default async function EditPostPage({
   return (
     <div className="page-container page-x fade-in">
       <div className="py-14 max-w-2xl">
-        <h1 className="text-2xl font-bold mb-8">Редактировать пост</h1>
+        <PageHeader title={t("postsForm.editTitle")} size="md" />
 
         <form action={updatePostWithId} className="flex flex-col gap-5">
           {/* Обложка */}
           <ImageUpload name="coverImage" defaultValue={post.coverImage ?? undefined} />
 
           {/* Заголовок */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="title" className="text-sm font-medium">Заголовок</label>
-            <input
+          <Field label={t("fields.title")} htmlFor="title">
+            <TextInput
               id="title"
               name="title"
               type="text"
               required
               defaultValue={post.title}
-              className="h-10 rounded-md border border-border bg-surface px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors"
             />
-          </div>
+          </Field>
 
           {/* Анонс */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="excerpt" className="text-sm font-medium">Анонс</label>
-            <textarea
+          <Field label={t("fields.excerpt")} htmlFor="excerpt">
+            <TextArea
               id="excerpt"
               name="excerpt"
               rows={3}
               defaultValue={post.excerpt ?? ""}
-              className="rounded-md border border-border bg-surface px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors resize-none"
             />
-          </div>
+          </Field>
 
           {/* Содержимое */}
-          <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Содержимое</span>
+          <Field label={t("fields.content")}>
             <TiptapEditor name="content" defaultValue={post.content} />
-          </div>
+          </Field>
 
           {/* Чекбоксы */}
           <div className="flex gap-6">
-            <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <input type="checkbox" name="published" defaultChecked={post.published} className="accent-accent-vivid" />
-              Опубликован
-            </label>
-            <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <input type="checkbox" name="restricted" defaultChecked={post.restricted} className="accent-accent-vivid" />
-              Только для друзей
-            </label>
+            <CheckboxField name="published" defaultChecked={post.published} label={t("published")} />
+            <CheckboxField name="restricted" defaultChecked={post.restricted} label={t("restricted")} />
           </div>
 
-          <div className="flex gap-3 pt-2">
-            <button
+          <FormActions>
+            <Button
               type="submit"
-              className="px-5 py-2 bg-accent-vivid text-white text-sm font-medium rounded-md hover:bg-accent-dim transition-colors"
+              variant="primary"
+              className="px-5"
             >
-              Сохранить
-            </button>
-          </div>
+              {t("save")}
+            </Button>
+          </FormActions>
         </form>
 
         {/* Удалить */}
         <form action={deletePostWithId} className="mt-10 pt-8 border-t border-border">
-          <p className="text-sm text-muted mb-4">Опасная зона — удаление необратимо.</p>
-          <button
+          <p className="text-sm text-muted mb-4">{t("dangerZone")}</p>
+          <Button
             type="submit"
-            className="px-4 py-2 text-sm font-medium text-red-500 border border-red-500/30 rounded-md hover:bg-red-500/10 transition-colors"
+            variant="danger"
           >
-            Удалить пост
-          </button>
+            {t("postsForm.delete")}
+          </Button>
         </form>
       </div>
     </div>

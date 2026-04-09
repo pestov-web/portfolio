@@ -1,24 +1,15 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { auth } from "@/shared/auth/server/index";
 import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
 import { headers } from "next/headers";
+import { PageHeader } from "@/shared/ui/page-header";
+import { ListRow } from "@/shared/ui/list-row";
+import { NativeSelect } from "@/shared/ui/native-select";
+import { Button } from "@/shared/ui";
 import { updateUserRole } from "../actions";
-
-// Бейдж роли
-function RoleBadge({ role }: { role: "USER" | "FRIEND" | "ADMIN" }) {
-  const styles = {
-    USER:   "bg-subtle text-muted",
-    FRIEND: "bg-accent-vivid/10 text-accent",
-    ADMIN:  "bg-red-500/10 text-red-400",
-  };
-  const labels = { USER: "User", FRIEND: "Friend", ADMIN: "Admin" };
-  return (
-    <span className={`px-2 py-0.5 rounded text-xs font-mono font-medium ${styles[role]}`}>
-      {labels[role]}
-    </span>
-  );
-}
+import { RoleBadge } from "./role-badge";
 
 export default async function AdminUsersPage({
   params,
@@ -26,6 +17,7 @@ export default async function AdminUsersPage({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations("admin");
 
   // Проверяем права
   const session = await auth.api.getSession({ headers: await headers() });
@@ -44,16 +36,22 @@ export default async function AdminUsersPage({
     },
   });
 
+  const dateLocale = locale === "ru" ? "ru-RU" : "en-US";
+  const roleLabels = {
+    USER: t("usersPage.roles.USER"),
+    FRIEND: t("usersPage.roles.FRIEND"),
+    ADMIN: t("usersPage.roles.ADMIN"),
+  } as const;
+
   return (
     <div className="page-container page-x fade-in">
       <div className="py-14">
-        <div className="mb-8">
-          <p className="font-mono text-xs text-faint mb-2">
-            <span className="text-accent">$</span> sudo users --list
-          </p>
-          <h1 className="text-2xl font-bold">Пользователи</h1>
-          <p className="text-sm text-muted mt-1">{users.length} аккаунтов</p>
-        </div>
+        <PageHeader
+          title={t("usersPage.title")}
+          description={t("usersPage.accountsCount", { count: users.length })}
+          eyebrow={<><span className="text-accent">$</span> sudo users --list</>}
+          size="md"
+        />
 
         <div className="flex flex-col gap-2">
           {users.map((user) => {
@@ -61,9 +59,10 @@ export default async function AdminUsersPage({
             const isCurrentUser = user.id === session.user.id;
 
             return (
-              <div
+              <ListRow
                 key={user.id}
-                className="glass px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4"
+                layout="responsive"
+                padding="comfortable"
               >
                 {/* Аватар + info */}
                 <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -78,14 +77,17 @@ export default async function AdminUsersPage({
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="font-medium text-sm truncate">{user.name}</span>
-                      <RoleBadge role={user.role} />
+                      <RoleBadge role={user.role} label={roleLabels[user.role]} />
                       {isCurrentUser && (
-                        <span className="text-xs text-faint">(вы)</span>
+                        <span className="text-xs text-faint">{t("usersPage.currentUser")}</span>
                       )}
                     </div>
                     <div className="text-xs text-faint truncate">{user.email}</div>
                     <div className="text-xs text-faint mt-0.5">
-                      {user._count.comments} комм. · зарег. {new Date(user.createdAt).toLocaleDateString("ru-RU")}
+                      {t("usersPage.summary", {
+                        comments: user._count.comments,
+                        date: new Date(user.createdAt).toLocaleDateString(dateLocale),
+                      })}
                     </div>
                   </div>
                 </div>
@@ -93,24 +95,24 @@ export default async function AdminUsersPage({
                 {/* Форма смены роли */}
                 {!isCurrentUser && (
                   <form action={updateRole} className="flex items-center gap-2 shrink-0">
-                    <select
+                    <NativeSelect
                       name="role"
                       defaultValue={user.role}
-                      className="h-8 rounded-md border border-border bg-surface px-2 text-xs focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors"
                     >
-                      <option value="USER">User</option>
-                      <option value="FRIEND">Friend</option>
-                      <option value="ADMIN">Admin</option>
-                    </select>
-                    <button
+                      <option value="USER">{roleLabels.USER}</option>
+                      <option value="FRIEND">{roleLabels.FRIEND}</option>
+                      <option value="ADMIN">{roleLabels.ADMIN}</option>
+                    </NativeSelect>
+                    <Button
                       type="submit"
-                      className="h-8 px-3 text-xs font-medium bg-accent-vivid text-white rounded-md hover:bg-accent-dim transition-colors"
+                      variant="primary"
+                      size="sm"
                     >
-                      Сохранить
-                    </button>
+                      {t("save")}
+                    </Button>
                   </form>
                 )}
-              </div>
+              </ListRow>
             );
           })}
         </div>

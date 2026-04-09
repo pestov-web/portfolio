@@ -1,6 +1,8 @@
 import type { Locale } from "@/shared/config/index";
+import { getTranslations } from "next-intl/server";
 import { createProject } from "../../actions";
-import { TiptapEditor, ImageUpload } from "@/shared/ui";
+import { PageHeader } from "@/shared/ui/page-header";
+import { Button, CheckboxField, Field, FormActions, TiptapEditor, ImageUpload, TextArea, TextInput } from "@/shared/ui";
 
 export default async function NewProjectPage({
   params,
@@ -8,97 +10,85 @@ export default async function NewProjectPage({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations("admin");
   const createProjectWithLocale = createProject.bind(null, locale);
 
   return (
     <div className="page-container page-x fade-in">
       <div className="py-14 max-w-2xl">
-        <h1 className="text-2xl font-bold mb-8">Новый проект</h1>
+        <PageHeader title={t("projectsForm.newTitle")} size="md" />
 
         <form action={createProjectWithLocale} className="flex flex-col gap-5">
           {/* Обложка */}
           <ImageUpload name="coverImage" />
 
           {/* Название */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="title" className="text-sm font-medium">Название</label>
-            <input
+          <Field label={t("fields.title")} htmlFor="title">
+            <TextInput
               id="title"
               name="title"
               type="text"
               required
-              className="h-10 rounded-md border border-border bg-surface px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors"
             />
-          </div>
+          </Field>
 
           {/* Описание */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="description" className="text-sm font-medium">Описание</label>
-            <textarea
+          <Field label={t("fields.description")} htmlFor="description">
+            <TextArea
               id="description"
               name="description"
               rows={3}
-              className="rounded-md border border-border bg-surface px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors resize-none"
             />
-          </div>
+          </Field>
 
           {/* Ссылки */}
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="repoUrl" className="text-sm font-medium">Репозиторий</label>
-              <input
+            <Field label={t("fields.repository")} htmlFor="repoUrl">
+              <TextInput
                 id="repoUrl"
                 name="repoUrl"
                 type="url"
                 placeholder="https://github.com/..."
-                className="h-10 rounded-md border border-border bg-surface px-3 text-sm placeholder:text-faint focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors"
               />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="demoUrl" className="text-sm font-medium">Демо</label>
-              <input
+            </Field>
+            <Field label={t("fields.demo")} htmlFor="demoUrl">
+              <TextInput
                 id="demoUrl"
                 name="demoUrl"
                 type="url"
                 placeholder="https://..."
-                className="h-10 rounded-md border border-border bg-surface px-3 text-sm placeholder:text-faint focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors"
               />
-            </div>
+            </Field>
           </div>
 
           {/* Порядок */}
-          <div className="flex flex-col gap-1.5 w-32">
-            <label htmlFor="order" className="text-sm font-medium">Порядок</label>
-            <input
+          <Field label={t("fields.order")} htmlFor="order" className="w-32">
+            <TextInput
               id="order"
               name="order"
               type="number"
               defaultValue={0}
               min={0}
-              className="h-10 rounded-md border border-border bg-surface px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent-vivid/50 focus:border-accent-vivid transition-colors"
             />
-          </div>
+          </Field>
 
           {/* Содержимое */}
-          <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Содержимое</span>
+          <Field label={t("fields.content")}>
             <TiptapEditor name="content" />
-          </div>
+          </Field>
 
           {/* Чекбокс */}
-          <label className="flex items-center gap-2 text-sm cursor-pointer">
-            <input type="checkbox" name="published" className="accent-accent-vivid" />
-            Опубликован
-          </label>
+          <CheckboxField name="published" label={t("published")} />
 
-          <div className="flex gap-3 pt-2">
-            <button
+          <FormActions>
+            <Button
               type="submit"
-              className="px-5 py-2 bg-accent-vivid text-white text-sm font-medium rounded-md hover:bg-accent-dim transition-colors"
+              variant="primary"
+              className="px-5"
             >
-              Создать
-            </button>
-          </div>
+              {t("projectsForm.create")}
+            </Button>
+          </FormActions>
         </form>
       </div>
     </div>

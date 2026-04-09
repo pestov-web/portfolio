@@ -1,0 +1,15 @@
+export const postCardClassNames = {
+  root: "glass flex flex-col overflow-hidden group",
+  cover: "relative h-44 overflow-hidden",
+  coverImage: "object-cover transition-transform duration-500 group-hover:scale-105",
+  body: "flex flex-col gap-3 p-5 flex-1",
+  meta: "flex items-center justify-between gap-2 text-xs text-faint",
+  tags: "flex flex-wrap gap-1.5",
+  tagLink: "px-2 py-0.5 rounded-full bg-subtle text-muted hover:text-accent no-underline transition-colors",
+  date: "shrink-0",
+  title: "text-base font-semibold leading-snug line-clamp-2",
+  titleLink: "no-underline hover:text-accent transition-colors",
+  lock: "inline-flex items-center mr-1.5 text-faint",
+  excerpt: "text-sm text-muted line-clamp-3 leading-relaxed flex-1",
+  action: "mt-auto text-xs font-medium text-accent hover:text-accent-vivid no-underline transition-colors",
+} as const;

@@ -1,0 +1,2 @@
+export const socialAuthButtonClassName =
+  "flex items-center justify-center gap-3 h-10 w-full rounded-md border border-border bg-surface text-sm font-medium hover:bg-subtle hover:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed";

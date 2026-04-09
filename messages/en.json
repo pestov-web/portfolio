@@ -5,8 +5,14 @@
     "projects": "Projects",
     "contact": "Contact",
     "hypeVoice": "Hype Voice",
+    "admin": "Admin",
     "signIn": "Sign in",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "mainNavigation": "Main navigation",
+    "mobileNavigation": "Mobile navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "switchToLocale": "Switch to {locale}"
   },
   "home": {
     "hero": {
@@ -27,7 +33,9 @@
   "blog": {
     "title": "Blog",
     "description": "Thoughts, notes and tutorials about development.",
-    "readMore": "Read more",    "empty": "No posts published yet.",    "restrictedPost": "This post is available for friends only.",
+    "readMore": "Read more",
+    "empty": "No posts published yet.",
+    "restrictedPost": "This post is available for friends only.",
     "loginToRead": "Sign in to read",
     "emptyContent": "Content not added yet.",
     "comments": {
@@ -35,7 +43,8 @@
       "placeholder": "Write a comment...",
       "submit": "Submit",
       "empty": "No comments yet.",
-      "loginRequired": "Sign in to leave a comment."
+      "loginRequired": "Sign in to leave a comment.",
+      "delete": "Delete"
     }
   },
   "projects": {
@@ -62,12 +71,20 @@
     "login": "Sign in",
     "logout": "Sign out",
     "loginWith": "Sign in with {provider}",
-    "loginDescription": "Sign in to leave comments and read restricted posts."
+    "loginDescription": "Sign in to leave comments and read restricted posts.",
+    "unknownError": "Unknown error",
+    "errorStatus": "Error {status}",
+    "terms": "By signing in, you agree to the terms of use.",
+    "providers": {
+      "yandex": "Yandex"
+    }
   },
   "admin": {
     "title": "Dashboard",
     "posts": "Posts",
+    "post": "post",
     "projects": "Projects",
+    "project": "project",
     "users": "Users",
     "new": "New",
     "edit": "Edit",
@@ -75,7 +92,73 @@
     "save": "Save",
     "published": "Published",
     "draft": "Draft",
-    "restricted": "Friends only"
+    "restricted": "Friends only",
+    "emptyPosts": "No posts.",
+    "emptyProjects": "No projects.",
+    "fields": {
+      "title": "Title",
+      "excerpt": "Excerpt",
+      "content": "Content",
+      "description": "Description",
+      "repository": "Repository",
+      "demo": "Demo",
+      "order": "Order"
+    },
+    "postsForm": {
+      "newTitle": "New post",
+      "editTitle": "Edit post",
+      "create": "Create post",
+      "delete": "Delete post"
+    },
+    "projectsForm": {
+      "newTitle": "New project",
+      "editTitle": "Edit project",
+      "create": "Create project",
+      "delete": "Delete project"
+    },
+    "dangerZone": "Danger zone: deletion cannot be undone.",
+    "usersPage": {
+      "title": "Users",
+      "accountsCount": "{count} accounts",
+      "currentUser": "(you)",
+      "summary": "{comments} comments · joined {date}",
+      "roles": {
+        "USER": "User",
+        "FRIEND": "Friend",
+        "ADMIN": "Admin"
+      }
+    }
+  },
+  "theme": {
+    "toggleToLight": "Switch to light theme",
+    "toggleToDark": "Switch to dark theme"
+  },
+  "media": {
+    "cover": "Cover",
+    "previewAlt": "Cover preview",
+    "loading": "Loading...",
+    "removeImage": "Remove image",
+    "selectImage": "Select image",
+    "formatsHint": "JPEG, PNG, WebP, GIF, AVIF up to 10 MB",
+    "uploadError": "Upload failed"
+  },
+  "editor": {
+    "bold": "Bold",
+    "italic": "Italic",
+    "code": "Code",
+    "heading2": "Heading H2",
+    "heading3": "Heading H3",
+    "bulletList": "Bullet list",
+    "orderedList": "Ordered list",
+    "blockquote": "Blockquote",
+    "codeBlock": "Code block",
+    "link": "Link",
+    "image": "Image",
+    "undo": "Undo",
+    "redo": "Redo",
+    "uploadingImage": "Uploading image...",
+    "uploadError": "Upload failed",
+    "linkPrompt": "Link URL:"
   },
   "common": {
     "loading": "Loading...",

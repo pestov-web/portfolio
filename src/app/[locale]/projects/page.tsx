@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import type { Locale } from "@/shared/config/index";
 import { prisma } from "@/shared/lib/prisma";
 import { ProjectCard } from "@/entities/project";
+import { PageHeader } from "@/shared/ui/page-header";
 
 export default async function ProjectsPage({
   params,
@@ -29,11 +30,10 @@ export default async function ProjectsPage({
   return (
     <div className="page-container page-x fade-in">
       <section className="py-14">
-        {/* Заголовок */}
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
-          <p className="text-muted">{t("description")}</p>
-        </div>
+        <PageHeader
+          title={t("title")}
+          description={t("description")}
+        />
 
         {/* Сетка проектов */}
         {projects.length === 0 ? (
