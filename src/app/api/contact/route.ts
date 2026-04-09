@@ -1,23 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { deliverContactMessage, getClientIp, validateContactInput } from "@/shared/lib/contact";
 import { contactRateLimiter } from "@/shared/lib/rate-limit";
 
-// Простая валидация на сервере
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function getClientIp(req: NextRequest) {
-  const forwardedFor = req.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    return forwardedFor.split(",")[0]?.trim() ?? "unknown";
-  }
-
-  return req.headers.get("x-real-ip") ?? "unknown";
-}
-
 export async function POST(req: NextRequest) {
-  const rateLimit = contactRateLimiter(getClientIp(req));
+  const rateLimit = await contactRateLimiter(getClientIp(req.headers));
   if (!rateLimit.success) {
     return NextResponse.json(
       { error: "Too many requests" },
@@ -48,40 +34,22 @@ export async function POST(req: NextRequest) {
 
   const { name, email, message } = body as Record<string, unknown>;
 
-  if (
-    typeof name !== "string" || name.trim().length < 1 ||
-    typeof email !== "string" || !isValidEmail(email) ||
-    typeof message !== "string" || message.trim().length < 1
-  ) {
+  if (typeof name !== "string" || typeof email !== "string" || typeof message !== "string") {
     return NextResponse.json({ error: "Invalid fields" }, { status: 422 });
   }
 
-  const to = process.env.CONTACT_EMAIL;
-
-  if (!to || !process.env.RESEND_API_KEY) {
-    if (process.env.NODE_ENV !== "production") {
-      // В dev без настроенного Resend просто логируем
-      console.log("[contact]", { name, email, message });
-      return NextResponse.json({ ok: true });
-    }
-
-    return NextResponse.json({ error: "Email delivery is not configured" }, { status: 500 });
+  const validationCode = validateContactInput({ name, email, message });
+  if (validationCode) {
+    return NextResponse.json({ error: "Invalid fields" }, { status: 422 });
   }
 
-  try {
-    // Создаём клиент только здесь (RESEND_API_KEY может быть не задан в dev)
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    await resend.emails.send({
-      from: "portfolio <onboarding@resend.dev>",
-      to,
-      subject: `[Portfolio] Сообщение от ${name.trim()}`,
-      replyTo: email.trim(),
-      text: `От: ${name.trim()} <${email.trim()}>\n\n${message.trim()}`,
-    });
-
+  const delivery = await deliverContactMessage({ name, email, message });
+  if (delivery.ok) {
     return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("[contact] Resend error:", err);
-    return NextResponse.json({ error: "Send failed" }, { status: 500 });
   }
+
+  return NextResponse.json(
+    { error: delivery.code === "not_configured" ? "Email delivery is not configured" : "Send failed" },
+    { status: 500 }
+  );
 }

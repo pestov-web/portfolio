@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { createPost } from "../../actions";
 import { PageHeader } from "@/shared/ui/page-header";
 import { Button, CheckboxField, Field, FormActions, TiptapEditor, ImageUpload, TextArea, TextInput } from "@/shared/ui";
+import { ActionForm } from "../../action-form";
 
 export default async function NewPostPage({
   params,
@@ -18,7 +19,7 @@ export default async function NewPostPage({
       <div className="py-14 max-w-2xl">
         <PageHeader title={t("postsForm.newTitle")} size="md" />
 
-        <form action={createPostWithLocale} className="flex flex-col gap-5">
+        <ActionForm action={createPostWithLocale} className="flex flex-col gap-5">
           {/* Обложка */}
           <ImageUpload name="coverImage" />
 
@@ -61,7 +62,7 @@ export default async function NewPostPage({
               {t("postsForm.create")}
             </Button>
           </FormActions>
-        </form>
+        </ActionForm>
       </div>
     </div>
   );

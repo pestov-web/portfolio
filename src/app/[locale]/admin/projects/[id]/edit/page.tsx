@@ -5,6 +5,7 @@ import { prisma } from "@/shared/lib/prisma";
 import { updateProject, deleteProject } from "../../../actions";
 import { PageHeader } from "@/shared/ui/page-header";
 import { Button, CheckboxField, Field, FormActions, TiptapEditor, ImageUpload, TextArea, TextInput } from "@/shared/ui";
+import { ActionForm } from "../../../action-form";
 
 export default async function EditProjectPage({
   params,
@@ -32,7 +33,7 @@ export default async function EditProjectPage({
       <div className="py-14 max-w-2xl">
         <PageHeader title={t("projectsForm.editTitle")} size="md" />
 
-        <form action={updateProjectWithId} className="flex flex-col gap-5">
+        <ActionForm action={updateProjectWithId} className="flex flex-col gap-5">
           {/* Обложка */}
           <ImageUpload name="coverImage" defaultValue={project.coverImage ?? undefined} />
 
@@ -107,7 +108,7 @@ export default async function EditProjectPage({
               {t("save")}
             </Button>
           </FormActions>
-        </form>
+        </ActionForm>
 
         {/* Удалить */}
         <form action={deleteProjectWithId} className="mt-10 pt-8 border-t border-border">

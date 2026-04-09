@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { ToastProvider } from "@/shared/ui/toast";
 import type { ThemeProviderProps } from "./theme-provider.types";
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
@@ -12,7 +13,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       disableTransitionOnChange={false}
       scriptProps={{ suppressHydrationWarning: true }}
     >
-      {children}
+      <ToastProvider>{children}</ToastProvider>
     </NextThemesProvider>
   );
 }

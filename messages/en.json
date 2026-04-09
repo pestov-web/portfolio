@@ -35,6 +35,7 @@
     "description": "Thoughts, notes and tutorials about development.",
     "readMore": "Read more",
     "empty": "No posts published yet.",
+    "emptyFiltered": "No posts found for the selected tag.",
     "restrictedPost": "This post is available for friends only.",
     "loginToRead": "Sign in to read",
     "emptyContent": "Content not added yet.",
@@ -44,13 +45,18 @@
       "submit": "Submit",
       "empty": "No comments yet.",
       "loginRequired": "Sign in to leave a comment.",
-      "delete": "Delete"
+      "delete": "Delete",
+      "errors": {
+        "required": "Comment cannot be empty.",
+        "tooLong": "Comment is too long. Maximum length is 2000 characters."
+      }
     }
   },
   "projects": {
     "title": "Projects",
     "description": "My work and side projects.",
     "empty": "No projects yet.",
+    "emptyFiltered": "No projects found for the selected tag.",
     "viewProject": "Details",
     "viewCode": "Code",
     "viewDemo": "Demo"
@@ -64,7 +70,12 @@
       "message": "Message",
       "submit": "Send",
       "success": "Message sent!",
-      "error": "Something went wrong. Please try again later."
+      "error": "Something went wrong. Please try again later.",
+      "nameRequired": "Please enter your name.",
+      "emailInvalid": "Please enter a valid email address.",
+      "messageRequired": "Message cannot be empty.",
+      "rateLimited": "Too many messages. Please try again later.",
+      "notConfigured": "Message delivery is not configured yet."
     }
   },
   "auth": {
@@ -72,6 +83,7 @@
     "logout": "Sign out",
     "loginWith": "Sign in with {provider}",
     "loginDescription": "Sign in to leave comments and read restricted posts.",
+    "providersUnavailable": "OAuth sign-in is currently unavailable.",
     "unknownError": "Unknown error",
     "errorStatus": "Error {status}",
     "terms": "By signing in, you agree to the terms of use.",
@@ -99,6 +111,7 @@
       "title": "Title",
       "excerpt": "Excerpt",
       "content": "Content",
+      "cover": "Cover",
       "description": "Description",
       "repository": "Repository",
       "demo": "Demo",
@@ -127,6 +140,16 @@
         "FRIEND": "Friend",
         "ADMIN": "Admin"
       }
+    },
+    "errors": {
+      "requiredField": "The “{field}” field is required.",
+      "tooLong": "The “{field}” field exceeds the allowed length.",
+      "invalidUrl": "The “{field}” field contains an invalid URL.",
+      "invalidJson": "The “{field}” field contains invalid data.",
+      "invalidOrder": "The “Order” field must be a non-negative integer.",
+      "invalidRole": "Invalid role.",
+      "invalidImageType": "Invalid file type.",
+      "imageTooLarge": "The file is too large. Maximum size is 10 MB."
     }
   },
   "theme": {
@@ -160,11 +183,32 @@
     "uploadError": "Upload failed",
     "linkPrompt": "Link URL:"
   },
+  "errors": {
+    "title": "Something went wrong",
+    "description": "An error occurred while processing the request. Try again or return to the home page.",
+    "retry": "Try again",
+    "goHome": "Go home",
+    "notFound": {
+      "title": "Page not found",
+      "description": "The link may be outdated or the page no longer exists.",
+      "goHome": "Go home",
+      "goBlog": "Open blog"
+    }
+  },
   "common": {
     "loading": "Loading...",
     "error": "Error",
     "notFound": "Not found",
     "back": "Back",
-    "author": "mwkeay"
+    "author": "mwkeay",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "summary": "Page {page} of {totalPages} · total {totalItems}"
+    },
+    "filters": {
+      "title": "Filter by tag",
+      "all": "All"
+    }
   }
 }

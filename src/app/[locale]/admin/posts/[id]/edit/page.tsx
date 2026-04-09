@@ -5,6 +5,7 @@ import { prisma } from "@/shared/lib/prisma";
 import { updatePost, deletePost } from "../../../actions";
 import { PageHeader } from "@/shared/ui/page-header";
 import { Button, CheckboxField, Field, FormActions, TiptapEditor, ImageUpload, TextArea, TextInput } from "@/shared/ui";
+import { ActionForm } from "../../../action-form";
 
 export default async function EditPostPage({
   params,
@@ -30,7 +31,7 @@ export default async function EditPostPage({
       <div className="py-14 max-w-2xl">
         <PageHeader title={t("postsForm.editTitle")} size="md" />
 
-        <form action={updatePostWithId} className="flex flex-col gap-5">
+        <ActionForm action={updatePostWithId} className="flex flex-col gap-5">
           {/* Обложка */}
           <ImageUpload name="coverImage" defaultValue={post.coverImage ?? undefined} />
 
@@ -75,7 +76,7 @@ export default async function EditPostPage({
               {t("save")}
             </Button>
           </FormActions>
-        </form>
+        </ActionForm>
 
         {/* Удалить */}
         <form action={deletePostWithId} className="mt-10 pt-8 border-t border-border">

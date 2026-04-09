@@ -7,7 +7,7 @@ export const projectCardClassNames = {
   titleLink: "no-underline hover:text-accent transition-colors",
   description: "text-sm text-muted line-clamp-3 leading-relaxed flex-1",
   tags: "flex flex-wrap gap-1.5",
-  tag: "px-2 py-0.5 text-xs rounded-full bg-subtle text-faint font-mono",
+  tag: "px-2 py-0.5 text-xs rounded-full bg-subtle text-faint font-mono no-underline transition-colors hover:text-accent",
   actions: "mt-auto flex items-center gap-3 pt-1",
   mainAction: "text-xs font-medium text-accent hover:text-accent-vivid no-underline transition-colors",
   secondaryAction: "flex items-center gap-1 text-xs text-faint hover:text-fg no-underline transition-colors",

@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { createProject } from "../../actions";
 import { PageHeader } from "@/shared/ui/page-header";
 import { Button, CheckboxField, Field, FormActions, TiptapEditor, ImageUpload, TextArea, TextInput } from "@/shared/ui";
+import { ActionForm } from "../../action-form";
 
 export default async function NewProjectPage({
   params,
@@ -18,7 +19,7 @@ export default async function NewProjectPage({
       <div className="py-14 max-w-2xl">
         <PageHeader title={t("projectsForm.newTitle")} size="md" />
 
-        <form action={createProjectWithLocale} className="flex flex-col gap-5">
+        <ActionForm action={createProjectWithLocale} className="flex flex-col gap-5">
           {/* Обложка */}
           <ImageUpload name="coverImage" />
 
@@ -89,7 +90,7 @@ export default async function NewProjectPage({
               {t("projectsForm.create")}
             </Button>
           </FormActions>
-        </form>
+        </ActionForm>
       </div>
     </div>
   );

@@ -9,4 +9,7 @@ export const imageUploadClassNames = {
   emptyContent: "flex flex-col items-center gap-1 text-muted text-sm select-none",
   hint: "text-xs text-faint",
   error: "text-xs text-red-500",
+  actions: "mt-2 flex flex-wrap items-center gap-3",
+  actionButton: "text-xs text-muted hover:text-accent transition-colors disabled:opacity-50 disabled:pointer-events-none",
+  fileName: "text-xs text-faint",
 } as const;

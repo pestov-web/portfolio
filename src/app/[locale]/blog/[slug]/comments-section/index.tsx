@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useSession } from "@/shared/auth/index";
-import { Button, TextArea } from "@/shared/ui";
-import { addComment, deleteComment } from "../comment-actions";
+import { deleteComment } from "../comment-actions";
 import { commentsSectionClassNames } from "./comments-section.styles";
 import type { CommentsSectionProps } from "./comments-section.types";
+import { CommentForm } from "./comment-form";
 
 function formatRelative(date: Date, locale: string) {
   const diff = Date.now() - date.getTime();
@@ -23,8 +23,6 @@ function formatRelative(date: Date, locale: string) {
 export function CommentsSection({ postId, comments, locale }: CommentsSectionProps) {
   const t = useTranslations("blog.comments");
   const { data: session } = useSession();
-
-  const addCommentBound = addComment.bind(null, postId, locale);
 
   return (
     <section>
@@ -75,19 +73,12 @@ export function CommentsSection({ postId, comments, locale }: CommentsSectionPro
       )}
 
       {session ? (
-        <form action={addCommentBound} className={commentsSectionClassNames.form}>
-          <TextArea
-            name="content"
-            rows={3}
-            required
-            maxLength={2000}
-            placeholder={t("placeholder")}
-            className={commentsSectionClassNames.textarea}
-          />
-          <Button type="submit" variant="primary" className={commentsSectionClassNames.submit}>
-            {t("submit")}
-          </Button>
-        </form>
+        <CommentForm
+          postId={postId}
+          locale={locale}
+          placeholder={t("placeholder")}
+          submitLabel={t("submit")}
+        />
       ) : (
         <p className={commentsSectionClassNames.loginRequired}>{t("loginRequired")}</p>
       )}

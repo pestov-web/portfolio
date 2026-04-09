@@ -2,18 +2,39 @@
 
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { auth } from "@/shared/auth/server/index";
 import { prisma } from "@/shared/lib/prisma";
 
-export async function addComment(postId: string, locale: string, formData: FormData) {
+export type CommentActionState = {
+  error: string | null;
+  submittedAt: number | null;
+};
+
+export const initialCommentActionState: CommentActionState = {
+  error: null,
+  submittedAt: null,
+};
+
+export async function addComment(
+  postId: string,
+  locale: string,
+  _state: CommentActionState | void,
+  formData: FormData
+): Promise<CommentActionState> {
+  const t = await getTranslations({ locale, namespace: "blog.comments" });
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
-    throw new Error("Unauthorized");
+    return { error: t("loginRequired"), submittedAt: null };
   }
 
   const content = String(formData.get("content") ?? "").trim();
-  if (content.length < 1 || content.length > 2000) {
-    return;
+  if (content.length < 1) {
+    return { error: t("errors.required"), submittedAt: null };
+  }
+
+  if (content.length > 2000) {
+    return { error: t("errors.tooLong"), submittedAt: null };
   }
 
   await prisma.comment.create({
@@ -28,12 +49,14 @@ export async function addComment(postId: string, locale: string, formData: FormD
   if (post) {
     revalidatePath(`/${locale}/blog/${post.slug}`);
   }
+
+  return { error: null, submittedAt: Date.now() };
 }
 
 export async function deleteComment(commentId: string, locale: string) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
-    throw new Error("Unauthorized");
+    return;
   }
 
   const comment = await prisma.comment.findUnique({
