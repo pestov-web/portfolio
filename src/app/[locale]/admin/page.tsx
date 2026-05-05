@@ -13,10 +13,11 @@ export default async function AdminPage({
   const { locale } = await params;
   const t = await getTranslations("admin");
 
-  const [postCount, projectCount, userCount] = await Promise.all([
+  const [postCount, projectCount, userCount, tagCount] = await Promise.all([
     prisma.post.count(),
     prisma.project.count(),
     prisma.user.count(),
+    prisma.tag.count(),
   ]);
 
   return (
@@ -28,10 +29,11 @@ export default async function AdminPage({
         />
 
         {/* Статистика */}
-        <div className="grid gap-4 sm:grid-cols-3 mb-12">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-12">
           <StatCard label={t("posts")} count={postCount} href={`/${locale}/admin/posts`} />
           <StatCard label={t("projects")} count={projectCount} href={`/${locale}/admin/projects`} />
           <StatCard label={t("users")} count={userCount} href={`/${locale}/admin/users`} />
+          <StatCard label={t("tagsLabel")} count={tagCount} href={`/${locale}/admin/tags`} />
         </div>
 
         {/* Быстрые действия */}
@@ -47,6 +49,12 @@ export default async function AdminPage({
             variant="secondary"
           >
             + {t("new")} {t("projects").toLowerCase()}
+          </ButtonLink>
+          <ButtonLink
+            href={`/${locale}/admin/tags`}
+            variant="outline"
+          >
+            # {t("tagsLabel")}
           </ButtonLink>
         </div>
       </div>

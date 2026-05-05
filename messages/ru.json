@@ -1,215 +1,247 @@
 {
-  "nav": {
-    "home": "Главная",
-    "blog": "Блог",
-    "projects": "Проекты",
-    "contact": "Контакты",
-    "hypeVoice": "Hype Voice",
-    "admin": "Админ",
-    "signIn": "Войти",
-    "signOut": "Выйти",
-    "mainNavigation": "Основная навигация",
-    "mobileNavigation": "Мобильная навигация",
-    "openMenu": "Открыть меню",
-    "closeMenu": "Закрыть меню",
-    "switchToLocale": "Переключить на {locale}"
-  },
-  "home": {
-    "hero": {
-      "greeting": "Привет, я",
-      "role": "Full-Stack разработчик",
-      "bio": "Создаю веб-приложения с чистой архитектурой и хорошим кодом."
+    "nav": {
+        "home": "Главная",
+        "blog": "Блог",
+        "projects": "Проекты",
+        "contact": "Контакты",
+        "hypeVoice": "Hype Voice",
+        "admin": "Админ",
+        "signIn": "Войти",
+        "signOut": "Выйти",
+        "mainNavigation": "Основная навигация",
+        "mobileNavigation": "Мобильная навигация",
+        "openMenu": "Открыть меню",
+        "closeMenu": "Закрыть меню",
+        "switchToLocale": "Переключить на {locale}"
     },
-    "latestPosts": "Последние посты",
-    "latestProjects": "Последние проекты",
-    "viewAll": "Смотреть все",
-    "noPosts": "Посты ещё не добавлены.",
-    "noProjects": "Проекты ещё не добавлены.",
-    "readMore": "Читать далее",
-    "viewProject": "Подробнее",
-    "viewCode": "Код",
-    "viewDemo": "Демо"
-  },
-  "blog": {
-    "title": "Блог",
-    "description": "Мысли, заметки и туториалы о разработке.",
-    "readMore": "Читать далее",
-    "empty": "Посты ещё не опубликованы.",
-    "emptyFiltered": "По выбранному тегу постов пока нет.",
-    "restrictedPost": "Этот пост доступен только для друзей.",
-    "loginToRead": "Войти, чтобы читать",
-    "emptyContent": "Содержимое ещё не добавлено.",
-    "comments": {
-      "title": "Комментарии",
-      "placeholder": "Написать комментарий...",
-      "submit": "Отправить",
-      "empty": "Комментариев пока нет.",
-      "loginRequired": "Войдите, чтобы оставить комментарий.",
-      "delete": "Удалить",
-      "errors": {
-        "required": "Комментарий не должен быть пустым.",
-        "tooLong": "Комментарий слишком длинный. Максимум 2000 символов."
-      }
-    }
-  },
-  "projects": {
-    "title": "Проекты",
-    "description": "Мои работы и пет-проекты.",
-    "empty": "Проекты ещё не добавлены.",
-    "emptyFiltered": "По выбранному тегу проектов пока нет.",
-    "viewProject": "Подробнее",
-    "viewCode": "Код",
-    "viewDemo": "Демо"
-  },
-  "contact": {
-    "title": "Контакты",
-    "description": "Напишите мне, отвечу как можно скорее.",
-    "form": {
-      "name": "Имя",
-      "email": "Email",
-      "message": "Сообщение",
-      "submit": "Отправить",
-      "success": "Сообщение отправлено!",
-      "error": "Что-то пошло не так. Попробуйте позже.",
-      "nameRequired": "Укажи имя.",
-      "emailInvalid": "Укажи корректный email.",
-      "messageRequired": "Сообщение не должно быть пустым.",
-      "rateLimited": "Слишком много сообщений. Попробуй чуть позже.",
-      "notConfigured": "Отправка сообщений пока не настроена."
-    }
-  },
-  "auth": {
-    "login": "Войти",
-    "logout": "Выйти",
-    "loginWith": "Войти через {provider}",
-    "loginDescription": "Войдите чтобы оставлять комментарии и читать закрытые посты.",
-    "providersUnavailable": "Вход через OAuth сейчас недоступен.",
-    "unknownError": "Неизвестная ошибка",
-    "errorStatus": "Ошибка {status}",
-    "terms": "Авторизуясь, вы принимаете условия использования.",
-    "providers": {
-      "yandex": "Яндекс"
-    }
-  },
-  "admin": {
-    "title": "Панель управления",
-    "posts": "Посты",
-    "post": "пост",
-    "projects": "Проекты",
-    "project": "проект",
-    "users": "Пользователи",
-    "new": "Создать",
-    "edit": "Редактировать",
-    "delete": "Удалить",
-    "save": "Сохранить",
-    "published": "Опубликован",
-    "draft": "Черновик",
-    "restricted": "Только для друзей",
-    "emptyPosts": "Нет постов.",
-    "emptyProjects": "Нет проектов.",
-    "fields": {
-      "title": "Заголовок",
-      "excerpt": "Анонс",
-      "content": "Содержимое",
-      "cover": "Обложка",
-      "description": "Описание",
-      "repository": "Репозиторий",
-      "demo": "Демо",
-      "order": "Порядок"
+    "home": {
+        "hero": {
+            "greeting": "Привет, я",
+            "name": "Владимир",
+            "role": "Frontend разработчик",
+            "bio": "Создаю веб-приложения с чистой архитектурой и хорошим кодом."
+        },
+        "latestPosts": "Последние посты",
+        "latestProjects": "Последние проекты",
+        "viewAll": "Смотреть все",
+        "noPosts": "Посты ещё не добавлены.",
+        "noProjects": "Проекты ещё не добавлены.",
+        "readMore": "Читать далее",
+        "viewProject": "Подробнее",
+        "viewCode": "Код",
+        "viewDemo": "Демо"
     },
-    "postsForm": {
-      "newTitle": "Новый пост",
-      "editTitle": "Редактировать пост",
-      "create": "Создать пост",
-      "delete": "Удалить пост"
+    "blog": {
+        "title": "Блог",
+        "description": "Мысли, заметки и туториалы о разработке.",
+        "readMore": "Читать далее",
+        "empty": "Посты ещё не опубликованы.",
+        "emptyFiltered": "По выбранному тегу постов пока нет.",
+        "restrictedPost": "Этот пост доступен только для друзей.",
+        "loginToRead": "Войти, чтобы читать",
+        "emptyContent": "Содержимое ещё не добавлено.",
+        "comments": {
+            "title": "Комментарии",
+            "placeholder": "Написать комментарий…",
+            "submit": "Отправить",
+            "empty": "Комментариев пока нет.",
+            "loginRequired": "Войдите, чтобы оставить комментарий.",
+            "delete": "Удалить",
+            "errors": {
+                "required": "Комментарий не должен быть пустым.",
+                "tooLong": "Комментарий слишком длинный. Максимум 2000 символов."
+            }
+        }
     },
-    "projectsForm": {
-      "newTitle": "Новый проект",
-      "editTitle": "Редактировать проект",
-      "create": "Создать проект",
-      "delete": "Удалить проект"
+    "projects": {
+        "title": "Проекты",
+        "description": "Мои работы и пет-проекты.",
+        "empty": "Проекты ещё не добавлены.",
+        "emptyFiltered": "По выбранному тегу проектов пока нет.",
+        "viewProject": "Подробнее",
+        "viewCode": "Код",
+        "viewDemo": "Демо"
     },
-    "dangerZone": "Опасная зона — удаление необратимо.",
-    "usersPage": {
-      "title": "Пользователи",
-      "accountsCount": "{count} аккаунтов",
-      "currentUser": "(вы)",
-      "summary": "{comments} комм. · зарег. {date}",
-      "roles": {
-        "USER": "User",
-        "FRIEND": "Friend",
-        "ADMIN": "Admin"
-      }
+    "contact": {
+        "title": "Контакты",
+        "description": "Напишите мне, отвечу как можно скорее.",
+        "form": {
+            "name": "Имя",
+            "email": "Email",
+            "message": "Сообщение",
+            "submit": "Отправить",
+            "success": "Сообщение отправлено!",
+            "error": "Что-то пошло не так. Попробуйте позже.",
+            "nameRequired": "Укажи имя.",
+            "nameTooLong": "Имя слишком длинное. Максимум 100 символов.",
+            "emailInvalid": "Укажи корректный email.",
+            "emailTooLong": "Email слишком длинный.",
+            "messageRequired": "Сообщение не должно быть пустым.",
+            "messageTooLong": "Сообщение слишком длинное. Максимум 5000 символов.",
+            "rateLimited": "Слишком много сообщений. Попробуй чуть позже.",
+            "notConfigured": "Отправка сообщений пока не настроена."
+        }
+    },
+    "auth": {
+        "login": "Войти",
+        "logout": "Выйти",
+        "loginWith": "Войти через {provider}",
+        "loginDescription": "Войдите чтобы оставлять комментарии и читать закрытые посты.",
+        "providersUnavailable": "Вход через OAuth сейчас недоступен.",
+        "unknownError": "Неизвестная ошибка",
+        "errorStatus": "Ошибка {status}",
+        "terms": "Авторизуясь, вы принимаете условия использования.",
+        "providers": {
+            "yandex": "Яндекс"
+        }
+    },
+    "admin": {
+        "title": "Панель управления",
+        "posts": "Посты",
+        "post": "пост",
+        "projects": "Проекты",
+        "project": "проект",
+        "tagsLabel": "Теги",
+        "users": "Пользователи",
+        "new": "Создать",
+        "edit": "Редактировать",
+        "delete": "Удалить",
+        "cancel": "Отмена",
+        "save": "Сохранить",
+        "generateSlug": "Сгенерировать slug",
+        "translationHint": "Редактируется перевод для локали {locale}.",
+        "translationMissing": "Для текущей локали перевод ещё не создан. После сохранения он будет добавлен.",
+        "confirmDeleteTitle": "Подтвердить удаление",
+        "published": "Опубликован",
+        "draft": "Черновик",
+        "restricted": "Только для друзей",
+        "emptyPosts": "Нет постов.",
+        "emptyProjects": "Нет проектов.",
+        "fields": {
+            "name": "Название",
+            "title": "Заголовок",
+            "slug": "Слаг",
+            "excerpt": "Анонс",
+            "content": "Содержимое",
+            "tags": "Теги",
+            "cover": "Обложка",
+            "description": "Описание",
+            "repository": "Репозиторий",
+            "demo": "Демо",
+            "order": "Порядок"
+        },
+        "tags": {
+            "selected": "Выбранные теги",
+            "empty": "Теги не выбраны.",
+            "available": "Доступные теги",
+            "noneAvailable": "Тегов пока нет."
+        },
+        "tagsPage": {
+            "title": "Теги",
+            "count": "{count} тегов",
+            "nameLabel": "Название тега",
+            "create": "Создать тег",
+            "empty": "Тегов пока нет.",
+            "usage": "Использований: {total} · посты {posts} · проекты {projects}",
+            "confirmDelete": "Удалить тег «{tag}»? Он исчезнет из постов и проектов.",
+            "renameAriaLabel": "Переименовать тег {tag}"
+        },
+        "postsForm": {
+            "newTitle": "Новый пост",
+            "editTitle": "Редактировать пост",
+            "create": "Создать пост",
+            "delete": "Удалить пост",
+            "confirmDelete": "Удалить пост? Это действие нельзя отменить."
+        },
+        "projectsForm": {
+            "newTitle": "Новый проект",
+            "editTitle": "Редактировать проект",
+            "create": "Создать проект",
+            "delete": "Удалить проект",
+            "confirmDelete": "Удалить проект? Это действие нельзя отменить."
+        },
+        "dangerZone": "Опасная зона — удаление необратимо.",
+        "usersPage": {
+            "title": "Пользователи",
+            "accountsCount": "{count} аккаунтов",
+            "currentUser": "(вы)",
+            "summary": "{comments} комм. · зарег. {date}",
+            "roles": {
+                "USER": "User",
+                "FRIEND": "Friend",
+                "ADMIN": "Admin"
+            }
+        },
+        "errors": {
+            "requiredField": "Поле «{field}» обязательно.",
+            "tooLong": "Поле «{field}» превышает допустимую длину.",
+            "invalidUrl": "Поле «{field}» содержит некорректный URL.",
+            "invalidJson": "Поле «{field}» содержит некорректные данные.",
+            "invalidOrder": "Поле «Порядок» должно быть неотрицательным целым числом.",
+            "invalidRole": "Недопустимая роль.",
+            "invalidImageType": "Недопустимый тип файла.",
+            "imageTooLarge": "Файл слишком большой. Максимум 10 МБ.",
+            "slugConflict": "Не удалось подобрать уникальный адрес. Попробуй изменить заголовок.",
+            "tagConflict": "Тег с таким названием или адресом уже существует."
+        }
+    },
+    "theme": {
+        "toggleToLight": "Переключить на светлую тему",
+        "toggleToDark": "Переключить на тёмную тему"
+    },
+    "media": {
+        "cover": "Обложка",
+        "previewAlt": "Превью обложки",
+        "loading": "Загрузка…",
+        "removeImage": "Удалить изображение",
+        "selectImage": "Выбрать изображение",
+        "formatsHint": "JPEG, PNG, WebP, GIF, AVIF — до 10 МБ",
+        "uploadError": "Ошибка загрузки"
+    },
+    "editor": {
+        "bold": "Жирный",
+        "italic": "Курсив",
+        "code": "Код",
+        "heading2": "Заголовок H2",
+        "heading3": "Заголовок H3",
+        "bulletList": "Маркированный список",
+        "orderedList": "Нумерованный список",
+        "blockquote": "Цитата",
+        "codeBlock": "Блок кода",
+        "link": "Ссылка",
+        "image": "Изображение",
+        "undo": "Отменить",
+        "redo": "Повторить",
+        "uploadingImage": "Загрузка изображения...",
+        "uploadError": "Ошибка загрузки",
+        "linkPrompt": "URL ссылки:"
     },
     "errors": {
-      "requiredField": "Поле «{field}» обязательно.",
-      "tooLong": "Поле «{field}» превышает допустимую длину.",
-      "invalidUrl": "Поле «{field}» содержит некорректный URL.",
-      "invalidJson": "Поле «{field}» содержит некорректные данные.",
-      "invalidOrder": "Поле «Порядок» должно быть неотрицательным целым числом.",
-      "invalidRole": "Недопустимая роль.",
-      "invalidImageType": "Недопустимый тип файла.",
-      "imageTooLarge": "Файл слишком большой. Максимум 10 МБ."
-    }
-  },
-  "theme": {
-    "toggleToLight": "Переключить на светлую тему",
-    "toggleToDark": "Переключить на тёмную тему"
-  },
-  "media": {
-    "cover": "Обложка",
-    "previewAlt": "Превью обложки",
-    "loading": "Загрузка…",
-    "removeImage": "Удалить изображение",
-    "selectImage": "Выбрать изображение",
-    "formatsHint": "JPEG, PNG, WebP, GIF, AVIF — до 10 МБ",
-    "uploadError": "Ошибка загрузки"
-  },
-  "editor": {
-    "bold": "Жирный",
-    "italic": "Курсив",
-    "code": "Код",
-    "heading2": "Заголовок H2",
-    "heading3": "Заголовок H3",
-    "bulletList": "Маркированный список",
-    "orderedList": "Нумерованный список",
-    "blockquote": "Цитата",
-    "codeBlock": "Блок кода",
-    "link": "Ссылка",
-    "image": "Изображение",
-    "undo": "Отменить",
-    "redo": "Повторить",
-    "uploadingImage": "Загрузка изображения...",
-    "uploadError": "Ошибка загрузки",
-    "linkPrompt": "URL ссылки:"
-  },
-  "errors": {
-    "title": "Что-то пошло не так",
-    "description": "Во время обработки запроса произошла ошибка. Попробуй повторить действие или вернуться на главную страницу.",
-    "retry": "Попробовать снова",
-    "goHome": "На главную",
-    "notFound": {
-      "title": "Страница не найдена",
-      "description": "Возможно, ссылка устарела или страницы больше не существует.",
-      "goHome": "На главную",
-      "goBlog": "Открыть блог"
-    }
-  },
-  "common": {
-    "loading": "Загрузка...",
-    "error": "Ошибка",
-    "notFound": "Не найдено",
-    "back": "Назад",
-    "author": "mwkeay",
-    "pagination": {
-      "previous": "Назад",
-      "next": "Далее",
-      "summary": "Страница {page} из {totalPages} · всего {totalItems}"
+        "title": "Что-то пошло не так",
+        "description": "Во время обработки запроса произошла ошибка. Попробуй повторить действие или вернуться на главную страницу.",
+        "retry": "Попробовать снова",
+        "goHome": "На главную",
+        "notFound": {
+            "title": "Страница не найдена",
+            "description": "Возможно, ссылка устарела или страницы больше не существует.",
+            "goHome": "На главную",
+            "goBlog": "Открыть блог"
+        }
     },
-    "filters": {
-      "title": "Фильтр по тегам",
-      "all": "Все"
+    "common": {
+        "loading": "Загрузка…",
+        "error": "Ошибка",
+        "notFound": "Не найдено",
+        "back": "Назад",
+        "author": "mwkeay",
+        "pagination": {
+            "previous": "Назад",
+            "next": "Далее",
+            "summary": "Страница {page} из {totalPages} · всего {totalItems}"
+        },
+        "filters": {
+            "title": "Фильтр по тегам",
+            "all": "Все"
+        }
     }
-  }
 }
- 
