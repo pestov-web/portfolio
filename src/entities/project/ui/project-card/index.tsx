@@ -35,9 +35,13 @@ export function ProjectCard({ project, locale, viewProjectLabel, viewCodeLabel, 
         {project.tags.length > 0 ? (
           <div className={projectCardClassNames.tags}>
             {project.tags.slice(0, 5).map(({ tag }) => (
-              <span key={tag.slug} className={projectCardClassNames.tag}>
+              <Link
+                key={tag.slug}
+                href={`/${locale}/projects?tag=${tag.slug}`}
+                className={projectCardClassNames.tag}
+              >
                 {tag.name}
-              </span>
+              </Link>
             ))}
           </div>
         ) : null}

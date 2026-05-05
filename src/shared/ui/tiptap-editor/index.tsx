@@ -5,6 +5,7 @@ import { Image } from "@tiptap/extension-image";
 import StarterKit from "@tiptap/starter-kit";
 import { useTranslations } from "next-intl";
 import { useRef, useState, type ChangeEvent } from "react";
+import { useToast } from "@/shared/ui/toast";
 import {
   BlockquoteIcon,
   BulletListIcon,
@@ -32,6 +33,7 @@ export function TiptapEditor({ name, defaultValue }: TiptapEditorProps) {
   const t = useTranslations("editor");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const { showToast } = useToast();
   const initialContent = getInitialEditorContent(defaultValue);
   const [serializedContent, setSerializedContent] = useState(initialContent.serialized);
 
@@ -85,7 +87,10 @@ export function TiptapEditor({ name, defaultValue }: TiptapEditorProps) {
 
       editor?.chain().focus().setImage({ src: toRenderableFileUrl(data.url) }).run();
     } catch (error) {
-      window.alert(error instanceof Error ? error.message : t("uploadError"));
+      showToast({
+        description: error instanceof Error ? error.message : t("uploadError"),
+        variant: "error",
+      });
     } finally {
       setIsUploadingImage(false);
       event.target.value = "";

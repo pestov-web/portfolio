@@ -1,19 +1,24 @@
 import Link from "next/link";
+import { forwardRef } from "react";
 import { cx } from "@/shared/lib/classnames";
 import { getButtonClassName } from "./button.styles";
 import type { ButtonLinkProps, ButtonProps } from "./button.types";
 
-export function Button({
-  variant,
-  size,
-  fullWidth,
-  className,
-  type = "button",
-  children,
-  ...props
-}: ButtonProps) {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  {
+    variant,
+    size,
+    fullWidth,
+    className,
+    type = "button",
+    children,
+    ...props
+  },
+  ref
+) {
   return (
     <button
+      ref={ref}
       type={type}
       className={cx(getButtonClassName({ variant, size, fullWidth }), className)}
       {...props}
@@ -21,7 +26,7 @@ export function Button({
       {children}
     </button>
   );
-}
+});
 
 export function ButtonLink({
   variant,

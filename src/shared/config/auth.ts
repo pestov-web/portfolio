@@ -4,6 +4,7 @@ import { nextCookies } from "better-auth/next-js";
 import { genericOAuth } from "better-auth/plugins";
 import { prisma } from "@/shared/lib/prisma";
 import { mapYandexUserInfo } from "@/shared/lib/yandex-oauth";
+import { enabledAuthProviders } from "./auth-providers";
 
 const baseURL = process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 const trustedOrigins = Array.from(new Set([
@@ -45,14 +46,18 @@ export const auth = betterAuth({
 
   // OAuth провайдеры
   socialProviders: {
-    github: {
-      clientId: process.env.AUTH_GITHUB_ID!,
-      clientSecret: process.env.AUTH_GITHUB_SECRET!,
-    },
-    google: {
-      clientId: process.env.AUTH_GOOGLE_ID!,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
-    },
+    ...(enabledAuthProviders.github ? {
+      github: {
+        clientId: process.env.AUTH_GITHUB_ID!,
+        clientSecret: process.env.AUTH_GITHUB_SECRET!,
+      },
+    } : {}),
+    ...(enabledAuthProviders.google ? {
+      google: {
+        clientId: process.env.AUTH_GOOGLE_ID!,
+        clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+      },
+    } : {}),
   },
 
   // Страницы авторизации
@@ -62,39 +67,37 @@ export const auth = betterAuth({
   },
 
   plugins: [
-    // Автоматически устанавливает cookies в Server Actions (Next.js 16)
     nextCookies(),
+    ...(enabledAuthProviders.yandex ? [
+      genericOAuth({
+        config: [
+          {
+            providerId: "yandex",
+            clientId: process.env.AUTH_YANDEX_ID!,
+            clientSecret: process.env.AUTH_YANDEX_SECRET!,
+            authorizationUrl: "https://oauth.yandex.ru/authorize",
+            tokenUrl: "https://oauth.yandex.ru/token",
+            scopes: ["login:email", "login:info", "login:avatar"],
+            getUserInfo: async (tokens) => {
+              const res = await fetch("https://login.yandex.ru/info?format=json", {
+                headers: { Authorization: `OAuth ${tokens.accessToken}` },
+              });
+              if (!res.ok) return null;
 
-    // Яндекс OAuth через generic-oauth (нет встроенного провайдера)
-    genericOAuth({
-      config: [
-        {
-          providerId: "yandex",
-          clientId: process.env.AUTH_YANDEX_ID!,
-          clientSecret: process.env.AUTH_YANDEX_SECRET!,
-          authorizationUrl: "https://oauth.yandex.ru/authorize",
-          tokenUrl: "https://oauth.yandex.ru/token",
-          scopes: ["login:email", "login:info", "login:avatar"],
-          // Яндекс возвращает нестандартный формат — маппим вручную
-          getUserInfo: async (tokens) => {
-            const res = await fetch("https://login.yandex.ru/info?format=json", {
-              headers: { Authorization: `OAuth ${tokens.accessToken}` },
-            });
-            if (!res.ok) return null;
+              const data = await res.json() as {
+                id: string;
+                display_name?: string;
+                real_name?: string;
+                default_email?: string;
+                default_avatar_id?: string;
+              };
 
-            const data = await res.json() as {
-              id: string;
-              display_name?: string;
-              real_name?: string;
-              default_email?: string;
-              default_avatar_id?: string;
-            };
-
-            return mapYandexUserInfo(data);
+              return mapYandexUserInfo(data);
+            },
           },
-        },
-      ],
-    }),
+        ],
+      }),
+    ] : []),
   ],
 });
 

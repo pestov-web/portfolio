@@ -187,9 +187,97 @@ pnpm test
 pnpm build
 ```
 
+## CI/CD и прод-деплой
+
+В репозитории есть два контура автоматизации:
+
+- [ci.yml](.github/workflows/ci.yml) — проверка качества на push и pull request
+- [deploy.yml](.github/workflows/deploy.yml) — production deploy на `main`
+
+Production deploy устроен так:
+
+1. GitHub Actions собирает Docker image приложения.
+2. Image пушится в GHCR.
+3. Self-hosted GitHub Actions runner на сервере `192.168.1.100` забирает job локально.
+4. Runner кладёт [docker-compose.prod.yml](docker-compose.prod.yml) и [deploy/nginx.pestov-web.ru.conf](deploy/nginx.pestov-web.ru.conf) в deploy-каталог.
+5. Сервер локально делает `docker compose pull`, затем `prisma migrate deploy`, затем перезапускает контейнер приложения на `127.0.0.1:3001`.
+6. Публичный трафик до приложения доводит уже существующий системный nginx на сервере.
+
+### Что нужно на сервере
+
+На сервере должны быть установлены:
+
+- Docker Engine
+- Docker Compose plugin
+- доступ пользователя `mwk` к Docker без `sudo`
+- self-hosted GitHub Actions runner с label `portfolio-prod`
+
+Нужно подготовить каталог:
+
+```bash
+mkdir -p /home/mwk/apps/portfolio/deploy
+```
+
+Так как сервер указан как локальный адрес `192.168.1.100`, для публичного домена `pestov-web.ru` нужно также настроить:
+
+- A-запись домена на ваш внешний IP
+- проброс портов `80` и `443` с роутера на `192.168.1.100`
+
+Без этого Let's Encrypt не сможет выпустить сертификат для системного nginx.
+
+### GitHub Secrets
+
+Для workflow deploy нужны secrets:
+
+- `PRODUCTION_ENV_FILE` — полный текст production `.env.production`
+
+Базовый шаблон production env лежит в [.env.production.example](.env.production.example).
+
+`PRODUCTION_ENV_FILE` должен содержать production-значения как минимум для:
+
+- `DATABASE_URL`
+- `NEXT_PUBLIC_APP_URL=https://pestov-web.ru`
+- `BETTER_AUTH_URL=https://pestov-web.ru`
+- `BETTER_AUTH_SECRET`
+- OAuth secrets
+- MinIO secrets
+- `RESEND_API_KEY`
+- `CONTACT_EMAIL`
+
+### Первый запуск
+
+1. На сервере нужно установить self-hosted runner GitHub Actions под пользователем `mwk` и повесить label `portfolio-prod`.
+2. После добавления secrets достаточно запушить изменения в `main` или вручную запустить workflow `Deploy` из GitHub Actions.
+
+Пример установки runner на сервере:
+
+```bash
+mkdir -p ~/actions-runner && cd ~/actions-runner
+curl -o actions-runner-linux-x64.tar.gz -L https://github.com/actions/runner/releases/latest/download/actions-runner-linux-x64.tar.gz
+tar xzf actions-runner-linux-x64.tar.gz
+./config.sh --url https://github.com/<owner>/<repo> --token <runner-token> --labels portfolio-prod --unattended
+./run.sh
+```
+
+Для постоянной работы runner лучше зарегистрировать как systemd service через `./svc.sh install` и `./svc.sh start`.
+
+### Reverse proxy
+
+На сервере уже работает системный nginx и он занимает `80` и `443`, поэтому отдельный Caddy-контур не нужен и будет конфликтовать с текущей инфраструктурой.
+
+Для `pestov-web.ru` нужно один раз установить конфиг на сервере под root:
+
+```bash
+sudo cp /home/mwk/apps/portfolio/deploy/nginx.pestov-web.ru.conf /etc/nginx/sites-available/pestov-web.ru
+sudo ln -s /etc/nginx/sites-available/pestov-web.ru /etc/nginx/sites-enabled/pestov-web.ru
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+Затем выпустить сертификат Certbot для домена `pestov-web.ru` и `www.pestov-web.ru`, чтобы пути в [deploy/nginx.pestov-web.ru.conf](deploy/nginx.pestov-web.ru.conf) стали валидными.
+
 ## Примечания
 
 - Prisma client генерируется в `generated/prisma`
 - для доступа к MinIO-файлам используется прокси-роут `/api/media/[...path]`
 - загрузка файлов доступна только пользователям с ролью `ADMIN`
-- если хочешь отключить часть OAuth-провайдеров локально, сейчас это нужно делать в коде, а не только через env

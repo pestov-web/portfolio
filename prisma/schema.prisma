@@ -85,10 +85,6 @@ model Tag {
 // Посты блога
 model Post {
   id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  excerpt     String?
-  content     String   // JSON от Tiptap
   coverImage  String?  // URL в MinIO
   published   Boolean  @default(false)
   // Закрытый пост — только для FRIEND/ADMIN
@@ -96,8 +92,26 @@ model Post {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  tags     PostTag[]
-  comments Comment[]
+  tags         PostTag[]
+  comments     Comment[]
+  translations PostTranslation[]
+}
+
+model PostTranslation {
+  id        String   @id @default(cuid())
+  locale    String
+  title     String
+  slug      String
+  excerpt   String?
+  content   String   // JSON от Tiptap
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+
+  @@unique([postId, locale])
+  @@unique([locale, slug])
 }
 
 // Связь посты ↔ теги
@@ -113,10 +127,6 @@ model PostTag {
 // Проекты
 model Project {
   id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  description String?
-  content     String?  // JSON от Tiptap
   coverImage  String?  // URL в MinIO
   repoUrl     String?
   demoUrl     String?
@@ -125,7 +135,25 @@ model Project {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  tags ProjectTag[]
+  tags         ProjectTag[]
+  translations ProjectTranslation[]
+}
+
+model ProjectTranslation {
+  id          String   @id @default(cuid())
+  locale      String
+  title       String
+  slug        String
+  description String?
+  content     String?  // JSON от Tiptap
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+
+  @@unique([projectId, locale])
+  @@unique([locale, slug])
 }
 
 // Связь проекты ↔ теги

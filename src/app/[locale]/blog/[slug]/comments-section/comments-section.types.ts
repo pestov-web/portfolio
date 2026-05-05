@@ -10,3 +10,10 @@ export type CommentsSectionProps = {
   comments: CommentItem[];
   locale: string;
 };
+
+export type CommentFormProps = {
+  postId: string;
+  locale: string;
+  placeholder: string;
+  submitLabel: string;
+};

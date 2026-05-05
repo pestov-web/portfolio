@@ -1,0 +1,29 @@
+services:
+    app:
+        image: ${GHCR_IMAGE}:${IMAGE_TAG:-latest}
+        restart: unless-stopped
+        env_file:
+            - ${APP_ENV_FILE:-.env.production}
+        environment:
+            NODE_ENV: production
+            PORT: 3000
+            HOSTNAME: 0.0.0.0
+        ports:
+            - '127.0.0.1:${APP_PORT:-3001}:3000'
+        networks:
+            - web
+
+    migrate:
+        image: ${GHCR_IMAGE}:${IMAGE_TAG:-latest}
+        env_file:
+            - ${APP_ENV_FILE:-.env.production}
+        environment:
+            NODE_ENV: production
+        command: ['pnpm', 'exec', 'prisma', 'migrate', 'deploy']
+        restart: 'no'
+        networks:
+            - web
+
+networks:
+    web:
+        driver: bridge

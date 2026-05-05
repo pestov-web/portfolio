@@ -5,6 +5,6 @@ export const footerClassNames = {
   copyright: "font-mono",
   accent: "text-accent",
   links: "flex items-center gap-4",
-  rss: "no-underline text-faint hover:text-fg transition-colors font-mono",
-  github: "text-faint hover:text-fg transition-colors",
+  rss: "no-underline text-faint hover:text-fg transition-colors font-mono rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-vivid/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+  github: "text-faint hover:text-fg transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-vivid/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
 } as const;

@@ -2,60 +2,80 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { ImagePlaceholderIcon } from "@/shared/ui/icons";
 import { toRenderableFileUrl } from "@/shared/lib/media";
 import { imageUploadClassNames } from "./image-upload.styles";
 import type { ImageUploadProps } from "./image-upload.types";
 
-export function ImageUpload({ name, defaultValue, label }: ImageUploadProps) {
+export function ImageUpload({ name, defaultValue, label, disabled = false }: ImageUploadProps) {
   const t = useTranslations("media");
-  const [url, setUrl] = useState(defaultValue ?? "");
+  const [storedUrl, setStoredUrl] = useState(defaultValue ?? "");
   const [preview, setPreview] = useState(toRenderableFileUrl(defaultValue));
-  const [loading, setLoading] = useState(false);
+  const [objectUrl, setObjectUrl] = useState<string | null>(null);
+  const [selectedFileName, setSelectedFileName] = useState("");
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  async function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    setPreview(URL.createObjectURL(file));
-    setError("");
-    setLoading(true);
-
-    try {
-      const form = new FormData();
-      form.append("file", file);
-
-      const res = await fetch("/api/upload", { method: "POST", body: form });
-      const json = (await res.json()) as { url?: string; error?: string };
-
-      if (!res.ok || !json.url) {
-        throw new Error(json.error ?? t("uploadError"));
+  useEffect(() => {
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
       }
+    };
+  }, [objectUrl]);
 
-      setUrl(json.url);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t("uploadError"));
-      setPreview(toRenderableFileUrl(url));
-    } finally {
-      setLoading(false);
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
     }
+
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+    }
+
+    const nextPreview = URL.createObjectURL(file);
+    setObjectUrl(nextPreview);
+    setPreview(nextPreview);
+    setStoredUrl("");
+    setSelectedFileName(file.name);
+    setError("");
   }
 
   function handleRemove() {
-    setUrl("");
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+      setObjectUrl(null);
+    }
+
+    setStoredUrl("");
     setPreview("");
+    setSelectedFileName("");
     setError("");
-    if (inputRef.current) inputRef.current.value = "";
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }
+
+  function openFilePicker() {
+    inputRef.current?.click();
   }
 
   return (
     <div className={imageUploadClassNames.root}>
       <span className={imageUploadClassNames.label}>{label ?? t("cover")}</span>
 
-      <input type="hidden" name={name} value={url} />
+      <input type="hidden" name={name} value={storedUrl} />
+      <input
+        ref={inputRef}
+        type="file"
+        name={`${name}File`}
+        accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+        onChange={handleChange}
+        className="sr-only"
+        disabled={disabled}
+      />
 
       {preview ? (
         <div className={imageUploadClassNames.previewWrapper}>
@@ -67,29 +87,27 @@ export function ImageUpload({ name, defaultValue, label }: ImageUploadProps) {
               unoptimized
               className="object-cover"
             />
-            {loading ? <div className={imageUploadClassNames.loadingOverlay}>{t("loading")}</div> : null}
           </div>
-          {!loading ? (
-            <button type="button" onClick={handleRemove} className={imageUploadClassNames.removeButton}>
+          <div className={imageUploadClassNames.actions}>
+            <button type="button" onClick={openFilePicker} className={imageUploadClassNames.actionButton} disabled={disabled}>
+              {t("selectImage")}
+            </button>
+            <button type="button" onClick={handleRemove} className={imageUploadClassNames.removeButton} disabled={disabled}>
               {t("removeImage")}
             </button>
-          ) : null}
+            {selectedFileName ? (
+              <span className={imageUploadClassNames.fileName}>{selectedFileName}</span>
+            ) : null}
+          </div>
         </div>
       ) : (
-        <label className={imageUploadClassNames.emptyLabel}>
+        <button type="button" className={imageUploadClassNames.emptyLabel} onClick={openFilePicker} disabled={disabled}>
           <div className={imageUploadClassNames.emptyContent}>
             <ImagePlaceholderIcon />
             <span>{t("selectImage")}</span>
             <span className={imageUploadClassNames.hint}>{t("formatsHint")}</span>
           </div>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
-            onChange={handleChange}
-            className="sr-only"
-          />
-        </label>
+        </button>
       )}
 
       {error ? <p className={imageUploadClassNames.error}>{error}</p> : null}

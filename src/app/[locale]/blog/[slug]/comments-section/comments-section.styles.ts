@@ -16,5 +16,6 @@ export const commentsSectionClassNames = {
   form: "flex flex-col gap-3",
   textarea: "w-full",
   submit: "self-end",
+  formError: "text-sm text-red-500",
   loginRequired: "text-sm text-faint",
 } as const;

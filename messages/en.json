@@ -1,170 +1,247 @@
 {
-  "nav": {
-    "home": "Home",
-    "blog": "Blog",
-    "projects": "Projects",
-    "contact": "Contact",
-    "hypeVoice": "Hype Voice",
-    "admin": "Admin",
-    "signIn": "Sign in",
-    "signOut": "Sign out",
-    "mainNavigation": "Main navigation",
-    "mobileNavigation": "Mobile navigation",
-    "openMenu": "Open menu",
-    "closeMenu": "Close menu",
-    "switchToLocale": "Switch to {locale}"
-  },
-  "home": {
-    "hero": {
-      "greeting": "Hi, I'm",
-      "role": "Full-Stack Developer",
-      "bio": "I build web applications with clean architecture and quality code."
+    "nav": {
+        "home": "Home",
+        "blog": "Blog",
+        "projects": "Projects",
+        "contact": "Contact",
+        "hypeVoice": "Hype Voice",
+        "admin": "Admin",
+        "signIn": "Sign in",
+        "signOut": "Sign out",
+        "mainNavigation": "Main navigation",
+        "mobileNavigation": "Mobile navigation",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu",
+        "switchToLocale": "Switch to {locale}"
     },
-    "latestPosts": "Latest Posts",
-    "latestProjects": "Latest Projects",
-    "viewAll": "View all",
-    "noPosts": "No posts yet.",
-    "noProjects": "No projects yet.",
-    "readMore": "Read more",
-    "viewProject": "Details",
-    "viewCode": "Code",
-    "viewDemo": "Demo"
-  },
-  "blog": {
-    "title": "Blog",
-    "description": "Thoughts, notes and tutorials about development.",
-    "readMore": "Read more",
-    "empty": "No posts published yet.",
-    "restrictedPost": "This post is available for friends only.",
-    "loginToRead": "Sign in to read",
-    "emptyContent": "Content not added yet.",
-    "comments": {
-      "title": "Comments",
-      "placeholder": "Write a comment...",
-      "submit": "Submit",
-      "empty": "No comments yet.",
-      "loginRequired": "Sign in to leave a comment.",
-      "delete": "Delete"
-    }
-  },
-  "projects": {
-    "title": "Projects",
-    "description": "My work and side projects.",
-    "empty": "No projects yet.",
-    "viewProject": "Details",
-    "viewCode": "Code",
-    "viewDemo": "Demo"
-  },
-  "contact": {
-    "title": "Contact",
-    "description": "Drop me a message, I'll get back to you as soon as possible.",
-    "form": {
-      "name": "Name",
-      "email": "Email",
-      "message": "Message",
-      "submit": "Send",
-      "success": "Message sent!",
-      "error": "Something went wrong. Please try again later."
-    }
-  },
-  "auth": {
-    "login": "Sign in",
-    "logout": "Sign out",
-    "loginWith": "Sign in with {provider}",
-    "loginDescription": "Sign in to leave comments and read restricted posts.",
-    "unknownError": "Unknown error",
-    "errorStatus": "Error {status}",
-    "terms": "By signing in, you agree to the terms of use.",
-    "providers": {
-      "yandex": "Yandex"
-    }
-  },
-  "admin": {
-    "title": "Dashboard",
-    "posts": "Posts",
-    "post": "post",
-    "projects": "Projects",
-    "project": "project",
-    "users": "Users",
-    "new": "New",
-    "edit": "Edit",
-    "delete": "Delete",
-    "save": "Save",
-    "published": "Published",
-    "draft": "Draft",
-    "restricted": "Friends only",
-    "emptyPosts": "No posts.",
-    "emptyProjects": "No projects.",
-    "fields": {
-      "title": "Title",
-      "excerpt": "Excerpt",
-      "content": "Content",
-      "description": "Description",
-      "repository": "Repository",
-      "demo": "Demo",
-      "order": "Order"
+    "home": {
+        "hero": {
+            "greeting": "Hi, I'm",
+            "name": "Vladimir",
+            "role": "Frontend Developer",
+            "bio": "I create web applications with clean architecture and good code."
+        },
+        "latestPosts": "Latest Posts",
+        "latestProjects": "Latest Projects",
+        "viewAll": "View all",
+        "noPosts": "No posts yet.",
+        "noProjects": "No projects yet.",
+        "readMore": "Read more",
+        "viewProject": "Details",
+        "viewCode": "Code",
+        "viewDemo": "Demo"
     },
-    "postsForm": {
-      "newTitle": "New post",
-      "editTitle": "Edit post",
-      "create": "Create post",
-      "delete": "Delete post"
+    "blog": {
+        "title": "Blog",
+        "description": "Thoughts, notes and tutorials about development.",
+        "readMore": "Read more",
+        "empty": "No posts published yet.",
+        "emptyFiltered": "No posts found for the selected tag.",
+        "restrictedPost": "This post is available for friends only.",
+        "loginToRead": "Sign in to read",
+        "emptyContent": "Content not added yet.",
+        "comments": {
+            "title": "Comments",
+            "placeholder": "Write a comment…",
+            "submit": "Submit",
+            "empty": "No comments yet.",
+            "loginRequired": "Sign in to leave a comment.",
+            "delete": "Delete",
+            "errors": {
+                "required": "Comment cannot be empty.",
+                "tooLong": "Comment is too long. Maximum length is 2000 characters."
+            }
+        }
     },
-    "projectsForm": {
-      "newTitle": "New project",
-      "editTitle": "Edit project",
-      "create": "Create project",
-      "delete": "Delete project"
+    "projects": {
+        "title": "Projects",
+        "description": "My work and side projects.",
+        "empty": "No projects yet.",
+        "emptyFiltered": "No projects found for the selected tag.",
+        "viewProject": "Details",
+        "viewCode": "Code",
+        "viewDemo": "Demo"
     },
-    "dangerZone": "Danger zone: deletion cannot be undone.",
-    "usersPage": {
-      "title": "Users",
-      "accountsCount": "{count} accounts",
-      "currentUser": "(you)",
-      "summary": "{comments} comments · joined {date}",
-      "roles": {
-        "USER": "User",
-        "FRIEND": "Friend",
-        "ADMIN": "Admin"
-      }
+    "contact": {
+        "title": "Contact",
+        "description": "Drop me a message, I'll get back to you as soon as possible.",
+        "form": {
+            "name": "Name",
+            "email": "Email",
+            "message": "Message",
+            "submit": "Send",
+            "success": "Message sent!",
+            "error": "Something went wrong. Please try again later.",
+            "nameRequired": "Please enter your name.",
+            "nameTooLong": "Name is too long. Maximum length is 100 characters.",
+            "emailInvalid": "Please enter a valid email address.",
+            "emailTooLong": "Email is too long.",
+            "messageRequired": "Message cannot be empty.",
+            "messageTooLong": "Message is too long. Maximum length is 5000 characters.",
+            "rateLimited": "Too many messages. Please try again later.",
+            "notConfigured": "Message delivery is not configured yet."
+        }
+    },
+    "auth": {
+        "login": "Sign in",
+        "logout": "Sign out",
+        "loginWith": "Sign in with {provider}",
+        "loginDescription": "Sign in to leave comments and read restricted posts.",
+        "providersUnavailable": "OAuth sign-in is currently unavailable.",
+        "unknownError": "Unknown error",
+        "errorStatus": "Error {status}",
+        "terms": "By signing in, you agree to the terms of use.",
+        "providers": {
+            "yandex": "Yandex"
+        }
+    },
+    "admin": {
+        "title": "Dashboard",
+        "posts": "Posts",
+        "post": "post",
+        "projects": "Projects",
+        "project": "project",
+        "tagsLabel": "Tags",
+        "users": "Users",
+        "new": "New",
+        "edit": "Edit",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "save": "Save",
+        "generateSlug": "Generate slug",
+        "translationHint": "Editing translation for locale {locale}.",
+        "translationMissing": "There is no translation for the current locale yet. It will be created after saving.",
+        "confirmDeleteTitle": "Confirm deletion",
+        "published": "Published",
+        "draft": "Draft",
+        "restricted": "Friends only",
+        "emptyPosts": "No posts.",
+        "emptyProjects": "No projects.",
+        "fields": {
+            "name": "Name",
+            "title": "Title",
+            "slug": "Slug",
+            "excerpt": "Excerpt",
+            "content": "Content",
+            "tags": "Tags",
+            "cover": "Cover",
+            "description": "Description",
+            "repository": "Repository",
+            "demo": "Demo",
+            "order": "Order"
+        },
+        "tags": {
+            "selected": "Selected tags",
+            "empty": "No tags selected.",
+            "available": "Available tags",
+            "noneAvailable": "No tags yet."
+        },
+        "tagsPage": {
+            "title": "Tags",
+            "count": "{count} tags",
+            "nameLabel": "Tag name",
+            "create": "Create tag",
+            "empty": "No tags yet.",
+            "usage": "Used {total} times · posts {posts} · projects {projects}",
+            "confirmDelete": "Delete the “{tag}” tag? It will be removed from posts and projects.",
+            "renameAriaLabel": "Rename tag {tag}"
+        },
+        "postsForm": {
+            "newTitle": "New post",
+            "editTitle": "Edit post",
+            "create": "Create post",
+            "delete": "Delete post",
+            "confirmDelete": "Delete this post? This action cannot be undone."
+        },
+        "projectsForm": {
+            "newTitle": "New project",
+            "editTitle": "Edit project",
+            "create": "Create project",
+            "delete": "Delete project",
+            "confirmDelete": "Delete this project? This action cannot be undone."
+        },
+        "dangerZone": "Danger zone: deletion cannot be undone.",
+        "usersPage": {
+            "title": "Users",
+            "accountsCount": "{count} accounts",
+            "currentUser": "(you)",
+            "summary": "{comments} comments · joined {date}",
+            "roles": {
+                "USER": "User",
+                "FRIEND": "Friend",
+                "ADMIN": "Admin"
+            }
+        },
+        "errors": {
+            "requiredField": "The “{field}” field is required.",
+            "tooLong": "The “{field}” field exceeds the allowed length.",
+            "invalidUrl": "The “{field}” field contains an invalid URL.",
+            "invalidJson": "The “{field}” field contains invalid data.",
+            "invalidOrder": "The “Order” field must be a non-negative integer.",
+            "invalidRole": "Invalid role.",
+            "invalidImageType": "Invalid file type.",
+            "imageTooLarge": "The file is too large. Maximum size is 10 MB.",
+            "slugConflict": "Could not generate a unique URL. Try changing the title.",
+            "tagConflict": "A tag with the same name or URL already exists."
+        }
+    },
+    "theme": {
+        "toggleToLight": "Switch to light theme",
+        "toggleToDark": "Switch to dark theme"
+    },
+    "media": {
+        "cover": "Cover",
+        "previewAlt": "Cover preview",
+        "loading": "Loading…",
+        "removeImage": "Remove image",
+        "selectImage": "Select image",
+        "formatsHint": "JPEG, PNG, WebP, GIF, AVIF up to 10 MB",
+        "uploadError": "Upload failed"
+    },
+    "editor": {
+        "bold": "Bold",
+        "italic": "Italic",
+        "code": "Code",
+        "heading2": "Heading H2",
+        "heading3": "Heading H3",
+        "bulletList": "Bullet list",
+        "orderedList": "Ordered list",
+        "blockquote": "Blockquote",
+        "codeBlock": "Code block",
+        "link": "Link",
+        "image": "Image",
+        "undo": "Undo",
+        "redo": "Redo",
+        "uploadingImage": "Uploading image...",
+        "uploadError": "Upload failed",
+        "linkPrompt": "Link URL:"
+    },
+    "errors": {
+        "title": "Something went wrong",
+        "description": "An error occurred while processing the request. Try again or return to the home page.",
+        "retry": "Try again",
+        "goHome": "Go home",
+        "notFound": {
+            "title": "Page not found",
+            "description": "The link may be outdated or the page no longer exists.",
+            "goHome": "Go home",
+            "goBlog": "Open blog"
+        }
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "notFound": "Not found",
+        "back": "Back",
+        "author": "mwkeay",
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "summary": "Page {page} of {totalPages} · total {totalItems}"
+        },
+        "filters": {
+            "title": "Filter by tag",
+            "all": "All"
+        }
     }
-  },
-  "theme": {
-    "toggleToLight": "Switch to light theme",
-    "toggleToDark": "Switch to dark theme"
-  },
-  "media": {
-    "cover": "Cover",
-    "previewAlt": "Cover preview",
-    "loading": "Loading...",
-    "removeImage": "Remove image",
-    "selectImage": "Select image",
-    "formatsHint": "JPEG, PNG, WebP, GIF, AVIF up to 10 MB",
-    "uploadError": "Upload failed"
-  },
-  "editor": {
-    "bold": "Bold",
-    "italic": "Italic",
-    "code": "Code",
-    "heading2": "Heading H2",
-    "heading3": "Heading H3",
-    "bulletList": "Bullet list",
-    "orderedList": "Ordered list",
-    "blockquote": "Blockquote",
-    "codeBlock": "Code block",
-    "link": "Link",
-    "image": "Image",
-    "undo": "Undo",
-    "redo": "Redo",
-    "uploadingImage": "Uploading image...",
-    "uploadError": "Upload failed",
-    "linkPrompt": "Link URL:"
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "Error",
-    "notFound": "Not found",
-    "back": "Back",
-    "author": "mwkeay"
-  }
 }

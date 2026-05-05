@@ -9,6 +9,7 @@ import { ListRow } from "@/shared/ui/list-row";
 import { NativeSelect } from "@/shared/ui/native-select";
 import { Button } from "@/shared/ui";
 import { updateUserRole } from "../actions";
+import { ActionForm } from "../action-form";
 import { RoleBadge } from "./role-badge";
 
 export default async function AdminUsersPage({
@@ -94,7 +95,7 @@ export default async function AdminUsersPage({
 
                 {/* Форма смены роли */}
                 {!isCurrentUser && (
-                  <form action={updateRole} className="flex items-center gap-2 shrink-0">
+                  <ActionForm action={updateRole} className="flex items-center gap-2 shrink-0">
                     <NativeSelect
                       name="role"
                       defaultValue={user.role}
@@ -110,7 +111,7 @@ export default async function AdminUsersPage({
                     >
                       {t("save")}
                     </Button>
-                  </form>
+                  </ActionForm>
                 )}
               </ListRow>
             );
