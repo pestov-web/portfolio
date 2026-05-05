@@ -67,12 +67,14 @@ jobs:
             IMAGE_NAME: ${{ github.repository }}
             DEPLOY_PATH: /home/mwk/apps/portfolio
             GHCR_IMAGE: ghcr.io/${{ github.repository }}
-            IMAGE_TAG: sha-${{ github.sha }}
             APP_PORT: 3001
 
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+
+            - name: Compute short SHA
+              run: echo "IMAGE_TAG=sha-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
 
             - name: Ensure deploy directory exists
               run: mkdir -p "$DEPLOY_PATH/deploy"

@@ -199,8 +199,8 @@ Production deploy устроен так:
 1. GitHub Actions собирает Docker image приложения.
 2. Image пушится в GHCR.
 3. Self-hosted GitHub Actions runner на сервере `192.168.1.100` забирает job локально.
-4. Runner кладёт [docker-compose.prod.yml](docker-compose.prod.yml) и [deploy/nginx.pestov-web.ru.conf](deploy/nginx.pestov-web.ru.conf) в deploy-каталог.
-5. Сервер локально делает `docker compose pull`, затем `prisma migrate deploy`, затем перезапускает контейнер приложения на `127.0.0.1:3001`.
+4. Runner кладёт [docker-compose.prod.yml](docker-compose.prod.yml) и [deploy/nginx.pestov-web.ru.conf](deploy/nginx.pestov-web.ru.conf) в deploy-каталог и пишет `.env.production`.
+5. Сервер делает `docker compose pull`, затем `prisma migrate deploy`, затем перезапускает контейнер приложения на `127.0.0.1:3001`.
 6. Публичный трафик до приложения доводит уже существующий системный nginx на сервере.
 
 ### Что нужно на сервере
@@ -218,9 +218,26 @@ Production deploy устроен так:
 mkdir -p /home/mwk/apps/portfolio/deploy
 ```
 
-Так как сервер указан как локальный адрес `192.168.1.100`, для публичного домена `pestov-web.ru` нужно также настроить:
+Для общих сервисов PostgreSQL и MinIO в репозитории теперь есть отдельный compose-файл [deploy/docker-compose.infra.yml](deploy/docker-compose.infra.yml). Он поднимает один общий PostgreSQL, один общий MinIO и создаёт:
 
-- A-запись домена на ваш внешний IP
+- базы `portfolio` и `hype`
+- bucket'ы `portfolio` и `hype`
+
+Перед первым deploy приложения нужно один раз поднять инфраструктурный стек:
+
+```bash
+cd /home/mwk/apps/portfolio/deploy
+cp .env.infra.example .env.infra
+docker compose -f docker-compose.infra.yml up -d
+```
+
+Значения `POSTGRES_USER`, `POSTGRES_PASSWORD`, `MINIO_ROOT_USER` и `MINIO_ROOT_PASSWORD` из `deploy/.env.infra` должны быть согласованы с `DATABASE_URL`, `MINIO_ACCESS_KEY` и `MINIO_SECRET_KEY` в `PRODUCTION_ENV_FILE`.
+
+После этого production compose приложения подключается к общей сети `shared-services` и может обращаться к сервисам по именам `postgres` и `minio`.
+
+Так как приложение слушает только локальный `127.0.0.1:3001`, для публичного домена `pestov-web.ru` нужно также настроить:
+
+- A-запись домена на внешний IP `80.82.38.194`
 - проброс портов `80` и `443` с роутера на `192.168.1.100`
 
 Без этого Let's Encrypt не сможет выпустить сертификат для системного nginx.
@@ -235,21 +252,29 @@ mkdir -p /home/mwk/apps/portfolio/deploy
 
 `PRODUCTION_ENV_FILE` должен содержать production-значения как минимум для:
 
-- `DATABASE_URL`
+- `DATABASE_URL=postgresql://portfolio:<password>@postgres:5432/portfolio?schema=public`
 - `NEXT_PUBLIC_APP_URL=https://pestov-web.ru`
 - `BETTER_AUTH_URL=https://pestov-web.ru`
 - `BETTER_AUTH_SECRET`
 - OAuth secrets
-- MinIO secrets
+- `MINIO_ENDPOINT=minio`
+- `MINIO_PORT=9000`
+- `MINIO_USE_SSL=false`
+- `MINIO_ACCESS_KEY=minioadmin`
+- `MINIO_SECRET_KEY=<password-from-deploy-.env.infra>`
+- `MINIO_BUCKET=portfolio`
+- `NEXT_PUBLIC_MINIO_BUCKET=portfolio`
 - `RESEND_API_KEY`
 - `CONTACT_EMAIL`
 
 ### Первый запуск
 
-1. На сервере нужно установить self-hosted runner GitHub Actions под пользователем `mwk` и повесить label `portfolio-prod`.
-2. После добавления secrets достаточно запушить изменения в `main` или вручную запустить workflow `Deploy` из GitHub Actions.
+1. Установить self-hosted runner GitHub Actions на сервер `192.168.1.100` под пользователем `mwk` и повесить label `portfolio-prod`.
+2. Один раз поднять инфраструктурный стек из [deploy/docker-compose.infra.yml](deploy/docker-compose.infra.yml) и заполнить `deploy/.env.infra`.
+3. Добавить `PRODUCTION_ENV_FILE` в secrets репозитория.
+4. После этого достаточно запушить изменения в `main` или вручную запустить workflow `Deploy` из GitHub Actions.
 
-Пример установки runner на сервере:
+Пример установки runner:
 
 ```bash
 mkdir -p ~/actions-runner && cd ~/actions-runner
@@ -258,8 +283,6 @@ tar xzf actions-runner-linux-x64.tar.gz
 ./config.sh --url https://github.com/<owner>/<repo> --token <runner-token> --labels portfolio-prod --unattended
 ./run.sh
 ```
-
-Для постоянной работы runner лучше зарегистрировать как systemd service через `./svc.sh install` и `./svc.sh start`.
 
 ### Reverse proxy
 
@@ -274,7 +297,11 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-Затем выпустить сертификат Certbot для домена `pestov-web.ru` и `www.pestov-web.ru`, чтобы пути в [deploy/nginx.pestov-web.ru.conf](deploy/nginx.pestov-web.ru.conf) стали валидными.
+Этот конфиг является bootstrap-вариантом: он проксирует HTTP-трафик на `127.0.0.1:3001` и безопасно включается даже до выпуска сертификата.
+
+Если приложение ещё не поднято, nginx будет отдавать `502 Bad Gateway` — это ожидаемо, потому что upstream на `127.0.0.1:3001` пока не слушает.
+
+После запуска приложения можно выпустить сертификат через Certbot для доменов `pestov-web.ru` и `www.pestov-web.ru`, а затем при желании перевести конфиг на HTTPS.
 
 ## Примечания
 

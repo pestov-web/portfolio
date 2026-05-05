@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { startTransition, useEffect, useRef, useState } from 'react';
 import { toSlug } from '@/shared/lib/slug';
 import { cx } from '@/shared/lib/classnames';
 import { Button, TextInput } from '@/shared/ui';
@@ -48,7 +48,7 @@ export function AutoSlugField({
         lastGeneratedSlugRef.current = initialGeneratedSlug;
 
         if (!slugInput.value && initialGeneratedSlug) {
-            setValue(initialGeneratedSlug);
+            startTransition(() => setValue(initialGeneratedSlug));
         }
 
         const handleSourceInput = () => {
