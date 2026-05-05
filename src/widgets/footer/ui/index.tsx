@@ -22,7 +22,7 @@ export async function Footer() {
               rss
             </Link>
             <a
-              href="https://github.com/mwkeay"
+              href="https://github.com/pestov-web"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"

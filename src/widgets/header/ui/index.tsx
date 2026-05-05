@@ -60,7 +60,7 @@ export function Header() {
               </Link>
             ))}
             <a
-              href="https://hype-voice.ru"
+              href="https://voice.pestov-web.ru"
               target="_blank"
               rel="noopener noreferrer"
               className={headerClassNames.desktopExternalLink}
