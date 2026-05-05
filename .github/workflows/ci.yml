@@ -66,8 +66,8 @@ jobs:
       - name: Generate Prisma client
         run: pnpm exec prisma generate
 
-      - name: Push Prisma schema
-        run: pnpm exec prisma db push --accept-data-loss --skip-generate
+      - name: Apply Prisma migrations
+        run: pnpm exec prisma migrate deploy
 
       - name: Check FSD
         run: pnpm fsd:check

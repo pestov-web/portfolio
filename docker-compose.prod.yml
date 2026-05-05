@@ -12,6 +12,7 @@ services:
             - '127.0.0.1:${APP_PORT:-3001}:3000'
         networks:
             - web
+            - shared-services
 
     migrate:
         image: ${GHCR_IMAGE}:${IMAGE_TAG:-latest}
@@ -23,7 +24,11 @@ services:
         restart: 'no'
         networks:
             - web
+            - shared-services
 
 networks:
     web:
         driver: bridge
+    shared-services:
+        external: true
+        name: shared-services

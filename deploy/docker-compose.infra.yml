@@ -1,0 +1,61 @@
+services:
+    postgres:
+        image: postgres:16
+        restart: unless-stopped
+        env_file:
+            - .env.infra
+        ports:
+            - '127.0.0.1:${POSTGRES_PORT:-5432}:5432'
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - ./postgres/init:/docker-entrypoint-initdb.d:ro
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U "$${POSTGRES_USER}" -d postgres']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        networks:
+            shared-services:
+                aliases:
+                    - postgres
+
+    minio:
+        image: minio/minio:latest
+        restart: unless-stopped
+        env_file:
+            - .env.infra
+        command: server /data --console-address ':9001'
+        ports:
+            - '127.0.0.1:${MINIO_PORT:-9000}:9000'
+            - '127.0.0.1:${MINIO_CONSOLE_PORT:-9001}:9001'
+        volumes:
+            - minio_data:/data
+        networks:
+            shared-services:
+                aliases:
+                    - minio
+
+    minio-init:
+        image: minio/mc:latest
+        env_file:
+            - .env.infra
+        depends_on:
+            minio:
+                condition: service_started
+        entrypoint: >-
+            /bin/sh -c
+            "until mc alias set local http://minio:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD; do sleep 2; done &&
+            mc mb --ignore-existing local/portfolio &&
+            mc mb --ignore-existing local/hype"
+        restart: 'no'
+        networks:
+            - shared-services
+
+volumes:
+    postgres_data:
+    minio_data:
+
+networks:
+    shared-services:
+        name: shared-services
+        driver: bridge
