@@ -51,6 +51,9 @@ jobs:
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
+                  build-args: |
+                      NEXT_PUBLIC_APP_URL=https://pestov-web.ru
+                      NEXT_PUBLIC_MINIO_BUCKET=portfolio
 
     deploy:
         needs: build
