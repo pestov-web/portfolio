@@ -76,8 +76,14 @@ MINIO_SECRET_KEY="minioadmin"
 MINIO_BUCKET="portfolio"
 NEXT_PUBLIC_MINIO_BUCKET="portfolio"
 
-RESEND_API_KEY=""
+SMTP_HOST="localhost"
+SMTP_PORT="1025"
+SMTP_SECURE="false"
+SMTP_USER=""
+SMTP_PASSWORD=""
 CONTACT_EMAIL="you@example.com"
+CONTACT_FROM_EMAIL="you@example.com"
+CONTACT_FROM_NAME="Portfolio"
 ```
 
 ### 3. Поднять внешние сервисы
@@ -87,7 +93,7 @@ CONTACT_EMAIL="you@example.com"
 - PostgreSQL
 - MinIO с созданным bucket `portfolio` или другим значением из `MINIO_BUCKET`
 
-Resend обязателен только для реальной отправки писем. Если `RESEND_API_KEY` и `CONTACT_EMAIL` не заданы, в dev-режиме сообщения из формы контактов просто логируются на сервере.
+SMTP обязателен только для реальной отправки писем. Если SMTP-переменные и `CONTACT_EMAIL` не заданы, в dev-режиме сообщения из формы контактов просто логируются на сервере.
 
 ### 4. Сгенерировать Prisma client и синхронизировать схему
 
@@ -168,8 +174,15 @@ pnpm seed        # сидирование базы тестовыми данны
 ### Опциональные
 
 - `NEXT_PUBLIC_MINIO_BUCKET` — bucket для клиентских URL, по умолчанию `portfolio`
-- `RESEND_API_KEY` — нужен для отправки email из контактной формы
+- `SMTP_HOST` — SMTP-сервер для формы контактов
+- `SMTP_PORT` — SMTP-порт, обычно `587` или `465`
+- `SMTP_SECURE` — `true` для implicit TLS, обычно нужно для `465`
+- `SMTP_TLS_SERVERNAME` — имя сервера для TLS-проверки, полезно если `SMTP_HOST` задан IP-адресом
+- `SMTP_USER`
+- `SMTP_PASSWORD`
 - `CONTACT_EMAIL` — адрес, на который приходят сообщения с формы контактов
+- `CONTACT_FROM_EMAIL` — адрес отправителя для формы контактов
+- `CONTACT_FROM_NAME` — имя отправителя, по умолчанию `Portfolio`
 
 ## Что уже есть в сид-данных
 
@@ -264,8 +277,15 @@ docker compose -f docker-compose.infra.yml up -d
 - `MINIO_SECRET_KEY=<password-from-deploy-.env.infra>`
 - `MINIO_BUCKET=portfolio`
 - `NEXT_PUBLIC_MINIO_BUCKET=portfolio`
-- `RESEND_API_KEY`
+- `SMTP_HOST=192.168.1.100`
+- `SMTP_PORT=587`
+- `SMTP_SECURE=false`
+- `SMTP_TLS_SERVERNAME=mail.pestov-web.ru`
+- `SMTP_USER=pw@pestov-web.ru`
+- `SMTP_PASSWORD=<mail-password>`
 - `CONTACT_EMAIL`
+- `CONTACT_FROM_EMAIL=pw@pestov-web.ru`
+- `CONTACT_FROM_NAME=Portfolio`
 
 ### Первый запуск
 

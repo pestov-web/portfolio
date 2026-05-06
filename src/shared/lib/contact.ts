@@ -1,4 +1,4 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
 export type ContactInput = {
     name: string;
@@ -23,6 +23,19 @@ export const CONTACT_LIMITS = {
 
 type HeaderSource = {
     get(name: string): string | null;
+};
+
+type SmtpConfig = {
+    host: string;
+    port: number;
+    secure: boolean;
+    auth: {
+        user: string;
+        pass: string;
+    };
+    tls?: {
+        servername: string;
+    };
 };
 
 export function isValidEmail(email: string) {
@@ -84,12 +97,66 @@ export function getClientIp(headers: HeaderSource) {
     return realIp ?? 'unknown';
 }
 
+function parseBoolean(value: string | undefined) {
+    return value === '1' || value?.toLowerCase() === 'true';
+}
+
+function getSmtpConfig():
+    | {
+          to: string;
+          from: {
+              name: string;
+              address: string;
+          };
+          transport: SmtpConfig;
+      }
+    | null {
+    const to = process.env.CONTACT_EMAIL?.trim();
+    const host = process.env.SMTP_HOST?.trim();
+    const user = process.env.SMTP_USER?.trim();
+    const pass = process.env.SMTP_PASSWORD;
+    const port = Number(process.env.SMTP_PORT ?? '587');
+
+    if (!to || !host || !user || !pass || !Number.isInteger(port) || port < 1 || port > 65_535) {
+        return null;
+    }
+
+    const secure = process.env.SMTP_SECURE ? parseBoolean(process.env.SMTP_SECURE) : port === 465;
+    const tlsServername = process.env.SMTP_TLS_SERVERNAME?.trim();
+    const fromAddress = process.env.CONTACT_FROM_EMAIL?.trim() || user;
+    const fromName = process.env.CONTACT_FROM_NAME?.trim() || 'Portfolio';
+
+    return {
+        to,
+        from: {
+            name: fromName,
+            address: fromAddress,
+        },
+        transport: {
+            host,
+            port,
+            secure,
+            auth: {
+                user,
+                pass,
+            },
+            ...(tlsServername
+                ? {
+                      tls: {
+                          servername: tlsServername,
+                      },
+                  }
+                : {}),
+        },
+    };
+}
+
 export async function deliverContactMessage(
     input: ContactInput,
 ): Promise<{ ok: true } | { ok: false; code: ContactDeliveryErrorCode }> {
-    const to = process.env.CONTACT_EMAIL;
+    const smtp = getSmtpConfig();
 
-    if (!to || !process.env.RESEND_API_KEY) {
+    if (!smtp) {
         if (process.env.NODE_ENV !== 'production') {
             console.log('[contact]', input);
             return { ok: true };
@@ -99,10 +166,10 @@ export async function deliverContactMessage(
     }
 
     try {
-        const resend = new Resend(process.env.RESEND_API_KEY);
-        await resend.emails.send({
-            from: 'portfolio <onboarding@resend.dev>',
-            to,
+        const transporter = nodemailer.createTransport(smtp.transport);
+        await transporter.sendMail({
+            from: smtp.from,
+            to: smtp.to,
             subject: `[Portfolio] Сообщение от ${input.name.trim()}`,
             replyTo: input.email.trim(),
             text: `От: ${input.name.trim()} <${input.email.trim()}>\n\n${input.message.trim()}`,
@@ -110,7 +177,7 @@ export async function deliverContactMessage(
 
         return { ok: true };
     } catch (error) {
-        console.error('[contact] Resend error:', error);
+        console.error('[contact] SMTP error:', error);
         return { ok: false, code: 'send_failed' };
     }
 }
