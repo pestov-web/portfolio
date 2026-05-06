@@ -6,7 +6,8 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { authClient } from "@/shared/auth/index";
 import type { Locale } from "@/shared/config/index";
-import { GitHubIcon, GoogleIcon, YandexIcon, useToast } from "@/shared/ui";
+import { GitHubIcon, GoogleIcon, YandexIcon } from "@/shared/ui";
+import { useToast } from "@/shared/ui/index.client";
 import { SocialAuthButton } from "./social-auth-button";
 
 type EnabledProviders = {

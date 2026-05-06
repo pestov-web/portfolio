@@ -7,10 +7,12 @@ import { mapYandexUserInfo } from "@/shared/lib/yandex-oauth";
 import { enabledAuthProviders } from "./auth-providers";
 
 const baseURL = process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const devOrigins = process.env.NODE_ENV !== "production"
+  ? ["http://localhost:3000", "http://localhost:3001"]
+  : [];
 const trustedOrigins = Array.from(new Set([
   baseURL,
-  "http://localhost:3000",
-  "http://localhost:3001",
+  ...devOrigins,
 ])).filter(Boolean);
 
 export const auth = betterAuth({

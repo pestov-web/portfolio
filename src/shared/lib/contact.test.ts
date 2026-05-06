@@ -54,10 +54,20 @@ describe('validateContactInput', () => {
 });
 
 describe('getClientIp', () => {
-    it('prefers first x-forwarded-for entry', () => {
+    it('prefers first x-forwarded-for entry when proxy is trusted', () => {
+        const originalEnv = process.env.TRUSTED_PROXY_IPS;
+        process.env.TRUSTED_PROXY_IPS = '127.0.0.1';
         const headers = new Headers({ 'x-forwarded-for': '203.0.113.10, 203.0.113.11', 'x-real-ip': '127.0.0.1' });
 
         expect(getClientIp(headers)).toBe('203.0.113.10');
+
+        process.env.TRUSTED_PROXY_IPS = originalEnv;
+    });
+
+    it('ignores x-forwarded-for when proxy is not trusted', () => {
+        const headers = new Headers({ 'x-forwarded-for': '203.0.113.10, 203.0.113.11', 'x-real-ip': '127.0.0.1' });
+
+        expect(getClientIp(headers)).toBe('127.0.0.1');
     });
 
     it('falls back to x-real-ip and then unknown', () => {

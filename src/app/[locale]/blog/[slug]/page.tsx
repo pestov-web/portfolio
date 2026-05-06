@@ -2,15 +2,59 @@ import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 import { auth } from '@/shared/auth/server/index';
 import type { Locale } from '@/shared/config/index';
 import { toRenderableFileUrl } from '@/shared/lib/media';
 import { prisma } from '@/shared/lib/prisma';
 import { renderTiptap } from '@/shared/lib/tiptap';
-import { ButtonLink } from '@/shared/ui';
-import { CoverMedia } from '@/shared/ui/cover-media';
-import { DetailHeader } from '@/shared/ui/detail-header';
+import { ButtonLink, CoverMedia, DetailHeader } from '@/shared/ui';
 import { CommentsSection } from './comments-section';
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: Locale; slug: string }>;
+}): Promise<Metadata> {
+    const { locale, slug } = await params;
+
+    const postTranslation = await prisma.postTranslation.findUnique({
+        where: { locale_slug: { locale, slug } },
+        select: {
+            title: true,
+            excerpt: true,
+            post: { select: { coverImage: true, published: true, restricted: true } },
+        },
+    });
+
+    if (!postTranslation || !postTranslation.post.published) return {};
+
+    if (postTranslation.post.restricted) {
+        return {
+            title: postTranslation.title,
+            robots: { index: false, follow: false },
+        };
+    }
+
+    const ogImage = postTranslation.post.coverImage
+        ? toRenderableFileUrl(postTranslation.post.coverImage)
+        : undefined;
+
+    return {
+        title: postTranslation.title,
+        description: postTranslation.excerpt ?? undefined,
+        alternates: { canonical: `${APP_URL}/${locale}/blog/${slug}` },
+        openGraph: {
+            title: postTranslation.title,
+            description: postTranslation.excerpt ?? undefined,
+            url: `${APP_URL}/${locale}/blog/${slug}`,
+            type: 'article',
+            ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: postTranslation.title }] } : {}),
+        },
+    };
+}
 
 function formatDate(date: Date, locale: string) {
     return new Intl.DateTimeFormat(locale === 'ru' ? 'ru-RU' : 'en-US', {

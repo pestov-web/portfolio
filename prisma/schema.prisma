@@ -166,6 +166,18 @@ model ProjectTag {
   @@id([projectId, tagId])
 }
 
+// Rate limiting
+model AppRateLimit {
+  scope   String
+  key     String
+  count   Int
+  resetAt DateTime @db.Timestamptz
+
+  @@id([scope, key])
+  @@index([resetAt])
+  @@map("app_rate_limits")
+}
+
 // Комментарии к постам
 model Comment {
   id        String   @id @default(cuid())

@@ -4,18 +4,19 @@ import type { Locale } from '@/shared/config/index';
 import { prisma } from '@/shared/lib/prisma';
 import { updateProject, deleteProject } from '../../../actions';
 import { AdminTagSelector } from '../../../tag-selector';
-import { PageHeader } from '@/shared/ui/page-header';
+
 import {
     Button,
     CheckboxField,
-    ConfirmSubmitButton,
     Field,
     FormActions,
-    TiptapEditor,
-    ImageUpload,
+    PageHeader,
     TextArea,
     TextInput,
 } from '@/shared/ui';
+import { ConfirmSubmitButton } from '@/shared/ui/confirm-submit-button';
+import { TiptapEditor } from '@/shared/ui/tiptap-editor';
+import { ImageUpload } from '@/shared/ui/image-upload';
 import { ActionForm } from '../../../action-form';
 import { AutoSlugField } from '../../../slug-field';
 

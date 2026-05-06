@@ -1,13 +1,50 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 import type { Locale } from '@/shared/config/index';
 import { toRenderableFileUrl } from '@/shared/lib/media';
 import { prisma } from '@/shared/lib/prisma';
 import { renderTiptap } from '@/shared/lib/tiptap';
-import { ButtonLink, ExternalLinkIcon, GitHubIcon } from '@/shared/ui';
-import { CoverMedia } from '@/shared/ui/cover-media';
-import { DetailHeader } from '@/shared/ui/detail-header';
+import { ButtonLink, CoverMedia, DetailHeader, ExternalLinkIcon, GitHubIcon } from '@/shared/ui';
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: Locale; slug: string }>;
+}): Promise<Metadata> {
+    const { locale, slug } = await params;
+
+    const projectTranslation = await prisma.projectTranslation.findUnique({
+        where: { locale_slug: { locale, slug } },
+        select: {
+            title: true,
+            description: true,
+            project: { select: { coverImage: true, published: true } },
+        },
+    });
+
+    if (!projectTranslation || !projectTranslation.project.published) return {};
+
+    const ogImage = projectTranslation.project.coverImage
+        ? toRenderableFileUrl(projectTranslation.project.coverImage)
+        : undefined;
+
+    return {
+        title: projectTranslation.title,
+        description: projectTranslation.description ?? undefined,
+        alternates: { canonical: `${APP_URL}/${locale}/projects/${slug}` },
+        openGraph: {
+            title: projectTranslation.title,
+            description: projectTranslation.description ?? undefined,
+            url: `${APP_URL}/${locale}/projects/${slug}`,
+            type: 'article',
+            ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: projectTranslation.title }] } : {}),
+        },
+    };
+}
 
 export default async function ProjectPage({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
     const { locale, slug } = await params;

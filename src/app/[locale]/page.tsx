@@ -1,11 +1,41 @@
 // Главная страница — заглушка, детали будут в src/pages/home
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import type { Locale } from '@/shared/config/index';
+import { locales } from '@/shared/config/index';
 import { prisma } from '@/shared/lib/prisma';
 import { PostCard } from '@/entities/post';
 import { ProjectCard } from '@/entities/project';
 import { ArrowRightIcon, ButtonLink } from '@/shared/ui';
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: 'home' });
+
+    const title = `${t('hero.name')} — ${t('hero.role')}`;
+    const description = t('hero.bio');
+
+    return {
+        title: t('hero.role'),
+        description,
+        alternates: {
+            canonical: `${APP_URL}/${locale}`,
+            languages: Object.fromEntries(locales.map((l) => [l, `${APP_URL}/${l}`])),
+        },
+        openGraph: {
+            title,
+            description,
+            url: `${APP_URL}/${locale}`,
+        },
+    };
+}
 
 type PostTranslationPreview = {
     locale: Locale;

@@ -16,31 +16,6 @@ type RateLimitResult = {
   retryAfter: number;
 };
 
-let rateLimitTableReady: Promise<void> | null = null;
-
-async function ensureRateLimitTable() {
-  if (!rateLimitTableReady) {
-    rateLimitTableReady = (async () => {
-      await prisma.$executeRawUnsafe(`
-        CREATE TABLE IF NOT EXISTS app_rate_limits (
-          scope TEXT NOT NULL,
-          key TEXT NOT NULL,
-          count INTEGER NOT NULL,
-          reset_at TIMESTAMPTZ NOT NULL,
-          PRIMARY KEY (scope, key)
-        )
-      `);
-
-      await prisma.$executeRawUnsafe(`
-        CREATE INDEX IF NOT EXISTS app_rate_limits_reset_at_idx
-        ON app_rate_limits (reset_at)
-      `);
-    })();
-  }
-
-  await rateLimitTableReady;
-}
-
 export function createMemoryRateLimiter(options: RateLimitOptions) {
   const store = new Map<string, RateLimitEntry>();
 
@@ -84,8 +59,6 @@ export function createDatabaseRateLimiter(scope: string, options: RateLimitOptio
 
   return async (key: string): Promise<RateLimitResult> => {
     try {
-      await ensureRateLimitTable();
-
       const rows = await prisma.$queryRawUnsafe<Array<{ count: number; retryAfter: number }>>(
         `
           INSERT INTO app_rate_limits (scope, key, count, reset_at)

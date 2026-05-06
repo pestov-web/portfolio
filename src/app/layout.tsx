@@ -1,12 +1,13 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import { Inter, Geist_Mono } from 'next/font/google';
 import { getLocale } from 'next-intl/server';
 import { ThemeProvider } from '@/shared/ui/theme-provider';
 import './globals.css';
 
-const geistSans = Geist({
-    variable: '--font-geist-sans',
+const inter = Inter({
+    variable: '--font-inter',
     subsets: ['latin', 'cyrillic'],
+    display: 'swap',
 });
 
 const geistMono = Geist_Mono({
@@ -14,12 +15,35 @@ const geistMono = Geist_Mono({
     subsets: ['latin'],
 });
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    themeColor: [
+        { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+        { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    ],
+};
+
 export const metadata: Metadata = {
+    metadataBase: new URL(APP_URL),
     title: {
         template: '%s | Portfolio',
         default: 'Portfolio',
     },
     description: 'Full-Stack Developer Portfolio',
+    authors: [{ name: 'Владимир', url: APP_URL }],
+    creator: 'Владимир',
+    robots: { index: true, follow: true },
+    openGraph: {
+        type: 'website',
+        siteName: 'Portfolio',
+    },
+    twitter: {
+        card: 'summary_large_image',
+    },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -31,7 +55,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             lang={locale}
             suppressHydrationWarning
             data-scroll-behavior='smooth'
-            className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+            className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
         >
             <body className='min-h-full flex flex-col bg-bg text-fg font-sans'>
                 <a

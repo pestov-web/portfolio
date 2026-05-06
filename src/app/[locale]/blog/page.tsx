@@ -1,10 +1,37 @@
 import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 import { BLOG_POSTS_PER_PAGE, type Locale } from '@/shared/config/index';
+import { locales } from '@/shared/config/index';
 import { prisma } from '@/shared/lib/prisma';
 import { buildPageHref, buildPaginationLinks, getPaginationMeta, parsePageParam } from '@/shared/lib/pagination';
 import { getLocalizedItem } from '@/shared/lib/content-localization';
 import { PostCard } from '@/entities/post';
 import { FilterBar, Pagination, PageHeader } from '@/shared/ui';
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: 'blog' });
+
+    return {
+        title: t('title'),
+        description: t('description'),
+        alternates: {
+            canonical: `${APP_URL}/${locale}/blog`,
+            languages: Object.fromEntries(locales.map((l) => [l, `${APP_URL}/${l}/blog`])),
+        },
+        openGraph: {
+            title: t('title'),
+            description: t('description'),
+            url: `${APP_URL}/${locale}/blog`,
+        },
+    };
+}
 
 export default async function BlogPage({
     params,

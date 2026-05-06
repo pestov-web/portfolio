@@ -66,7 +66,7 @@ function isUniqueConstraintError(error: unknown) {
     return typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2002';
 }
 
-// Проверка прав модератора
+// Проверка прав администратора
 async function requireAdmin(locale: Locale) {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session || session.user.role !== 'ADMIN') {

@@ -1,10 +1,8 @@
-export { ThemeProvider } from './theme-provider';
-export { ToastProvider, useToast } from './toast';
-export { ThemeToggle } from './theme-toggle';
-export { TiptapEditor } from './tiptap-editor';
-export { ImageUpload } from './image-upload';
+// Server-safe exports (no "use client" directive)
+// For client-only components (ThemeProvider, ThemeToggle, TiptapEditor,
+// ImageUpload, ToastProvider/useToast, ConfirmSubmitButton) import from
+// @/shared/ui/index.client or the component path directly.
 export { Button, ButtonLink, getButtonClassName } from './button';
-export { ConfirmSubmitButton } from './confirm-submit-button';
 export { Badge } from './badge';
 export { CheckboxField } from './checkbox-field';
 export { CoverMedia } from './cover-media';

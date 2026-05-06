@@ -2,9 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import type { Locale } from '@/shared/config/index';
 import { getLocalizedItem } from '@/shared/lib/content-localization';
 import { prisma } from '@/shared/lib/prisma';
-import { PageHeader } from '@/shared/ui/page-header';
-import { ListRow } from '@/shared/ui/list-row';
-import { Badge, ButtonLink } from '@/shared/ui';
+import { Badge, ButtonLink, ListRow, PageHeader } from '@/shared/ui';
 
 export default async function AdminProjectsPage({ params }: { params: Promise<{ locale: Locale }> }) {
     const { locale } = await params;
