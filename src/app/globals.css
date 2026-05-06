@@ -49,7 +49,7 @@
 /* ─── Tailwind v4 — регистрируем токены ─────────────────────────────────── */
 @theme inline {
   /* Шрифты (из layout.tsx) */
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   /* Цвета через CSS-переменные (rgb-значения) */
@@ -84,6 +84,7 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-optical-sizing: auto;
   }
 
   body {
@@ -97,6 +98,7 @@
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.2;
+    text-rendering: optimizeLegibility;
   }
 
   /* Подчёркивания ссылок цветом акцента */

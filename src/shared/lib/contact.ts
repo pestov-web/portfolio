@@ -62,12 +62,26 @@ export function validateContactInput(input: ContactInput): ContactValidationCode
 }
 
 export function getClientIp(headers: HeaderSource) {
-    const forwardedFor = headers.get('x-forwarded-for');
-    if (forwardedFor) {
-        return forwardedFor.split(',')[0]?.trim() ?? 'unknown';
+    // x-forwarded-for can be spoofed by clients — only trust it when running
+    // behind a trusted reverse proxy (configured via TRUSTED_PROXY_IPS env var).
+    // In all other environments fall back to x-real-ip which Nginx sets from
+    // the actual TCP connection address.
+    const trustedProxies = (process.env.TRUSTED_PROXY_IPS ?? '')
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+    const realIp = headers.get('x-real-ip');
+    const isProxied = trustedProxies.length > 0 && realIp && trustedProxies.includes(realIp);
+
+    if (isProxied) {
+        const forwardedFor = headers.get('x-forwarded-for');
+        if (forwardedFor) {
+            return forwardedFor.split(',')[0]?.trim() ?? 'unknown';
+        }
     }
 
-    return headers.get('x-real-ip') ?? 'unknown';
+    return realIp ?? 'unknown';
 }
 
 export async function deliverContactMessage(

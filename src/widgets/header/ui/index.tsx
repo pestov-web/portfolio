@@ -7,7 +7,8 @@ import { useState } from "react";
 import { useSession, signOut } from "@/shared/auth/index";
 import { locales, type Locale } from "@/shared/config/index";
 import { buildLocaleSwitchHref, stripLocalePrefix } from "@/shared/lib/locale";
-import { ExternalLinkIcon, MenuIcon, ThemeToggle } from "@/shared/ui";
+import { ExternalLinkIcon, MenuIcon } from "@/shared/ui";
+import { ThemeToggle } from "@/shared/ui/theme-toggle";
 import { headerClassNames, getHeaderMobileNavLinkClassName, getHeaderNavLinkClassName } from "./ui.styles";
 import type { HeaderNavLink } from "./ui.types";
 
