@@ -49,7 +49,8 @@
             "delete": "Delete",
             "errors": {
                 "required": "Comment cannot be empty.",
-                "tooLong": "Comment is too long. Maximum length is 2000 characters."
+                "tooLong": "Comment is too long. Maximum length is 2000 characters.",
+                "unavailable": "This post is not available for comments."
             }
         }
     },

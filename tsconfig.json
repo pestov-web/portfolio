@@ -22,7 +22,7 @@
       "@/*": ["./src/*"],
       "@/shared/config": ["./src/shared/config/index.ts"],
       "@/shared/auth": ["./src/shared/auth/index.ts"],
-      "@/shared/auth/server": ["./src/shared/auth/server/index.ts"]
+      "@/shared/auth/index.server": ["./src/shared/auth/index.server.ts"]
     }
   },
   "include": [

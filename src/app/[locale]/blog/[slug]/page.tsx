@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
-import { auth } from '@/shared/auth/server/index';
+import { auth } from '@/shared/auth/index.server';
 import type { Locale } from '@/shared/config/index';
 import { toRenderableFileUrl } from '@/shared/lib/media';
 import { prisma } from '@/shared/lib/prisma';

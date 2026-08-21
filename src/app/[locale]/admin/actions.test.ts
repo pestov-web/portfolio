@@ -66,7 +66,7 @@ vi.mock('next-intl/server', () => ({
     }),
 }));
 
-vi.mock('@/shared/auth/server/index', () => ({
+vi.mock('@/shared/auth/index.server', () => ({
     auth: {
         api: {
             getSession: getSessionMock,

@@ -3,7 +3,7 @@
 import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
-import { auth } from '@/shared/auth/server/index';
+import { auth } from '@/shared/auth/index.server';
 import { prisma } from '@/shared/lib/prisma';
 
 export type CommentActionState = {
@@ -37,6 +37,20 @@ export async function addComment(
         return { error: t('errors.tooLong'), submittedAt: null };
     }
 
+    const post = await prisma.post.findUnique({
+        where: { id: postId },
+        select: {
+            published: true,
+            restricted: true,
+            translations: { where: { locale }, select: { slug: true }, take: 1 },
+        },
+    });
+
+    const canAccessRestrictedPost = session.user.role === 'FRIEND' || session.user.role === 'ADMIN';
+    if (!post?.published || (post.restricted && !canAccessRestrictedPost)) {
+        return { error: t('errors.unavailable'), submittedAt: null };
+    }
+
     await prisma.comment.create({
         data: {
             content,
@@ -45,10 +59,6 @@ export async function addComment(
         },
     });
 
-    const post = await prisma.post.findUnique({
-        where: { id: postId },
-        select: { translations: { where: { locale }, select: { slug: true } } },
-    });
     const translation = post?.translations[0];
     if (translation) {
         revalidatePath(`/${locale}/blog/${translation.slug}`);

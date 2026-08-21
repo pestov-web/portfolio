@@ -1,6 +1,7 @@
 import { generateHTML } from "@tiptap/html";
 import StarterKit from "@tiptap/starter-kit";
 import { Image } from "@tiptap/extension-image";
+import sanitizeHtml from "sanitize-html";
 import { toRenderableFileUrl } from "./media";
 
 // Расширения, совпадающие с редактором (Link входит в StarterKit v3)
@@ -13,10 +14,26 @@ const extensions = [
 export function renderTiptap(json: string): string {
   try {
     const doc = normalizeTiptapDocument(JSON.parse(json) as Record<string, unknown>);
-    return generateHTML(doc, extensions);
+    return sanitizeTiptapHtml(generateHTML(doc, extensions));
   } catch {
     return "";
   }
+}
+
+function sanitizeTiptapHtml(html: string): string {
+  return sanitizeHtml(html, {
+    allowedTags: [...sanitizeHtml.defaults.allowedTags, "img"],
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      a: ["href", "target", "rel"],
+      img: ["src", "alt", "title", "width", "height", "loading"],
+    },
+    allowedSchemes: ["http", "https", "mailto", "tel"],
+    allowProtocolRelative: false,
+    transformTags: {
+      a: sanitizeHtml.simpleTransform("a", { rel: "noopener noreferrer" }, true),
+    },
+  });
 }
 
 function normalizeTiptapDocument(value: Record<string, unknown>): Record<string, unknown> {

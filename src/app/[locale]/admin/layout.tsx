@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { Locale } from '@/shared/config/index';
-import { auth } from '@/shared/auth/server/index';
+import { auth } from '@/shared/auth/index.server';
 import { localizePath } from '@/shared/lib/locale';
 
 export const metadata: Metadata = {

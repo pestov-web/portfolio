@@ -35,9 +35,8 @@
 Проект организован вокруг App Router и FSD-подхода:
 
 - `src/app` — маршруты, layout'ы, API routes и page-level компоненты
-- `src/entities` — сущности домена (`post`, `project`, `user`)
-- `src/features` — прикладные сценарии
-- `src/shared` — конфиг, утилиты, auth и общие UI-примитивы
+- `src/entities` — переиспользуемые модели и карточки домена (`post`, `project`)
+- `src/shared` — конфиг, инфраструктурные утилиты, auth и общие UI-примитивы
 - `src/widgets` — составные блоки интерфейса вроде header/footer
 - `prisma` — схема БД, сиды и инфраструктура Prisma
 - `messages` — словари локализации
@@ -145,6 +144,7 @@ pnpm lint        # eslint
 pnpm test        # vitest run
 pnpm test:watch  # vitest watch
 pnpm fsd:check   # проверка архитектурных ограничений Steiger
+pnpm prisma:generate  # генерация Prisma Client
 pnpm seed        # сидирование базы тестовыми данными
 ```
 

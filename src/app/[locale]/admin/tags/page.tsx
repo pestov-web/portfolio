@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { headers } from 'next/headers';
-import { auth } from '@/shared/auth/server/index';
+import { auth } from '@/shared/auth/index.server';
 import type { Locale } from '@/shared/config/index';
 import { prisma } from '@/shared/lib/prisma';
 import { Badge, Button, Field, ListRow, PageHeader, TextInput } from '@/shared/ui';
