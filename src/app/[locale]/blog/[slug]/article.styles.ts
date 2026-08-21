@@ -1,0 +1,18 @@
+export const articlePageClassNames = {
+  root: "relative overflow-hidden",
+  backdrop: "content-backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem]",
+  container: "page-container page-x",
+  article: "py-12 md:py-16",
+  breadcrumb: "mb-9 flex min-w-0 items-center font-mono text-[0.68rem] uppercase tracking-[0.14em] text-faint",
+  breadcrumbLink: "shrink-0 rounded-sm py-1 no-underline transition-colors hover:text-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-vivid/60",
+  breadcrumbSlash: "mx-3 text-border",
+  breadcrumbCurrent: "truncate text-muted",
+  tag: "rounded-full bg-subtle px-3 py-1 font-mono text-[0.62rem] text-faint no-underline transition-colors hover:text-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-vivid/60",
+  content: "mx-auto max-w-3xl",
+  emptyContent: "mx-auto max-w-3xl text-sm text-faint",
+  comments: "mx-auto max-w-3xl pb-16",
+  restricted: "flex min-h-[28rem] flex-col items-start justify-center border-y border-border py-16",
+  restrictedIndex: "font-mono text-[0.68rem] uppercase tracking-[0.2em] text-accent-strong",
+  restrictedTitle: "mt-5 max-w-2xl text-balance text-4xl font-semibold tracking-[-0.05em] md:text-5xl",
+  restrictedAction: "mt-8 rounded-full px-5 py-2.5",
+} as const;

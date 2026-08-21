@@ -10,6 +10,7 @@ import { prisma } from '@/shared/lib/prisma';
 import { renderTiptap } from '@/shared/lib/tiptap';
 import { ButtonLink, CoverMedia, DetailHeader } from '@/shared/ui';
 import { CommentsSection } from './comments-section';
+import { articlePageClassNames as styles } from './article.styles';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
@@ -92,13 +93,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
         const role = session?.user.role;
         if (!role || (role !== 'FRIEND' && role !== 'ADMIN')) {
             return (
-                <div className='page-container page-x fade-in'>
-                    <div className='py-20 flex flex-col items-center gap-4 text-center'>
-                        <div className='text-3xl'>🔒</div>
-                        <h1 className='text-xl font-semibold'>{t('restrictedPost')}</h1>
-                        <ButtonLink href={`/${locale}/login`} variant='primary' className='mt-2'>
-                            {t('loginToRead')}
-                        </ButtonLink>
+                <div className={styles.root}>
+                    <div className={styles.backdrop} aria-hidden='true' />
+                    <div className={styles.container}>
+                        <div className={styles.restricted}>
+                            <p className={styles.restrictedIndex}>401 / private</p>
+                            <h1 className={styles.restrictedTitle}>{t('restrictedPost')}</h1>
+                            <ButtonLink href={`/${locale}/login`} variant='primary' className={styles.restrictedAction}>
+                                {t('loginToRead')}
+                            </ButtonLink>
+                        </div>
                     </div>
                 </div>
             );
@@ -108,47 +112,48 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     const html = renderTiptap(postTranslation.content);
 
     return (
-        <div className='page-container page-x fade-in'>
-            <article className='py-14 max-w-3xl mx-auto'>
-                {/* Хлебные крошки */}
-                <nav className='mb-8 text-sm text-faint font-mono'>
-                    <Link href={`/${locale}/blog`} className='no-underline hover:text-accent transition-colors'>
+        <div className={styles.root}>
+            <div className={styles.backdrop} aria-hidden='true' />
+            <div className={styles.container}>
+                <article className={styles.article}>
+                    <nav className={styles.breadcrumb} aria-label={t('breadcrumbLabel')}>
+                        <Link href={`/${locale}/blog`} className={styles.breadcrumbLink}>
                         blog
-                    </Link>
-                    <span className='mx-2 text-border'>/</span>
-                    <span className='text-muted truncate'>{postTranslation.slug}</span>
-                </nav>
-
-                <DetailHeader
-                    title={postTranslation.title}
-                    tags={post.tags.map(({ tag }) => (
-                        <Link
-                            key={tag.slug}
-                            href={`/${locale}/blog?tag=${tag.slug}`}
-                            className='px-2.5 py-0.5 text-xs rounded-full bg-subtle text-muted no-underline hover:text-accent transition-colors'
-                        >
-                            {tag.name}
                         </Link>
-                    ))}
-                    meta={<time dateTime={post.createdAt.toISOString()}>{formatDate(post.createdAt, locale)}</time>}
-                />
+                        <span className={styles.breadcrumbSlash} aria-hidden='true'>/</span>
+                        <span className={styles.breadcrumbCurrent}>{postTranslation.slug}</span>
+                    </nav>
 
-                {/* Обложка */}
-                {post.coverImage && (
-                    <CoverMedia src={toRenderableFileUrl(post.coverImage)} alt={postTranslation.title} priority />
-                )}
+                    <DetailHeader
+                        title={postTranslation.title}
+                        description={postTranslation.excerpt}
+                        className='max-w-5xl'
+                        tags={post.tags.map(({ tag }) => (
+                            <Link
+                                key={tag.slug}
+                                href={`/${locale}/blog?tag=${tag.slug}`}
+                                className={styles.tag}
+                            >
+                                {tag.name}
+                            </Link>
+                        ))}
+                        meta={<time dateTime={post.createdAt.toISOString()}>{formatDate(post.createdAt, locale)}</time>}
+                    />
 
-                {/* Контент */}
-                {html ? (
-                    <div className='prose' dangerouslySetInnerHTML={{ __html: html }} />
-                ) : (
-                    <p className='text-faint text-sm'>{t('emptyContent')}</p>
-                )}
-            </article>
+                    {post.coverImage ? (
+                        <CoverMedia src={toRenderableFileUrl(post.coverImage)} alt={postTranslation.title} priority />
+                    ) : null}
 
-            {/* Комментарии */}
-            <div className='max-w-3xl mx-auto pb-16'>
-                <CommentsSection postId={post.id} comments={post.comments} locale={locale} />
+                    {html ? (
+                        <div className={`${styles.content} prose`} dangerouslySetInnerHTML={{ __html: html }} />
+                    ) : (
+                        <p className={styles.emptyContent}>{t('emptyContent')}</p>
+                    )}
+                </article>
+
+                <div className={styles.comments}>
+                    <CommentsSection postId={post.id} comments={post.comments} locale={locale} />
+                </div>
             </div>
         </div>
     );

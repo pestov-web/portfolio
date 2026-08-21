@@ -7,6 +7,7 @@ import { buildPageHref, buildPaginationLinks, getPaginationMeta, parsePageParam 
 import { getLocalizedItem } from '@/shared/lib/content-localization';
 import { PostCard } from '@/entities/post';
 import { FilterBar, Pagination, PageHeader } from '@/shared/ui';
+import { blogPageClassNames as styles } from './blog.styles';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
@@ -110,73 +111,76 @@ export default async function BlogPage({
     });
 
     return (
-        <div className='page-container page-x fade-in'>
-            <section className='py-14'>
-                <PageHeader title={t('title')} description={t('description')} />
+        <div className={styles.root}>
+            <div className={styles.backdrop} aria-hidden='true' />
+            <div className={styles.container}>
+                <section className={styles.section}>
+                    <PageHeader title={t('title')} description={t('description')} size='display' />
 
-                <FilterBar
-                    title={tf('title')}
-                    items={[
-                        {
-                            label: tf('all'),
-                            href: buildPageHref(`/${locale}/blog`, 1, { ...resolvedSearchParams, tag: undefined }),
-                            isActive: !activeTag,
-                        },
-                        ...availableTags.map((tag) => ({
-                            label: tag.name,
-                            href: buildPageHref(`/${locale}/blog`, 1, { ...resolvedSearchParams, tag: tag.slug }),
-                            isActive: tag.slug === activeTag,
-                        })),
-                    ]}
-                />
+                    <FilterBar
+                        title={tf('title')}
+                        items={[
+                            {
+                                label: tf('all'),
+                                href: buildPageHref(`/${locale}/blog`, 1, { ...resolvedSearchParams, tag: undefined }),
+                                isActive: !activeTag,
+                            },
+                            ...availableTags.map((tag) => ({
+                                label: tag.name,
+                                href: buildPageHref(`/${locale}/blog`, 1, { ...resolvedSearchParams, tag: tag.slug }),
+                                isActive: tag.slug === activeTag,
+                            })),
+                        ]}
+                    />
 
-                {localizedPosts.length === 0 ? (
-                    <p className='text-sm text-faint'>{activeTag ? t('emptyFiltered') : t('empty')}</p>
-                ) : (
-                    <>
-                        <div className='flex flex-col gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3'>
-                            {localizedPosts.map((post) => (
-                                <PostCard key={post.id} post={post} locale={locale} readMoreLabel={t('readMore')} />
-                            ))}
-                        </div>
-                        {pagination.totalPages > 1 ? (
-                            <Pagination
-                                summary={tc('summary', {
-                                    page: pagination.currentPage,
-                                    totalPages: pagination.totalPages,
-                                    totalItems: pagination.totalItems,
-                                })}
-                                previousLabel={tc('previous')}
-                                nextLabel={tc('next')}
-                                previousHref={
-                                    pagination.currentPage > 1
-                                        ? buildPageHref(
-                                              `/${locale}/blog`,
-                                              pagination.currentPage - 1,
-                                              resolvedSearchParams,
-                                          )
-                                        : undefined
-                                }
-                                nextHref={
-                                    pagination.currentPage < pagination.totalPages
-                                        ? buildPageHref(
-                                              `/${locale}/blog`,
-                                              pagination.currentPage + 1,
-                                              resolvedSearchParams,
-                                          )
-                                        : undefined
-                                }
-                                links={buildPaginationLinks(
-                                    `/${locale}/blog`,
-                                    pagination.currentPage,
-                                    pagination.totalPages,
-                                    resolvedSearchParams,
-                                )}
-                            />
-                        ) : null}
-                    </>
-                )}
-            </section>
+                    {localizedPosts.length === 0 ? (
+                        <p className={styles.empty}>{activeTag ? t('emptyFiltered') : t('empty')}</p>
+                    ) : (
+                        <>
+                            <div className={styles.list}>
+                                {localizedPosts.map((post) => (
+                                    <PostCard key={post.id} post={post} locale={locale} readMoreLabel={t('readMore')} />
+                                ))}
+                            </div>
+                            {pagination.totalPages > 1 ? (
+                                <Pagination
+                                    summary={tc('summary', {
+                                        page: pagination.currentPage,
+                                        totalPages: pagination.totalPages,
+                                        totalItems: pagination.totalItems,
+                                    })}
+                                    previousLabel={tc('previous')}
+                                    nextLabel={tc('next')}
+                                    previousHref={
+                                        pagination.currentPage > 1
+                                            ? buildPageHref(
+                                                  `/${locale}/blog`,
+                                                  pagination.currentPage - 1,
+                                                  resolvedSearchParams,
+                                              )
+                                            : undefined
+                                    }
+                                    nextHref={
+                                        pagination.currentPage < pagination.totalPages
+                                            ? buildPageHref(
+                                                  `/${locale}/blog`,
+                                                  pagination.currentPage + 1,
+                                                  resolvedSearchParams,
+                                              )
+                                            : undefined
+                                    }
+                                    links={buildPaginationLinks(
+                                        `/${locale}/blog`,
+                                        pagination.currentPage,
+                                        pagination.totalPages,
+                                        resolvedSearchParams,
+                                    )}
+                                />
+                            ) : null}
+                        </>
+                    )}
+                </section>
+            </div>
         </div>
     );
 }

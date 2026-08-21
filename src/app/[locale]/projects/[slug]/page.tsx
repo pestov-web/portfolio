@@ -7,6 +7,7 @@ import { toRenderableFileUrl } from '@/shared/lib/media';
 import { prisma } from '@/shared/lib/prisma';
 import { renderTiptap } from '@/shared/lib/tiptap';
 import { ButtonLink, CoverMedia, DetailHeader, ExternalLinkIcon, GitHubIcon } from '@/shared/ui';
+import { projectDetailClassNames as styles } from './project-detail.styles';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
@@ -67,64 +68,64 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
     const html = projectTranslation.content ? renderTiptap(projectTranslation.content) : null;
 
     return (
-        <div className='page-container page-x fade-in'>
-            <article className='py-14 max-w-3xl mx-auto'>
-                {/* Хлебные крошки */}
-                <nav className='mb-8 text-sm text-faint font-mono'>
-                    <Link href={`/${locale}/projects`} className='no-underline hover:text-accent transition-colors'>
+        <div className={styles.root}>
+            <div className={styles.backdrop} aria-hidden='true' />
+            <div className={styles.container}>
+                <article className={styles.article}>
+                    <nav className={styles.breadcrumb} aria-label={t('breadcrumbLabel')}>
+                        <Link href={`/${locale}/projects`} className={styles.breadcrumbLink}>
                         projects
-                    </Link>
-                    <span className='mx-2 text-border'>/</span>
-                    <span className='text-muted truncate'>{projectTranslation.slug}</span>
-                </nav>
+                        </Link>
+                        <span className={styles.breadcrumbSlash} aria-hidden='true'>/</span>
+                        <span className={styles.breadcrumbCurrent}>{projectTranslation.slug}</span>
+                    </nav>
 
-                <DetailHeader
-                    title={projectTranslation.title}
-                    description={projectTranslation.description}
-                    tags={project.tags.map(({ tag }) => (
-                        <span
-                            key={tag.slug}
-                            className='px-2.5 py-0.5 text-xs rounded-full bg-subtle text-faint font-mono'
-                        >
-                            {tag.name}
-                        </span>
-                    ))}
-                    actions={
-                        <>
-                            {project.repoUrl && (
-                                <ButtonLink
-                                    href={project.repoUrl}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    variant='secondary'
-                                >
-                                    <GitHubIcon width={16} height={16} />
-                                    {t('viewCode')}
-                                </ButtonLink>
-                            )}
-                            {project.demoUrl && (
-                                <ButtonLink
-                                    href={project.demoUrl}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    variant='primary'
-                                >
-                                    {t('viewDemo')}
-                                    <ExternalLinkIcon width={14} height={14} />
-                                </ButtonLink>
-                            )}
-                        </>
-                    }
-                />
+                    <DetailHeader
+                        title={projectTranslation.title}
+                        description={projectTranslation.description}
+                        className='max-w-5xl'
+                        tags={project.tags.map(({ tag }) => (
+                            <span key={tag.slug} className={styles.tag}>
+                                {tag.name}
+                            </span>
+                        ))}
+                        actions={
+                            <>
+                                {project.repoUrl ? (
+                                    <ButtonLink
+                                        href={project.repoUrl}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        variant='secondary'
+                                        className={styles.action}
+                                    >
+                                        <GitHubIcon width={16} height={16} />
+                                        {t('viewCode')}
+                                    </ButtonLink>
+                                ) : null}
+                                {project.demoUrl ? (
+                                    <ButtonLink
+                                        href={project.demoUrl}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        variant='primary'
+                                        className={styles.action}
+                                    >
+                                        {t('viewDemo')}
+                                        <ExternalLinkIcon width={14} height={14} />
+                                    </ButtonLink>
+                                ) : null}
+                            </>
+                        }
+                    />
 
-                {/* Обложка */}
-                {project.coverImage && (
-                    <CoverMedia src={toRenderableFileUrl(project.coverImage)} alt={projectTranslation.title} priority />
-                )}
+                    {project.coverImage ? (
+                        <CoverMedia src={toRenderableFileUrl(project.coverImage)} alt={projectTranslation.title} priority />
+                    ) : null}
 
-                {/* Контент */}
-                {html && <div className='prose' dangerouslySetInnerHTML={{ __html: html }} />}
-            </article>
+                    {html ? <div className={styles.content} dangerouslySetInnerHTML={{ __html: html }} /> : null}
+                </article>
+            </div>
         </div>
     );
 }

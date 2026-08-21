@@ -8,16 +8,13 @@ import { commentsSectionClassNames } from './comments-section.styles';
 import type { CommentsSectionProps } from './comments-section.types';
 import { CommentForm } from './comment-form';
 
-function formatRelative(date: Date, locale: string) {
-    const diff = Date.now() - date.getTime();
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
-    const days = Math.floor(diff / 86400000);
-
-    const rtf = new Intl.RelativeTimeFormat(locale === 'ru' ? 'ru' : 'en', { numeric: 'auto' });
-    if (minutes < 60) return rtf.format(-minutes, 'minute');
-    if (hours < 24) return rtf.format(-hours, 'hour');
-    return rtf.format(-days, 'day');
+function formatCommentDate(date: Date, locale: string) {
+    return new Intl.DateTimeFormat(locale === 'ru' ? 'ru-RU' : 'en-US', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'Europe/Moscow',
+    }).format(date);
 }
 
 export function CommentsSection({ postId, comments, locale }: CommentsSectionProps) {
@@ -57,7 +54,7 @@ export function CommentsSection({ postId, comments, locale }: CommentsSectionPro
                                         className={commentsSectionClassNames.time}
                                         dateTime={comment.createdAt.toISOString()}
                                     >
-                                        {formatRelative(new Date(comment.createdAt), locale)}
+                                        {formatCommentDate(new Date(comment.createdAt), locale)}
                                     </time>
                                 </div>
                                 <p className={commentsSectionClassNames.text}>{comment.content}</p>

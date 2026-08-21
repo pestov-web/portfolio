@@ -7,6 +7,7 @@ import { buildPageHref, buildPaginationLinks, getPaginationMeta, parsePageParam 
 import { getLocalizedItem } from '@/shared/lib/content-localization';
 import { ProjectCard } from '@/entities/project';
 import { FilterBar, Pagination, PageHeader } from '@/shared/ui';
+import { projectsPageClassNames as styles } from './projects.styles';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
@@ -110,11 +111,13 @@ export default async function ProjectsPage({
     });
 
     return (
-        <div className='page-container page-x fade-in'>
-            <section className='py-14'>
-                <PageHeader title={t('title')} description={t('description')} />
+        <div className={styles.root}>
+            <div className={styles.backdrop} aria-hidden='true' />
+            <div className={styles.container}>
+                <section className={styles.section}>
+                    <PageHeader title={t('title')} description={t('description')} size='display' />
 
-                <FilterBar
+                    <FilterBar
                     title={tf('title')}
                     items={[
                         {
@@ -128,13 +131,13 @@ export default async function ProjectsPage({
                             isActive: tag.slug === activeTag,
                         })),
                     ]}
-                />
+                    />
 
-                {localizedProjects.length === 0 ? (
-                    <p className='text-sm text-faint'>{activeTag ? t('emptyFiltered') : t('empty')}</p>
-                ) : (
-                    <>
-                        <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+                    {localizedProjects.length === 0 ? (
+                        <p className={styles.empty}>{activeTag ? t('emptyFiltered') : t('empty')}</p>
+                    ) : (
+                        <>
+                            <div className={styles.list}>
                             {localizedProjects.map((project) => (
                                 <ProjectCard
                                     key={project.id}
@@ -145,8 +148,8 @@ export default async function ProjectsPage({
                                     viewDemoLabel={t('viewDemo')}
                                 />
                             ))}
-                        </div>
-                        {pagination.totalPages > 1 ? (
+                            </div>
+                            {pagination.totalPages > 1 ? (
                             <Pagination
                                 summary={tc('summary', {
                                     page: pagination.currentPage,
@@ -180,10 +183,11 @@ export default async function ProjectsPage({
                                     resolvedSearchParams,
                                 )}
                             />
-                        ) : null}
-                    </>
-                )}
-            </section>
+                            ) : null}
+                        </>
+                    )}
+                </section>
+            </div>
         </div>
     );
 }

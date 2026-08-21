@@ -1,0 +1,8 @@
+export const projectsPageClassNames = {
+  root: "relative overflow-hidden",
+  backdrop: "content-backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem]",
+  container: "page-container page-x",
+  section: "py-12 md:py-16",
+  list: "grid gap-x-8 gap-y-12 md:grid-cols-2",
+  empty: "border-y border-dashed border-border py-8 text-sm text-faint",
+} as const;

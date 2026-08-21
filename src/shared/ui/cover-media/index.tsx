@@ -11,7 +11,7 @@ export function CoverMedia({ src, alt, priority = false }: CoverMediaProps) {
         fill
         unoptimized
         priority={priority}
-        sizes="(max-width: 768px) 100vw, 768px"
+        sizes="(max-width: 1200px) 100vw, 1120px"
         className={coverMediaClassNames.image}
       />
     </div>

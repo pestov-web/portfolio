@@ -2,9 +2,10 @@
 
 import { useActionState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Button, Field, FormActions, SurfaceCard, TextArea, TextInput } from '@/shared/ui';
+import { Button, Field, FormActions, TextArea, TextInput } from '@/shared/ui';
 import { initialContactActionState, submitContact } from './actions';
 import type { Locale } from '@/shared/config';
+import { contactFormClassNames as styles } from './contact-form.styles';
 
 type ContactFormProps = {
     locale: Locale;
@@ -17,15 +18,15 @@ export function ContactForm({ locale }: ContactFormProps) {
 
     if (state.success) {
         return (
-            <SurfaceCard padding='lg' className='text-center'>
-                <p className='text-accent font-medium'>{tf('success')}</p>
-            </SurfaceCard>
+            <div className={styles.success}>
+                <p>{tf('success')}</p>
+            </div>
         );
     }
 
     return (
-        <form action={formAction} className='flex flex-col gap-5'>
-            <Field label={tf('name')} htmlFor='name'>
+        <form action={formAction} className={styles.root}>
+            <Field label={tf('name')} htmlFor='name' className={styles.field} labelClassName={styles.label}>
                 <TextInput
                     id='name'
                     name='name'
@@ -33,11 +34,11 @@ export function ContactForm({ locale }: ContactFormProps) {
                     required
                     autoComplete='name'
                     maxLength={100}
-                    className='w-full'
+                    className={styles.input}
                 />
             </Field>
 
-            <Field label={tf('email')} htmlFor='email'>
+            <Field label={tf('email')} htmlFor='email' className={styles.field} labelClassName={styles.label}>
                 <TextInput
                     id='email'
                     name='email'
@@ -46,22 +47,22 @@ export function ContactForm({ locale }: ContactFormProps) {
                     autoComplete='email'
                     spellCheck={false}
                     maxLength={320}
-                    className='w-full'
+                    className={styles.input}
                 />
             </Field>
 
-            <Field label={tf('message')} htmlFor='message'>
-                <TextArea id='message' name='message' rows={6} required maxLength={5000} className='w-full' />
+            <Field label={tf('message')} htmlFor='message' className={styles.field} labelClassName={styles.label}>
+                <TextArea id='message' name='message' rows={7} required maxLength={5000} className={styles.textarea} />
             </Field>
 
             {state.error ? (
-                <p className='text-sm text-red-500' aria-live='polite'>
+                <p className={styles.error} aria-live='polite'>
                     {state.error}
                 </p>
             ) : null}
 
-            <FormActions className='pt-0'>
-                <Button type='submit' disabled={pending} variant='primary' className='h-10 px-5 self-start'>
+            <FormActions className={styles.actions}>
+                <Button type='submit' disabled={pending} variant='primary' className={styles.submit}>
                     {pending ? '…' : tf('submit')}
                 </Button>
             </FormActions>

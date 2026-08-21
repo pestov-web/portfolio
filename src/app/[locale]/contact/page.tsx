@@ -4,6 +4,7 @@ import { PageHeader } from '@/shared/ui';
 import type { Locale } from '@/shared/config';
 import { locales } from '@/shared/config';
 import { ContactForm } from './contact-form';
+import { contactPageClassNames as styles } from './contact.styles';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
@@ -39,14 +40,22 @@ export default async function ContactPage({
   const t = await getTranslations({ locale, namespace: "contact" });
 
   return (
-    <div className="page-container page-x fade-in">
-      <section className="py-14 max-w-xl">
-        <PageHeader
-          title={t("title")}
-          description={t("description")}
-        />
-        <ContactForm locale={locale} />
-      </section>
+    <div className={styles.root}>
+      <div className={styles.backdrop} aria-hidden="true" />
+      <div className={styles.container}>
+        <section className={styles.section}>
+          <div className={styles.header}>
+            <PageHeader
+              title={t("title")}
+              description={t("description")}
+              size="display"
+            />
+          </div>
+          <div className={styles.formPanel}>
+            <ContactForm locale={locale} />
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

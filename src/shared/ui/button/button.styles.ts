@@ -2,12 +2,13 @@ import { cx } from "@/shared/lib/classnames";
 import type { ButtonSize, ButtonStyleOptions, ButtonVariant } from "./button.types";
 
 const baseClassName =
-  "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-vivid/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+  "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-vivid/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
 
 const variantClassNames: Record<ButtonVariant, string> = {
-  primary: "bg-accent-vivid text-white hover:bg-accent-dim",
-  secondary: "border border-border hover:bg-subtle hover:border-transparent",
-  outline: "border border-border hover:bg-subtle",
+  primary: "bg-action-primary text-on-primary hover:bg-action-primary-hover shadow-sm",
+  secondary: "border border-border bg-action-secondary text-on-secondary hover:bg-action-secondary-hover hover:border-border",
+  outline: "border border-border bg-transparent text-fg hover:bg-subtle",
+  inverse: "bg-white text-zinc-950 hover:bg-violet-100 shadow-sm",
   danger: "border border-red-500/30 text-red-500 hover:bg-red-500/10",
 };
 

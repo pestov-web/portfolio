@@ -12,7 +12,12 @@ export function FilterBar({ title, items }: FilterBarProps) {
       <p className={filterBarClassNames.title}>{title}</p>
       <div className={filterBarClassNames.list}>
         {items.map((item) => (
-          <Link key={item.href} href={item.href} className={getFilterBarLinkClassName(item.isActive)}>
+          <Link
+            key={item.href}
+            href={item.href}
+            aria-current={item.isActive ? "page" : undefined}
+            className={getFilterBarLinkClassName(item.isActive)}
+          >
             {item.label}
           </Link>
         ))}

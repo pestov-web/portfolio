@@ -1,6 +1,6 @@
 export const footerClassNames = {
-  root: "mt-auto border-t border-border",
-  container: "page-container page-x py-6",
+  root: "mt-auto border-t border-border/70",
+  container: "page-container page-x py-8",
   row: "flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-faint",
   copyright: "font-mono",
   accent: "text-accent",

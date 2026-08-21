@@ -1,0 +1,83 @@
+/* Tailwind v4 CSS-first configuration.
+   Theme palettes live here; component styles consume semantic tokens only. */
+
+:root {
+  --accent: 79 70 229;
+  --accent-vivid: 99 102 241;
+  --accent-dim: 67 56 202;
+  --accent-strong: 79 70 229;
+  --accent-warm: 244 114 182;
+
+  --action-primary: 79 70 229;
+  --action-primary-hover: 67 56 202;
+  --action-on-primary: 255 255 255;
+  --action-secondary: 255 255 255;
+  --action-secondary-hover: 244 244 245;
+  --action-on-secondary: 39 39 42;
+
+  --bg: 250 250 250;
+  --bg-surface: 255 255 255;
+  --bg-subtle: 244 244 245;
+  --border: 228 228 231;
+  --fg: 9 9 11;
+  --fg-muted: 113 113 122;
+  --fg-subtle: 161 161 170;
+  --code-bg: 244 244 245;
+  --code-fg: 99 102 241;
+
+  color-scheme: light;
+}
+
+.dark {
+  --accent: 165 180 252;
+  --accent-strong: 196 181 253;
+  --accent-warm: 251 146 60;
+
+  --action-primary: 196 181 253;
+  --action-primary-hover: 221 214 254;
+  --action-on-primary: 24 24 27;
+  --action-secondary: 24 24 27;
+  --action-secondary-hover: 39 39 42;
+  --action-on-secondary: 244 244 245;
+
+  --bg: 10 10 10;
+  --bg-surface: 18 18 18;
+  --bg-subtle: 27 27 27;
+  --border: 39 39 42;
+  --fg: 250 250 250;
+  --fg-muted: 161 161 170;
+  --fg-subtle: 113 113 122;
+  --code-bg: 27 27 27;
+  --code-fg: 165 180 252;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --color-bg: rgb(var(--bg));
+  --color-surface: rgb(var(--bg-surface));
+  --color-subtle: rgb(var(--bg-subtle));
+  --color-border: rgb(var(--border));
+  --color-fg: rgb(var(--fg));
+  --color-muted: rgb(var(--fg-muted));
+  --color-faint: rgb(var(--fg-subtle));
+  --color-accent: rgb(var(--accent));
+  --color-accent-vivid: rgb(var(--accent-vivid));
+  --color-accent-dim: rgb(var(--accent-dim));
+  --color-accent-strong: rgb(var(--accent-strong));
+  --color-accent-warm: rgb(var(--accent-warm));
+  --color-code-bg: rgb(var(--code-bg));
+  --color-code-fg: rgb(var(--code-fg));
+  --color-action-primary: rgb(var(--action-primary));
+  --color-action-primary-hover: rgb(var(--action-primary-hover));
+  --color-on-primary: rgb(var(--action-on-primary));
+  --color-action-secondary: rgb(var(--action-secondary));
+  --color-action-secondary-hover: rgb(var(--action-secondary-hover));
+  --color-on-secondary: rgb(var(--action-on-secondary));
+
+  --radius-page: 0.75rem;
+  --width-page: 72rem;
+}

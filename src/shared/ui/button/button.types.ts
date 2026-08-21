@@ -1,7 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import type { LinkProps } from "next/link";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "danger";
+export type ButtonVariant = "primary" | "secondary" | "outline" | "inverse" | "danger";
 export type ButtonSize = "sm" | "md";
 
 export type ButtonStyleOptions = {

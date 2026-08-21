@@ -25,13 +25,14 @@ export function CommentForm({ postId, locale, placeholder, submitLabel }: Commen
         required
         maxLength={2000}
         placeholder={placeholder}
+        aria-label={placeholder}
         className={commentsSectionClassNames.textarea}
       />
       {state.error ? (
         <p className={commentsSectionClassNames.formError} aria-live="polite">{state.error}</p>
       ) : null}
       <Button type="submit" variant="primary" className={commentsSectionClassNames.submit} disabled={pending}>
-        {pending ? "..." : submitLabel}
+        {pending ? "…" : submitLabel}
       </Button>
     </form>
   );

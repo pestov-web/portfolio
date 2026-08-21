@@ -16,11 +16,24 @@
     },
     "home": {
         "hero": {
-            "greeting": "Hi, I'm",
             "name": "Vladimir",
             "role": "Frontend Developer",
-            "bio": "I create web applications with clean architecture and good code."
+            "title": "Complex —",
+            "titleAccent": "made clear.",
+            "bio": "I design and build web products — from the first screen to the architecture underneath.",
+            "eyebrow": "Vladimir · digital product developer",
+            "visualLabel": "A system in motion"
         },
+        "workEyebrow": "Projects",
+        "workTitle": "Selected work.",
+        "postEyebrow": "Journal",
+        "postTitle": "Notes on building.",
+        "contactEyebrow": "Contact",
+        "cta": {
+            "title": "Write to me",
+            "action": "Discuss a project"
+        },
+        "viewWork": "View selected work",
         "latestPosts": "Latest Posts",
         "latestProjects": "Latest Projects",
         "viewAll": "View all",
@@ -35,6 +48,7 @@
         "title": "Blog",
         "description": "Thoughts, notes and tutorials about development.",
         "readMore": "Read more",
+        "breadcrumbLabel": "Article navigation",
         "empty": "No posts published yet.",
         "emptyFiltered": "No posts found for the selected tag.",
         "restrictedPost": "This post is available for friends only.",
@@ -57,6 +71,7 @@
     "projects": {
         "title": "Projects",
         "description": "My work and side projects.",
+        "breadcrumbLabel": "Project navigation",
         "empty": "No projects yet.",
         "emptyFiltered": "No projects found for the selected tag.",
         "viewProject": "Details",

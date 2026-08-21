@@ -10,8 +10,8 @@ export function ProjectCard({ project, locale, viewProjectLabel, viewCodeLabel, 
 
   return (
     <article className={projectCardClassNames.root}>
-      {project.coverImage ? (
-        <div className={projectCardClassNames.cover}>
+      <Link href={href} className={projectCardClassNames.cover} aria-label={project.title}>
+        {project.coverImage ? (
           <Image
             src={toRenderableFileUrl(project.coverImage)}
             alt={project.title}
@@ -20,8 +20,12 @@ export function ProjectCard({ project, locale, viewProjectLabel, viewCodeLabel, 
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className={projectCardClassNames.coverImage}
           />
-        </div>
-      ) : null}
+        ) : (
+          <div className={projectCardClassNames.placeholder} aria-hidden="true">
+            <span className={projectCardClassNames.monogram}>{project.title.slice(0, 2).toUpperCase()}</span>
+          </div>
+        )}
+      </Link>
 
       <div className={projectCardClassNames.body}>
         <h2 className={projectCardClassNames.title}>
@@ -33,7 +37,7 @@ export function ProjectCard({ project, locale, viewProjectLabel, viewCodeLabel, 
         {project.description ? <p className={projectCardClassNames.description}>{project.description}</p> : null}
 
         {project.tags.length > 0 ? (
-          <div className={projectCardClassNames.tags}>
+          <div className={projectCardClassNames.tags} translate="no">
             {project.tags.slice(0, 5).map(({ tag }) => (
               <Link
                 key={tag.slug}
