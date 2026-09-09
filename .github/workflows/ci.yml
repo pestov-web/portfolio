@@ -3,32 +3,20 @@ name: CI
 on:
   push:
     branches:
-      - main
       - master
       - develop
   pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
 
 jobs:
   quality:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_DB: portfolio
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres -d portfolio"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/portfolio
+      DATABASE_URL: file:./portfolio.db
       NEXT_PUBLIC_APP_URL: http://localhost:3000
       BETTER_AUTH_URL: http://localhost:3000
       BETTER_AUTH_SECRET: test-test-test-test-test-test-test-test
@@ -52,7 +40,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 10.34.5
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -67,7 +55,7 @@ jobs:
         run: pnpm exec prisma generate
 
       - name: Apply Prisma migrations
-        run: pnpm exec prisma migrate deploy
+        run: pnpm db:migrate
 
       - name: Check FSD
         run: pnpm fsd:check
@@ -78,5 +66,25 @@ jobs:
       - name: Run tests
         run: pnpm test
 
+      - name: Check TypeScript
+        run: pnpm exec tsc --noEmit
+
       - name: Build app
         run: pnpm build
+
+      - name: Seed test database
+        run: pnpm seed
+
+      - name: Install browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: UI regression tests
+        run: pnpm exec playwright test
+
+      - name: Upload browser traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-traces
+          path: test-results/
+          retention-days: 7

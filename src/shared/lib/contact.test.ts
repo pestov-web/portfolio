@@ -91,6 +91,7 @@ describe('deliverContactMessage', () => {
     });
 
     afterEach(() => {
+        vi.unstubAllEnvs();
         consoleLogSpy.mockClear();
         consoleErrorSpy.mockClear();
     });
@@ -98,7 +99,7 @@ describe('deliverContactMessage', () => {
     it('returns ok in development when delivery is not configured', async () => {
         delete process.env.CONTACT_EMAIL;
         delete process.env.RESEND_API_KEY;
-        process.env.NODE_ENV = 'development';
+        vi.stubEnv('NODE_ENV', 'development');
 
         await expect(
             deliverContactMessage({ name: 'Test', email: 'test@example.com', message: 'Hello' }),
@@ -110,7 +111,7 @@ describe('deliverContactMessage', () => {
     it('returns not_configured in production when env is missing', async () => {
         delete process.env.CONTACT_EMAIL;
         delete process.env.RESEND_API_KEY;
-        process.env.NODE_ENV = 'production';
+        vi.stubEnv('NODE_ENV', 'production');
 
         await expect(
             deliverContactMessage({ name: 'Test', email: 'test@example.com', message: 'Hello' }),
@@ -120,7 +121,7 @@ describe('deliverContactMessage', () => {
     it('sends message through Resend when env is configured', async () => {
         process.env.CONTACT_EMAIL = 'owner@example.com';
         process.env.RESEND_API_KEY = 'secret';
-        process.env.NODE_ENV = 'production';
+        vi.stubEnv('NODE_ENV', 'production');
         sendEmailMock.mockResolvedValue({ id: 'email-id' });
 
         await expect(
@@ -140,7 +141,7 @@ describe('deliverContactMessage', () => {
     it('returns send_failed when Resend throws', async () => {
         process.env.CONTACT_EMAIL = 'owner@example.com';
         process.env.RESEND_API_KEY = 'secret';
-        process.env.NODE_ENV = 'production';
+        vi.stubEnv('NODE_ENV', 'production');
         sendEmailMock.mockRejectedValue(new Error('boom'));
 
         await expect(

@@ -25,34 +25,24 @@ export function ConfirmSubmitButton({
     const formRef = useRef<HTMLFormElement | null>(null);
     const triggerRef = useRef<HTMLButtonElement | null>(null);
     const cancelRef = useRef<HTMLButtonElement | null>(null);
+    const dialogRef = useRef<HTMLDialogElement | null>(null);
 
     useEffect(() => {
         if (!isOpen) {
             return;
         }
 
+        const dialog = dialogRef.current;
+        const trigger = triggerRef.current;
+        const previousOverflow = document.body.style.overflow;
+        dialog?.showModal();
         cancelRef.current?.focus();
-
-        function handleKeyDown(event: KeyboardEvent) {
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                setIsOpen(false);
-            }
-        }
-
-        document.addEventListener('keydown', handleKeyDown);
-
+        document.body.style.overflow = 'hidden';
         return () => {
-            document.removeEventListener('keydown', handleKeyDown);
+            dialog?.close();
+            document.body.style.overflow = previousOverflow;
+            trigger?.focus({ preventScroll: true });
         };
-    }, [isOpen]);
-
-    useEffect(() => {
-        if (isOpen) {
-            return;
-        }
-
-        triggerRef.current?.focus();
     }, [isOpen]);
 
     function openDialog(event: React.MouseEvent<HTMLButtonElement>) {
@@ -63,6 +53,20 @@ export function ConfirmSubmitButton({
 
     function closeDialog() {
         setIsOpen(false);
+    }
+
+    function trapFocus(event: React.KeyboardEvent<HTMLDialogElement>) {
+        if (event.key !== 'Tab') return;
+        const buttons = event.currentTarget.querySelectorAll<HTMLButtonElement>('button:not(:disabled)');
+        const first = buttons[0];
+        const last = buttons[buttons.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
+        }
     }
 
     function confirmSubmit() {
@@ -78,13 +82,14 @@ export function ConfirmSubmitButton({
             </Button>
 
             {isOpen ? (
-                <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4'>
-                    <div
-                        role='dialog'
+                    <dialog
+                        ref={dialogRef}
+                        onCancel={closeDialog}
+                        onKeyDown={trapFocus}
                         aria-modal='true'
                         aria-labelledby={titleId}
                         aria-describedby={descriptionId}
-                        className='glass w-full max-w-md p-6 shadow-2xl'
+                        className='glass fixed inset-0 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md overflow-y-auto overscroll-contain p-6 text-fg shadow-2xl backdrop:bg-black/60'
                     >
                         <div className='flex flex-col gap-3'>
                             <h2 id={titleId} className='text-lg font-semibold text-fg text-balance'>
@@ -103,8 +108,7 @@ export function ConfirmSubmitButton({
                                 {confirmLabel}
                             </Button>
                         </div>
-                    </div>
-                </div>
+                    </dialog>
             ) : null}
         </>
     );

@@ -1,0 +1,69 @@
+name: portfolio-local
+
+x-app: &app
+  image: portfolio:local
+  build:
+    context: .
+    args:
+      NEXT_PUBLIC_APP_URL: http://localhost:3100
+      NEXT_PUBLIC_MINIO_BUCKET: portfolio
+  environment:
+    DATABASE_URL: file:/data/portfolio.db
+    NEXT_PUBLIC_APP_URL: http://localhost:3100
+    BETTER_AUTH_URL: http://localhost:3100
+    BETTER_AUTH_SECRET: local-only-portfolio-secret-not-for-production-2026
+    MINIO_ENDPOINT: minio
+    MINIO_PORT: '9000'
+    MINIO_USE_SSL: 'false'
+    MINIO_ACCESS_KEY: portfolio-local
+    MINIO_SECRET_KEY: portfolio-local-storage
+    MINIO_BUCKET: portfolio
+    NEXT_PUBLIC_MINIO_BUCKET: portfolio
+  volumes:
+    - sqlite_data:/data
+
+services:
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ':9001'
+    environment:
+      MINIO_ROOT_USER: portfolio-local
+      MINIO_ROOT_PASSWORD: portfolio-local-storage
+    ports:
+      - '127.0.0.1:9101:9001'
+    volumes:
+      - minio_data:/data
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: ['/bin/sh', '-c']
+    command:
+      - 'until mc alias set local http://minio:9000 portfolio-local portfolio-local-storage; do sleep 2; done; mc mb --ignore-existing local/portfolio'
+
+  migrate:
+    <<: *app
+    command: ['pnpm', 'db:migrate']
+
+  seed:
+    <<: *app
+    profiles: ['seed']
+    command: ['pnpm', 'exec', 'tsx', 'prisma/seed.ts']
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  app:
+    <<: *app
+    ports:
+      - '127.0.0.1:3100:3000'
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      minio-init:
+        condition: service_completed_successfully
+
+volumes:
+  sqlite_data:
+  minio_data:

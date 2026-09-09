@@ -16,16 +16,12 @@ export function ContactForm({ locale }: ContactFormProps) {
     const submitContactWithLocale = submitContact.bind(null, locale);
     const [state, formAction, pending] = useActionState(submitContactWithLocale, initialContactActionState);
 
-    if (state.success) {
-        return (
-            <div className={styles.success}>
-                <p>{tf('success')}</p>
-            </div>
-        );
-    }
-
     return (
-        <form action={formAction} className={styles.root}>
+        <>
+        <div role='status' aria-live='polite' aria-atomic='true'>
+            {state.success ? <div className={styles.success}><p>{tf('success')}</p></div> : null}
+        </div>
+        {!state.success ? <form action={formAction} className={styles.root}>
             <Field label={tf('name')} htmlFor='name' className={styles.field} labelClassName={styles.label}>
                 <TextInput
                     id='name'
@@ -66,6 +62,7 @@ export function ContactForm({ locale }: ContactFormProps) {
                     {pending ? '…' : tf('submit')}
                 </Button>
             </FormActions>
-        </form>
+        </form> : null}
+        </>
     );
 }

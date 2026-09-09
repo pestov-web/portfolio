@@ -2,6 +2,7 @@
   "name": "portfolio",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.34.5",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,6 +10,7 @@
     "lint": "eslint",
     "fsd:check": "steiger ./src",
     "prisma:generate": "prisma generate",
+    "db:migrate": "tsx prisma/migrate.ts",
     "pretest": "pnpm prisma:generate",
     "test": "vitest run",
     "pretest:watch": "pnpm prisma:generate",
@@ -19,7 +21,7 @@
     "seed": "dotenv -e .env.local -- tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.7.0",
+    "@prisma/adapter-better-sqlite3": "7.7.0",
     "@prisma/client": "^7.7.0",
     "@tiptap/extension-image": "^3.22.2",
     "@tiptap/extension-link": "^3.22.2",
@@ -32,7 +34,6 @@
     "next": "16.2.2",
     "next-intl": "^4.9.0",
     "next-themes": "^0.4.6",
-    "pg": "^8.20.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "resend": "^6.10.0",
@@ -40,12 +41,13 @@
   },
   "devDependencies": {
     "@feature-sliced/steiger-plugin": "^0.5.7",
+    "@playwright/test": "1.62.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/sanitize-html": "^2.16.1",
+    "axe-core": "4.11.2",
     "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.2",

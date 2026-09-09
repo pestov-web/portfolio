@@ -1,0 +1,25 @@
+name: portfolio-storage
+services:
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    env_file: ../.env.storage
+    command: server /data --console-address ':9001'
+    volumes:
+      - media:/data
+    networks:
+      shared-services:
+        aliases: [portfolio-minio]
+  init:
+    image: minio/mc:latest
+    env_file: ../.env.storage
+    depends_on: [minio]
+    networks: [shared-services]
+    entrypoint: ['/bin/sh', '-c']
+    command:
+      - 'until mc alias set local http://portfolio-minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD"; do sleep 2; done; mc mb --ignore-existing local/portfolio'
+volumes:
+  media:
+networks:
+  shared-services:
+    name: shared-services

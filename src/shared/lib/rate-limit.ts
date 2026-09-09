@@ -59,37 +59,41 @@ export function createDatabaseRateLimiter(scope: string, options: RateLimitOptio
 
   return async (key: string): Promise<RateLimitResult> => {
     try {
-      const rows = await prisma.$queryRawUnsafe<Array<{ count: number; retryAfter: number }>>(
+      const now = Date.now();
+      const rows = await prisma.$queryRawUnsafe<Array<{ count: number | bigint; reset_at: number | bigint }>>(
         `
           INSERT INTO app_rate_limits (scope, key, count, reset_at)
-          VALUES ($1, $2, 1, NOW() + ($3 || ' milliseconds')::interval)
+          VALUES (?, ?, 1, ?)
           ON CONFLICT (scope, key)
           DO UPDATE SET
             count = CASE
-              WHEN app_rate_limits.reset_at <= NOW() THEN 1
-              ELSE LEAST(app_rate_limits.count + 1, $4 + 1)
+              WHEN app_rate_limits.reset_at <= ? THEN 1
+              ELSE MIN(app_rate_limits.count + 1, ?)
             END,
             reset_at = CASE
-              WHEN app_rate_limits.reset_at <= NOW() THEN NOW() + ($3 || ' milliseconds')::interval
+              WHEN app_rate_limits.reset_at <= ? THEN excluded.reset_at
               ELSE app_rate_limits.reset_at
             END
           RETURNING
             count,
-            GREATEST(1, CEIL(EXTRACT(EPOCH FROM reset_at - NOW())))::int AS "retryAfter"
+            reset_at
         `,
         scope,
         key,
-        options.windowMs,
-        options.max
+        now + options.windowMs,
+        now,
+        options.max + 1,
+        now
       );
 
       const row = rows[0];
-      const success = row.count <= options.max;
+      const count = Number(row.count);
+      const success = count <= options.max;
 
       return {
         success,
-        remaining: success ? Math.max(0, options.max - row.count) : 0,
-        retryAfter: row.retryAfter,
+        remaining: success ? Math.max(0, options.max - count) : 0,
+        retryAfter: Math.max(1, Math.ceil((Number(row.reset_at) - now) / 1000)),
       };
     } catch {
       return memoryFallback(key);

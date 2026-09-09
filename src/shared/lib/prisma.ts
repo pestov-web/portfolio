@@ -1,5 +1,5 @@
 import { PrismaClient } from '../../../generated/prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 
 // Singleton паттерн для Prisma клиента в Next.js dev-режиме
 // В dev hot reload создаёт несколько инстансов без этого паттерна
@@ -9,8 +9,8 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
-    const adapter = new PrismaPg({
-        connectionString: process.env.DATABASE_URL!,
+    const adapter = new PrismaBetterSqlite3({
+        url: process.env.DATABASE_URL ?? 'file:./portfolio.db',
     });
 
     return new PrismaClient({ adapter });

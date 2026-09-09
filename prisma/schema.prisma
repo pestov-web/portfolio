@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
 }
 
 // Роли пользователей
@@ -171,7 +171,7 @@ model AppRateLimit {
   scope   String
   key     String
   count   Int
-  resetAt DateTime @db.Timestamptz
+  resetAt BigInt @map("reset_at") // Unix milliseconds for atomic rate-limit SQL
 
   @@id([scope, key])
   @@index([resetAt])

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useSession, signOut } from "@/shared/auth/index";
 import { locales, type Locale } from "@/shared/config/index";
 import { buildLocaleSwitchHref, stripLocalePrefix } from "@/shared/lib/locale";
@@ -18,6 +18,27 @@ export function Header() {
   const rawPathname = usePathname();
   const searchParams = useSearchParams();
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuId = useId();
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.target instanceof Node && !headerRef.current?.contains(event.target)) setMenuOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [menuOpen]);
   const { data: session } = useSession();
 
   const isAdmin = session?.user.role === "ADMIN";
@@ -42,7 +63,7 @@ export function Header() {
   );
 
   return (
-    <header className={headerClassNames.root}>
+    <header ref={headerRef} className={headerClassNames.root}>
       <div className={headerClassNames.container}>
         <div className={headerClassNames.row}>
           <Link href={`/${locale}`} className={headerClassNames.brand} onClick={() => setMenuOpen(false)}>
@@ -107,6 +128,8 @@ export function Header() {
               onClick={() => setMenuOpen((value) => !value)}
               aria-label={menuOpen ? t("closeMenu") : t("openMenu")}
               aria-expanded={menuOpen}
+              aria-controls={menuId}
+              ref={menuButtonRef}
             >
               <MenuIcon open={menuOpen} />
             </button>
@@ -115,7 +138,7 @@ export function Header() {
       </div>
 
       {menuOpen ? (
-        <div className={headerClassNames.mobileMenu}>
+        <div id={menuId} className={headerClassNames.mobileMenu}>
           <nav className={headerClassNames.mobileNav} aria-label={t("mobileNavigation")}>
             {navLinks.map(({ href, label }) => (
               <Link
@@ -128,7 +151,7 @@ export function Header() {
               </Link>
             ))}
             <a
-              href="https://hype-voice.ru"
+              href="https://voice.pestov-web.ru"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMenuOpen(false)}

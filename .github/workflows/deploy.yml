@@ -8,10 +8,17 @@ on:
 
 concurrency:
     group: production-deploy
-    cancel-in-progress: true
+    cancel-in-progress: false
 
 jobs:
+    quality:
+        uses: ./.github/workflows/ci.yml
+        permissions:
+            contents: read
+
     build:
+        needs: quality
+        if: github.ref == 'refs/heads/main'
         runs-on: ubuntu-latest
         permissions:
             contents: read
@@ -41,8 +48,7 @@ jobs:
               with:
                   images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
                   tags: |
-                      type=raw,value=latest
-                      type=sha,prefix=sha-
+                      type=raw,value=sha-${{ github.sha }}
 
             - name: Build and push image
               uses: docker/build-push-action@v6
@@ -51,12 +57,15 @@ jobs:
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
                   build-args: |
                       NEXT_PUBLIC_APP_URL=https://pestov-web.ru
                       NEXT_PUBLIC_MINIO_BUCKET=portfolio
 
     deploy:
         needs: build
+        timeout-minutes: 15
         runs-on:
             - self-hosted
             - linux
@@ -76,11 +85,14 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: Compute short SHA
-              run: echo "IMAGE_TAG=sha-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+            - name: Select verified revision
+              run: echo "IMAGE_TAG=sha-${GITHUB_SHA}" >> "$GITHUB_ENV"
 
             - name: Ensure deploy directory exists
-              run: mkdir -p "$DEPLOY_PATH/deploy"
+              run: mkdir -p "$DEPLOY_PATH/deploy" "$DEPLOY_PATH/backups"
+
+            - name: Back up current release configuration
+              run: bash deploy/backup.sh
 
             - name: Sync deploy files
               run: |
@@ -88,13 +100,18 @@ jobs:
                   cp deploy/nginx.pestov-web.ru.conf "$DEPLOY_PATH/deploy/nginx.pestov-web.ru.conf"
 
             - name: Write production env file
+              env:
+                  PRODUCTION_ENV_FILE: ${{ secrets.PRODUCTION_ENV_FILE }}
               run: |
-                  cat > "$DEPLOY_PATH/.env.production" <<'EOF'
-                  ${{ secrets.PRODUCTION_ENV_FILE }}
-                  EOF
+                  test -n "$PRODUCTION_ENV_FILE"
+                  test -s "$DEPLOY_PATH/.env.storage"
+                  umask 077
+                  printf '%s\n' "$PRODUCTION_ENV_FILE" > "$DEPLOY_PATH/.env.production"
+                  cat "$DEPLOY_PATH/.env.storage" >> "$DEPLOY_PATH/.env.production"
 
             - name: Write deploy env file
               run: |
+                  umask 077
                   cat > "$DEPLOY_PATH/.deploy.env" <<EOF
                   GHCR_IMAGE=${GHCR_IMAGE}
                   IMAGE_TAG=${IMAGE_TAG}
@@ -115,11 +132,25 @@ jobs:
                   docker compose --env-file .deploy.env -f docker-compose.prod.yml pull app migrate
 
             - name: Apply database migrations
+              # The existing writer must be stopped before SQLite is copied or migrated.
               run: |
+                  bash deploy/backup.sh sqlite
                   cd "$DEPLOY_PATH"
                   docker compose --env-file .deploy.env -f docker-compose.prod.yml run --rm migrate
 
             - name: Restart application
               run: |
                   cd "$DEPLOY_PATH"
-                  docker compose --env-file .deploy.env -f docker-compose.prod.yml up -d app
+                  docker compose --env-file .deploy.env -f docker-compose.prod.yml up -d --wait --wait-timeout 90 app
+
+            - name: Verify public site
+              run: test "$(curl --fail --silent --show-error --max-time 20 https://pestov-web.ru/api/health)" = '{"status":"ok"}'
+
+            - name: Deployment failure details
+              if: failure()
+              run: |
+                  echo "Deployment failed. Inspect the backup under $DEPLOY_PATH/backups before any rollback."
+                  if test -f "$DEPLOY_PATH/.deploy.env"; then
+                    cd "$DEPLOY_PATH"
+                    docker compose --env-file .deploy.env -f docker-compose.prod.yml ps -a
+                  fi

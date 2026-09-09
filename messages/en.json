@@ -178,6 +178,7 @@
         },
         "dangerZone": "Danger zone: deletion cannot be undone.",
         "usersPage": {
+            "roleLabel": "User role",
             "title": "Users",
             "accountsCount": "{count} accounts",
             "currentUser": "(you)",

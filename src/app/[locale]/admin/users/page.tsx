@@ -98,6 +98,7 @@ export default async function AdminUsersPage({
                   <ActionForm action={updateRole} className="flex items-center gap-2 shrink-0">
                     <NativeSelect
                       name="role"
+                      aria-label={`${t("usersPage.roleLabel")} — ${user.name || user.email}`}
                       defaultValue={user.role}
                     >
                       <option value="USER">{roleLabels.USER}</option>

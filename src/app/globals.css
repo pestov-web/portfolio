@@ -254,6 +254,7 @@
 /* ─── Prose (рендер Tiptap/rich-text контента) ──────────────────────────── */
 @layer components {
   .prose {
+    overflow-wrap: anywhere;
     color: rgb(var(--fg));
     font-size: 1rem;
     line-height: 1.75;
@@ -299,6 +300,7 @@
   }
 
   .prose pre {
+    overflow-wrap: normal;
     background-color: rgb(var(--bg-subtle));
     border: 1px solid rgb(var(--border));
     border-radius: 0.5rem;

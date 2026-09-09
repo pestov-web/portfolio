@@ -12,7 +12,7 @@ export const headerClassNames = {
   authButton: "px-3 py-1.5 text-xs text-muted hover:text-fg hover:bg-subtle rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-vivid/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
   desktopAuth: "hidden md:flex items-center gap-1",
   mobileMenuButton: "md:hidden size-8 flex items-center justify-center text-muted hover:text-fg hover:bg-subtle rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-vivid/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-  mobileMenu: "md:hidden border-t border-border bg-bg",
+  mobileMenu: "md:hidden max-h-[calc(100dvh-3.5rem)] overflow-y-auto overscroll-contain border-t border-border bg-bg",
   mobileNav: "page-container page-x py-3 flex flex-col gap-1",
   mobileExternalLink: "flex items-center gap-1.5 px-3 py-2 text-sm text-muted hover:text-fg hover:bg-subtle rounded-md no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-vivid/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
   mobileAuth: "pt-2 mt-1 border-t border-border flex flex-col gap-1",

@@ -4,13 +4,14 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
 RUN corepack enable
+RUN apt-get update && apt-get install -y --no-install-recommends openssl && apt-get clean
 
 FROM base AS deps
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=portfolio-pnpm,target=/pnpm/store pnpm install --frozen-lockfile --store-dir=/pnpm/store
 
 FROM deps AS builder
 WORKDIR /app

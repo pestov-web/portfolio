@@ -178,6 +178,7 @@
         },
         "dangerZone": "Опасная зона — удаление необратимо.",
         "usersPage": {
+            "roleLabel": "Роль пользователя",
             "title": "Пользователи",
             "accountsCount": "{count} аккаунтов",
             "currentUser": "(вы)",
